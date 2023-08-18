@@ -1,0 +1,24 @@
+{
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "account": "account",
+    "email": "Email",
+    "name": "Name",
+    "surname": "Surname",
+    "password": "Password",
+    "errors":{
+        "empty": "The field should not be empty",
+        "short": "Too short",
+        "email": "Email is not correct",
+        "used": "A user with such an email already exists",
+        "wrong": "Password or email don't match",
+        "digits": "The field must not contain numbers"
+    },
+    "helpers": {
+        "titles": {
+            "signIn": "Sign in to your account",
+            "signUp": "Create your account"
+        },
+        "signUp(rich)": "Don't have an account? ${tapHere(Sign up)}"
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "app_name": "daylist",
+    "back": "Назад",
+    "cancel": "Отмена",
+    "title": "Настройки",
+    "general": "Общие",
+    "city": "Город",
+    "institution": "Учреждение",
+    "group": "Группа",
+    "undergroup": "Подгруппа",
+    "not_set_name": "Не задано",
+    "theme": "Тема",
+    "theme_mode": {
+        "light": "Светлая",
+        "dark": "Тёмная"
+    },
+    "pick_color": "Выбери цвет",
+    "primary_color": "Главный цвет",
+    "background_color": "Цвет фона",
+    "radius": "Угол блоков",
+    "show_time": "Показывать время"
+}

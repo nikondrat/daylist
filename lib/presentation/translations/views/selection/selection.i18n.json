@@ -1,0 +1,18 @@
+{
+    "city": "city",
+    "institution": "institution",
+    "group": "group",
+    "add": "Add",
+    "title": "Title",
+    "shortTitle": "Short title",
+    "addText": {
+        "city(rich)": "There is no your @:selection.city? ${tapHere(@:selection.add)}",
+        "institution(rich)": "There is no your @:selection.institution? ${tapHere(@:selection.add)}",
+        "group(rich)": "There is no your @:selection.group? ${tapHere(@:selection.add)}"
+    },
+    "select(context=SelectType)": {
+        "city": "Select @:selection.city",
+        "institution": "Select @:selection.institution",
+        "group": "Select @:selection.group"
+    }
+}

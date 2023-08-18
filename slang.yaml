@@ -1,0 +1,3 @@
+namespaces: true
+output_directory: lib/presentation/translations
+output_file_name: translations.g.dart

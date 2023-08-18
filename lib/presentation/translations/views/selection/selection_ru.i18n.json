@@ -1,0 +1,18 @@
+{
+    "city": "город",
+    "institution": "учреждение",
+    "group": "группа",
+    "add": "Добавить",
+    "title": "Название",
+    "shortTitle": "Короткое название",
+    "addText": {
+        "city(rich)": "Нет твоего города? ${tapHere(@:selection.add)}",
+        "institution(rich)": "Нет твоего учреждения? ${tapHere(@:selection.add)}",
+        "group(rich)": "Нет твоей группы? ${tapHere(@:selection.add)}"
+    },
+    "select(context=SelectType)": {
+        "city": "Выберите @:selection.city",
+        "institution": "Выберите @:selection.institution",
+        "group": "Выберите группу"
+    }
+}

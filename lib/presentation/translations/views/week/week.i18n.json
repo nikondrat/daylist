@@ -1,0 +1,27 @@
+{
+    "title": "week",
+    "isEven": [
+        "Even @:week.title",
+        "Odd @:week.title"
+    ],
+    "days": {
+        "short": [
+            "Mo",
+            "Tu",
+            "We",
+            "Th",
+            "Fr",
+            "Sa",
+            "Su"
+        ],
+        "full": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday"
+        ]
+    }
+}

@@ -1,0 +1,59 @@
+name: daylist
+description: App for college
+publish_to: 'none'
+
+environment:
+  sdk: '>=3.0.6 <4.0.0'
+
+version: 1.0.8+9
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # backend
+  appwrite: ^9.0.1
+
+  # storage
+  isar: ^3.0.5
+  isar_flutter_libs: ^3.0.5
+  shared_preferences: ^2.2.0
+  
+  # state
+  flutter_hooks: ^0.18.0
+  hooks_riverpod: ^2.3.7
+
+  # navigate
+  go_router: ^10.0.0
+
+  # utils
+  intl: ^0.18.0
+  get_it: ^7.6.0
+  path_provider: ^2.0.15
+  flutter_launcher_icons: ^0.13.1
+
+  # ui
+  unicons: ^2.1.1
+  google_fonts: ^4.0.3
+  flutter_colorpicker: ^1.0.3
+  font_awesome_flutter: ^10.5.0
+  loading_animation_widget: ^1.2.0+4
+
+  # localization
+  flutter_localizations:
+    sdk: flutter
+  slang: ^3.22.0
+  slang_flutter: ^3.22.0
+  
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+  build_runner: ^2.4.1
+  isar_generator: ^3.0.5
+  slang_build_runner: ^3.22.0
+
+flutter:
+  uses-material-design: true

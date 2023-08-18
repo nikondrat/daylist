@@ -1,0 +1,14 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "daylist",
+            "database": "postgres",
+            "username": "postgres",
+            "password": "qSRaotUODrNcxj9g"
+        }
+    ]
+}
