@@ -35,19 +35,19 @@ class _GeneralSectionWidget extends HookConsumerWidget {
       SubsectionWidget(
           subsection: Subsection(
               icon: const Icon(UniconsLine.building),
-              onTap: () => router.goNamed(ViewsNames.selectionCity),
+              onTap: () => router.pushNamed(ViewsNames.selectionCity),
               title: t.settings.city,
               trailing: [Text(settings.city!.title)])),
       SubsectionWidget(
           subsection: Subsection(
               icon: const Icon(UniconsLine.graduation_cap),
-              onTap: () => router.goNamed(ViewsNames.selectionInstitution),
+              onTap: () => router.pushNamed(ViewsNames.selectionInstitution),
               title: t.settings.institution,
               trailing: [Text(settings.institution!.shortTitle)])),
       SubsectionWidget(
           subsection: Subsection(
               icon: const Icon(UniconsLine.cell),
-              onTap: () => router.goNamed(ViewsNames.selectionGroup),
+              onTap: () => router.pushNamed(ViewsNames.selectionGroup),
               title: t.settings.group,
               trailing: [Text(settings.group!.title)])),
       SubsectionWidget(
@@ -120,7 +120,7 @@ class _ThemeSectionWidget extends HookConsumerWidget {
               ])),
           SubsectionWidget(
               subsection: Subsection(
-                  title: t.settings.primary_color,
+                  title: t.settings.background_color,
                   icon: const Icon(UniconsLine.dice_two),
                   onTap: () => showDialog(
                       context: context,

@@ -52,6 +52,6 @@ class Settings {
         backgroundColor: map['backgroundColor'] != null
             ? Color(map['backgroundColor'] as int)
             : null,
-        radius: map['radius']);
+        radius: map['radius'] ?? kDefaultRadius);
   }
 }

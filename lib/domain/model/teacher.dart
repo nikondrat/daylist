@@ -12,6 +12,12 @@ class Teacher {
       required this.titleId,
       required this.classroom});
 
+  String shortInitials() {
+    final List<String> i = initials.split(' ');
+
+    return '${i.first} ${i[1][0]}. ${i[1][0]}.';
+  }
+
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'documentId': id,

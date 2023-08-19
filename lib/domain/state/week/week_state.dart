@@ -62,3 +62,7 @@ final teachersProvider = FutureProvider<List<Teacher>>((ref) async {
 
   return teachers;
 });
+
+final teachersBySubject = FutureProvider<List<Teacher>>((ref) async {
+  return [];
+});

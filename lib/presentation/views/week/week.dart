@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:daylist/presentation/extensions/context.dart';
+import 'package:daylist/presentation/views/widgets/dialog.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -24,8 +26,17 @@ class WeekView extends StatelessWidget {
     final bool isEven = WeekUtil.weekNumber(now).isEven;
 
     return Scaffold(
-        appBar:
-            AppBar(title: Text(isEven ? t.week.isEven[0] : t.week.isEven[1])),
+        appBar: AppBar(
+            title: Text(isEven ? t.week.isEven[0] : t.week.isEven[1]),
+            actions: [
+              Padding(
+                  padding: const EdgeInsets.only(right: Insets.small),
+                  child: IconButton(
+                      onPressed: () => showDialog(
+                          context: context,
+                          builder: (context) => const _AddSubjectDialog()),
+                      icon: const Icon(Icons.add)))
+            ]),
         body: _Loader(
             builder: (times, titles, teachers, subjects) => _Body(
                 times: times,
@@ -132,5 +143,74 @@ class _Item extends StatelessWidget {
               subsectionSubject: SubsectionSubject(
                   time: time, teacher: teacher, title: title));
         }).toList());
+  }
+}
+
+class _AddSubjectDialog extends StatefulHookConsumerWidget {
+  const _AddSubjectDialog();
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      __AddSubjectDialogState();
+}
+
+class __AddSubjectDialogState extends ConsumerState<_AddSubjectDialog> {
+  Future addSubject() async {}
+
+  @override
+  Widget build(BuildContext context) {
+    final AsyncValue<List<SubjectTitle>> titles = ref.watch(titlesProvider);
+    final AsyncValue<List<Teacher>> teachers = ref.watch(teachersProvider);
+    final AsyncValue<List<Time>> times = ref.watch(timesProvider);
+
+    return CustomDialog(
+        title: t.selection.add,
+        onSubmitted: addSubject,
+        children: [
+          LoaderWidget(
+              config: titles,
+              builder: (v) => DropdownButtonFormField(
+                  hint: Text(t.selection.title, style: context.text.mediumText),
+                  items: v
+                      .map((e) =>
+                          DropdownMenuItem(value: e.id, child: Text(e.title)))
+                      .toList(),
+                  onChanged: (v) {})),
+          LoaderWidget(
+              config: teachers,
+              builder: (v) => Padding(
+                  padding: const EdgeInsets.only(top: Insets.small),
+                  child: DropdownButtonFormField(
+                      hint: Text(t.selection.teacher,
+                          style: context.text.mediumText),
+                      items: v
+                          .map((e) => DropdownMenuItem(
+                              value: e.id, child: Text(e.shortInitials())))
+                          .toList(),
+                      onChanged: (v) {}))),
+          LoaderWidget(
+              config: times,
+              builder: (v) => Padding(
+                  padding: const EdgeInsets.only(top: Insets.small),
+                  child: DropdownButtonFormField(
+                      hint: Text(t.selection.time,
+                          style: context.text.mediumText),
+                      items: v
+                          .map((e) => DropdownMenuItem(
+                              value: e.id,
+                              child: Text('${e.start} - ${e.end}')))
+                          .toList(),
+                      onChanged: (v) {}))),
+          Padding(
+              padding: const EdgeInsets.only(top: Insets.small),
+              child: DropdownButtonFormField(
+                  hint: Text(t.selection.day, style: context.text.mediumText),
+                  items: t.week.days.full
+                      .map((e) => DropdownMenuItem(
+                          value: t.week.days.full.indexOf(e) + 1,
+                          child: Text(e)))
+                      .toList(),
+                  onChanged: (v) {})),
+        ]);
   }
 }

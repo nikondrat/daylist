@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 132 (66 per locale)
+/// Strings: 138 (69 per locale)
 ///
-/// Built on 2023-08-18 at 07:32 UTC
+/// Built on 2023-08-19 at 14:12 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -205,6 +205,9 @@ class _TranslationsSelectionEn {
 	String get city => 'city';
 	String get institution => 'institution';
 	String get group => 'group';
+	String get teacher => 'Teacher';
+	String get day => 'Day';
+	String get time => 'Time';
 	String get add => 'Add';
 	String get title => 'Title';
 	String get shortTitle => 'Short title';
@@ -443,6 +446,9 @@ class _TranslationsSelectionRu implements _TranslationsSelectionEn {
 	@override String get city => 'город';
 	@override String get institution => 'учреждение';
 	@override String get group => 'группа';
+	@override String get teacher => 'Преподаватель';
+	@override String get day => 'День';
+	@override String get time => 'Время';
 	@override String get add => 'Добавить';
 	@override String get title => 'Название';
 	@override String get shortTitle => 'Короткое название';
@@ -450,11 +456,11 @@ class _TranslationsSelectionRu implements _TranslationsSelectionEn {
 	@override String select({required SelectType context}) {
 		switch (context) {
 			case SelectType.city:
-				return 'Выберите ${_root.selection.city}';
+				return 'Выбери ${_root.selection.city}';
 			case SelectType.institution:
-				return 'Выберите ${_root.selection.institution}';
+				return 'Выбери ${_root.selection.institution}';
 			case SelectType.group:
-				return 'Выберите группу';
+				return 'Выбери группу';
 		}
 	}
 }
@@ -639,6 +645,9 @@ extension on _TranslationsEn {
 			case 'selection.city': return 'city';
 			case 'selection.institution': return 'institution';
 			case 'selection.group': return 'group';
+			case 'selection.teacher': return 'Teacher';
+			case 'selection.day': return 'Day';
+			case 'selection.time': return 'Time';
 			case 'selection.add': return 'Add';
 			case 'selection.title': return 'Title';
 			case 'selection.shortTitle': return 'Short title';
@@ -732,6 +741,9 @@ extension on _TranslationsRu {
 			case 'selection.city': return 'город';
 			case 'selection.institution': return 'учреждение';
 			case 'selection.group': return 'группа';
+			case 'selection.teacher': return 'Преподаватель';
+			case 'selection.day': return 'День';
+			case 'selection.time': return 'Время';
 			case 'selection.add': return 'Добавить';
 			case 'selection.title': return 'Название';
 			case 'selection.shortTitle': return 'Короткое название';
@@ -750,11 +762,11 @@ extension on _TranslationsRu {
 			case 'selection.select': return ({required SelectType context}) {
 				switch (context) {
 					case SelectType.city:
-						return 'Выберите ${_root.selection.city}';
+						return 'Выбери ${_root.selection.city}';
 					case SelectType.institution:
-						return 'Выберите ${_root.selection.institution}';
+						return 'Выбери ${_root.selection.institution}';
 					case SelectType.group:
-						return 'Выберите группу';
+						return 'Выбери группу';
 				}
 			};
 			case 'settings.app_name': return 'daylist';
