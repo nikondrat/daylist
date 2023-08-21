@@ -41,7 +41,7 @@ class AppwriteService {
         databaseId: body.databaseId,
         collectionId: body.collectionId,
         documentId: body.city.id,
-        data: body.city.toMap());
+        data: {'title': body.city.title, 'createdBy': body.city.createdBy});
   }
 
   Future<List<ApiInstitution>> getInstitutions(
@@ -59,7 +59,12 @@ class AppwriteService {
         databaseId: body.databaseId,
         collectionId: body.collectionId,
         documentId: body.institution.id,
-        data: body.institution.toMap());
+        data: {
+          'title': body.institution.title,
+          'shortTitle': body.institution.shortTitle,
+          'cityId': body.institution.cityId,
+          'createdBy': body.institution.createdBy
+        });
   }
 
   Future<List<ApiGroup>> getGroups({required GetGroupsBody body}) async {
@@ -76,7 +81,11 @@ class AppwriteService {
         databaseId: body.databaseId,
         collectionId: body.collectionId,
         documentId: body.group.id,
-        data: body.group.toMap());
+        data: {
+          'title': body.group.title,
+          'institutionId': body.group.institutionId,
+          'createdBy': body.group.createdBy,
+        });
   }
 
   Future<List<ApiTitle>> getTitles({required GetTitlesBody body}) async {

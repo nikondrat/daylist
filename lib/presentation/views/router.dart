@@ -34,7 +34,7 @@ final GoRouter router = GoRouter(navigatorKey: navigatorKey, routes: [
 
         return null;
       },
-      builder: (context, state) => const Scaffold()),
+      builder: (context, state) => const Material()),
   GoRoute(
       name: ViewsNames.selectionCity,
       path: ViewsPaths.selectionCity,
