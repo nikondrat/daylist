@@ -1,6 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:daylist/presentation/extensions/context.dart';
-import 'package:daylist/presentation/views/widgets/dialog.dart';
+import 'package:daylist/domain/state/dialogs/subject_dialog_state.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -13,15 +11,16 @@ import 'package:daylist/domain/state/week/week_state.dart';
 import 'package:daylist/presentation/res/values.dart';
 import 'package:daylist/presentation/translations/translations.g.dart';
 import 'package:daylist/presentation/utils/week_util.dart';
+import 'package:daylist/presentation/views/widgets/dialogs/add_subject_dialog.dart';
 import 'package:daylist/presentation/views/widgets/loader.dart';
 import 'package:daylist/presentation/views/widgets/section.dart';
 import 'package:daylist/presentation/views/widgets/subsection.dart';
 
-class WeekView extends StatelessWidget {
+class WeekView extends HookConsumerWidget {
   const WeekView({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final DateTime now = DateTime.now();
     final bool isEven = WeekUtil.weekNumber(now).isEven;
 
@@ -33,8 +32,16 @@ class WeekView extends StatelessWidget {
                   padding: const EdgeInsets.only(right: Insets.small),
                   child: IconButton(
                       onPressed: () => showDialog(
-                          context: context,
-                          builder: (context) => const _AddSubjectDialog()),
+                              context: context,
+                              builder: (context) =>
+                                  const AddSubjectDialog()).then((value) {
+                            ref
+                                .read(selectedTeacherProvider.notifier)
+                                .update((state) => null);
+                            ref
+                                .read(selectedSubjectTitleProvider.notifier)
+                                .update((state) => null);
+                          }),
                       icon: const Icon(Icons.add)))
             ]),
         body: _Loader(
@@ -122,7 +129,7 @@ class _Item extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final DateTime now = DateTime.now();
-    final int weekday = t.week.days.full.indexOf(title);
+    final int weekday = t.week.days.full.indexOf(title) + 1;
 
     return SectionWidget(
         title: title,
@@ -143,74 +150,5 @@ class _Item extends StatelessWidget {
               subsectionSubject: SubsectionSubject(
                   time: time, teacher: teacher, title: title));
         }).toList());
-  }
-}
-
-class _AddSubjectDialog extends StatefulHookConsumerWidget {
-  const _AddSubjectDialog();
-
-  @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      __AddSubjectDialogState();
-}
-
-class __AddSubjectDialogState extends ConsumerState<_AddSubjectDialog> {
-  Future addSubject() async {}
-
-  @override
-  Widget build(BuildContext context) {
-    final AsyncValue<List<SubjectTitle>> titles = ref.watch(titlesProvider);
-    final AsyncValue<List<Teacher>> teachers = ref.watch(teachersProvider);
-    final AsyncValue<List<Time>> times = ref.watch(timesProvider);
-
-    return CustomDialog(
-        title: t.selection.add,
-        onSubmitted: addSubject,
-        children: [
-          LoaderWidget(
-              config: titles,
-              builder: (v) => DropdownButtonFormField(
-                  hint: Text(t.selection.title, style: context.text.mediumText),
-                  items: v
-                      .map((e) =>
-                          DropdownMenuItem(value: e.id, child: Text(e.title)))
-                      .toList(),
-                  onChanged: (v) {})),
-          LoaderWidget(
-              config: teachers,
-              builder: (v) => Padding(
-                  padding: const EdgeInsets.only(top: Insets.small),
-                  child: DropdownButtonFormField(
-                      hint: Text(t.selection.teacher,
-                          style: context.text.mediumText),
-                      items: v
-                          .map((e) => DropdownMenuItem(
-                              value: e.id, child: Text(e.shortInitials())))
-                          .toList(),
-                      onChanged: (v) {}))),
-          LoaderWidget(
-              config: times,
-              builder: (v) => Padding(
-                  padding: const EdgeInsets.only(top: Insets.small),
-                  child: DropdownButtonFormField(
-                      hint: Text(t.selection.time,
-                          style: context.text.mediumText),
-                      items: v
-                          .map((e) => DropdownMenuItem(
-                              value: e.id,
-                              child: Text('${e.start} - ${e.end}')))
-                          .toList(),
-                      onChanged: (v) {}))),
-          Padding(
-              padding: const EdgeInsets.only(top: Insets.small),
-              child: DropdownButtonFormField(
-                  hint: Text(t.selection.day, style: context.text.mediumText),
-                  items: t.week.days.full
-                      .map((e) => DropdownMenuItem(
-                          value: t.week.days.full.indexOf(e) + 1,
-                          child: Text(e)))
-                      .toList(),
-                  onChanged: (v) {})),
-        ]);
   }
 }

@@ -4,13 +4,15 @@ class Teacher {
   final String institutionId;
   final String titleId;
   final int classroom;
+  final String? createdBy;
 
   Teacher(
       {required this.id,
       required this.initials,
       required this.institutionId,
       required this.titleId,
-      required this.classroom});
+      required this.classroom,
+      required this.createdBy});
 
   String shortInitials() {
     final List<String> i = initials.split(' ');
@@ -24,7 +26,8 @@ class Teacher {
       'initials': initials,
       'institutionId': institutionId,
       'titleId': titleId,
-      'classroom': classroom
+      'classroom': classroom,
+      'createdBy': createdBy
     };
   }
 
@@ -34,6 +37,7 @@ class Teacher {
         initials: map['initials'] as String,
         institutionId: map['institutionId'] as String,
         titleId: map['titleId'] as String,
-        classroom: map['classroom'] as int);
+        classroom: map['classroom'] as int,
+        createdBy: map['createdBy']);
   }
 }

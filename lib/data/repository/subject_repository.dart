@@ -1,4 +1,5 @@
 import 'package:daylist/data/api/api_util.dart';
+import 'package:daylist/data/api/request/add/add_subject_body.dart';
 import 'package:daylist/data/api/request/get/get_subjects_body.dart';
 import 'package:daylist/data/storage/model/storage_subject.dart';
 import 'package:daylist/data/storage/storage_util.dart';
@@ -25,5 +26,19 @@ class SubjectDataRepository extends SubjectRepository {
     } else {
       return subjects;
     }
+  }
+
+  @override
+  Future addSubject({required AddSubjectBody body}) async {
+    return await _apiUtil.addSubject(body: body).then((value) async =>
+        await _storageUtil.addSubject(
+            subject: StorageSubject(
+                id: body.subject.id,
+                teacherId: body.subject.teacherId,
+                timeId: body.subject.timeId,
+                isEven: body.subject.isEven,
+                groupId: body.subject.groupId,
+                weekday: body.subject.weekday,
+                createdBy: body.subject.createdBy)));
   }
 }

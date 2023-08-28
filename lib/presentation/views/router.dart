@@ -4,8 +4,6 @@ import 'package:go_router/go_router.dart';
 
 import 'package:daylist/data/repository/auth_repository.dart';
 import 'package:daylist/internal/dependencies/dependencies.dart';
-import 'package:daylist/presentation/views/auth/sign_in.dart';
-import 'package:daylist/presentation/views/auth/sign_up.dart';
 import 'package:daylist/presentation/views/home/home.dart';
 import 'package:daylist/presentation/views/selection/selection.dart';
 import 'package:daylist/presentation/views/settings/settings.dart';
@@ -51,24 +49,24 @@ final GoRouter router = GoRouter(navigatorKey: navigatorKey, routes: [
                   builder: (context, state) => const SelectionGroupView())
             ])
       ]),
-  GoRoute(
-      name: ViewsNames.signIn,
-      path: ViewsPaths.signIn,
-      builder: (context, state) => const LoginView(),
-      redirect: (context, state) async {
-        final bool isAuthorized =
-            await AuthDataRepository(Dependencies().getIt.get()).isAuthorized();
+  // GoRoute(
+  //     name: ViewsNames.signIn,
+  //     path: ViewsPaths.signIn,
+  //     builder: (context, state) => const LoginView(),
+  //     redirect: (context, state) async {
+  //       final bool isAuthorized =
+  //           await AuthDataRepository(Dependencies().getIt.get()).isAuthorized();
 
-        if (isAuthorized) router.goNamed(ViewsNames.home);
+  //       if (isAuthorized) router.goNamed(ViewsNames.home);
 
-        return null;
-      },
-      routes: [
-        GoRoute(
-            name: ViewsNames.signUp,
-            path: ViewsPaths.signUp,
-            builder: (context, state) => const SignUpView())
-      ]),
+  //       return null;
+  //     },
+  //     routes: [
+  //       GoRoute(
+  //           name: ViewsNames.signUp,
+  //           path: ViewsPaths.signUp,
+  //           builder: (context, state) => const SignUpView())
+  //     ]),
   GoRoute(
       name: ViewsNames.home,
       path: ViewsPaths.home,
@@ -90,8 +88,8 @@ abstract class ViewsNames {
   static const String selectionInstitution = 'selectionInstitution';
   static const String selectionGroup = 'selectionGroup';
 
-  static const String signIn = 'signIn';
-  static const String signUp = 'signUp';
+  // static const String signIn = 'signIn';
+  // static const String signUp = 'signUp';
 
   static const String home = 'home';
   static const String week = 'week';
@@ -103,8 +101,8 @@ abstract class ViewsPaths {
   static const String selectionInstitution = ViewsNames.selectionInstitution;
   static const String selectionGroup = ViewsNames.selectionGroup;
 
-  static const String signIn = '/${ViewsNames.signIn}';
-  static const String signUp = ViewsNames.signUp;
+  // static const String signIn = '/${ViewsNames.signIn}';
+  // static const String signUp = ViewsNames.signUp;
 
   static const String home = '/${ViewsNames.home}';
   static const String week = ViewsNames.week;

@@ -5,6 +5,7 @@ class ApiSubject {
   final String groupId;
   final bool? isEven;
   final int weekday;
+  final String? createdBy;
 
   ApiSubject.fromApi(Map<String, dynamic> map)
       : id = map['\$id'],
@@ -12,5 +13,6 @@ class ApiSubject {
         timeId = map['timeId'],
         groupId = map['groupId'],
         isEven = map['isEven'],
-        weekday = map['weekday'];
+        weekday = map['weekday'],
+        createdBy = map['createdBy'];
 }

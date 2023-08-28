@@ -1,6 +1,5 @@
+import 'package:daylist/presentation/res/values.dart';
 import 'package:flutter/material.dart';
-
-import '../res/values.dart';
 
 class ThemeValues extends ThemeExtension<ThemeValues> {
   double padding;

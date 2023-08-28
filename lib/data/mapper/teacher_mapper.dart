@@ -9,7 +9,8 @@ class TeacherMapper {
         initials: teacher.initials,
         institutionId: teacher.institutionId,
         titleId: teacher.titleId,
-        classroom: teacher.classroom);
+        classroom: teacher.classroom,
+        createdBy: teacher.createdBy);
   }
 
   static Teacher fromStorage(StorageTeacher teacher) {
@@ -18,6 +19,7 @@ class TeacherMapper {
         initials: teacher.initials,
         institutionId: teacher.institutionId,
         titleId: teacher.titleId,
-        classroom: teacher.classroom);
+        classroom: teacher.classroom,
+        createdBy: teacher.createdBy);
   }
 }

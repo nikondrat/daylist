@@ -13,14 +13,16 @@ class StorageSubject {
   final String groupId;
   final bool? isEven;
   final int weekday;
-  StorageSubject({
-    required this.id,
-    required this.teacherId,
-    required this.timeId,
-    required this.groupId,
-    this.isEven,
-    required this.weekday,
-  });
+  final String? createdBy;
+
+  StorageSubject(
+      {required this.id,
+      required this.teacherId,
+      required this.timeId,
+      required this.groupId,
+      this.isEven,
+      required this.weekday,
+      required this.createdBy});
 
   StorageSubject.fromApi(Subject subject)
       : id = subject.id,
@@ -28,5 +30,6 @@ class StorageSubject {
         timeId = subject.timeId,
         groupId = subject.groupId,
         isEven = subject.isEven,
-        weekday = subject.weekday;
+        weekday = subject.weekday,
+        createdBy = subject.createdBy;
 }

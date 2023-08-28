@@ -1,9 +1,8 @@
 import 'package:daylist/domain/state/settings/settings_state.dart';
-import 'package:daylist/presentation/extensions/context.dart';
+import 'package:daylist/presentation/extensions/theme/context.dart';
 import 'package:daylist/presentation/res/values.dart';
 import 'package:daylist/presentation/translations/translations.g.dart';
 import 'package:daylist/presentation/views/router.dart';
-import 'package:daylist/presentation/views/widgets/adaptive.dart';
 import 'package:daylist/presentation/views/widgets/section.dart';
 import 'package:daylist/presentation/views/widgets/subsection.dart';
 import 'package:flutter/gestures.dart';
@@ -19,8 +18,24 @@ class SettingsView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Material(
         color: context.color.backgroundColor,
-        child: AdaptiveWidget(
-            mobile: _Mobile(), tablet: _Tablet(), desktop: _Desktop()));
+        child: Scaffold(
+            appBar: AppBar(title: Text(t.settings.title)),
+            body: ScrollConfiguration(
+                behavior: ScrollConfiguration.of(context).copyWith(
+                    dragDevices: {
+                      PointerDeviceKind.mouse,
+                      PointerDeviceKind.touch
+                    }),
+                child: ListView(
+                    physics: const BouncingScrollPhysics(),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: Insets.small),
+                    children: const [
+                      _GeneralSectionWidget(),
+                      _ThemeSectionWidget()
+                    ]))));
+    // const AdaptiveWidget(
+    // mobile: _Mobile(), tablet: _Tablet(), desktop: _Desktop()));
   }
 }
 

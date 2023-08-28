@@ -1,12 +1,12 @@
 /// Generated file. Do not edit.
 ///
-/// Original: lib/presentation/translations/views/auth
+/// Original: lib/presentation/translations/dialog
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 138 (69 per locale)
+/// Strings: 150 (75 per locale)
 ///
-/// Built on 2023-08-19 at 14:12 UTC
+/// Built on 2023-08-28 at 17:15 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -158,12 +158,27 @@ class _TranslationsEn implements BaseTranslations<AppLocale, _TranslationsEn> {
 	late final _TranslationsEn _root = this; // ignore: unused_field
 
 	// Translations
+	late final _TranslationsDialogEn dialog = _TranslationsDialogEn._(_root);
 	late final _TranslationsAuthEn auth = _TranslationsAuthEn._(_root);
 	late final _TranslationsHomeEn home = _TranslationsHomeEn._(_root);
 	late final _TranslationsSelectionEn selection = _TranslationsSelectionEn._(_root);
 	late final _TranslationsSettingsEn settings = _TranslationsSettingsEn._(_root);
 	late final _TranslationsWeekEn week = _TranslationsWeekEn._(_root);
 	late final _TranslationsSubjectEn subject = _TranslationsSubjectEn._(_root);
+}
+
+// Path: dialog
+class _TranslationsDialogEn {
+	_TranslationsDialogEn._(this._root);
+
+	final _TranslationsEn _root; // ignore: unused_field
+
+	// Translations
+	String get wrong => 'Wrong';
+	String get initials => 'Surname Name Patronymic';
+	String get start => 'Start';
+	String get end => 'End';
+	String get number => 'Number of subject';
 }
 
 // Path: auth
@@ -261,6 +276,7 @@ class _TranslationsWeekEn {
 	List<String> get isEven => [
 		'Even ${_root.week.title}',
 		'Odd ${_root.week.title}',
+		'Regular ${_root.week.title}',
 	];
 	late final _TranslationsWeekDaysEn days = _TranslationsWeekDaysEn._(_root);
 }
@@ -399,12 +415,27 @@ class _TranslationsRu implements _TranslationsEn {
 	@override late final _TranslationsRu _root = this; // ignore: unused_field
 
 	// Translations
+	@override late final _TranslationsDialogRu dialog = _TranslationsDialogRu._(_root);
 	@override late final _TranslationsAuthRu auth = _TranslationsAuthRu._(_root);
 	@override late final _TranslationsHomeRu home = _TranslationsHomeRu._(_root);
 	@override late final _TranslationsSelectionRu selection = _TranslationsSelectionRu._(_root);
 	@override late final _TranslationsSettingsRu settings = _TranslationsSettingsRu._(_root);
 	@override late final _TranslationsWeekRu week = _TranslationsWeekRu._(_root);
 	@override late final _TranslationsSubjectRu subject = _TranslationsSubjectRu._(_root);
+}
+
+// Path: dialog
+class _TranslationsDialogRu implements _TranslationsDialogEn {
+	_TranslationsDialogRu._(this._root);
+
+	@override final _TranslationsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get wrong => 'Неправильно';
+	@override String get initials => 'Фамилия Имя Отчество';
+	@override String get start => 'Начало';
+	@override String get end => 'Конец';
+	@override String get number => 'Номер пары';
 }
 
 // Path: auth
@@ -502,6 +533,7 @@ class _TranslationsWeekRu implements _TranslationsWeekEn {
 	@override List<String> get isEven => [
 		'Чётная ${_root.week.title}',
 		'Нечётная ${_root.week.title}',
+		'Обычная ${_root.week.title}',
 	];
 	@override late final _TranslationsWeekDaysRu days = _TranslationsWeekDaysRu._(_root);
 }
@@ -621,6 +653,11 @@ class _TranslationsAuthHelpersTitlesRu implements _TranslationsAuthHelpersTitles
 extension on _TranslationsEn {
 	dynamic _flatMapFunction(String path) {
 		switch (path) {
+			case 'dialog.wrong': return 'Wrong';
+			case 'dialog.initials': return 'Surname Name Patronymic';
+			case 'dialog.start': return 'Start';
+			case 'dialog.end': return 'End';
+			case 'dialog.number': return 'Number of subject';
 			case 'auth.signIn': return 'Sign in';
 			case 'auth.signUp': return 'Sign up';
 			case 'auth.account': return 'account';
@@ -694,6 +731,7 @@ extension on _TranslationsEn {
 			case 'week.title': return 'week';
 			case 'week.isEven.0': return 'Even ${_root.week.title}';
 			case 'week.isEven.1': return 'Odd ${_root.week.title}';
+			case 'week.isEven.2': return 'Regular ${_root.week.title}';
 			case 'week.days.short.0': return 'Mo';
 			case 'week.days.short.1': return 'Tu';
 			case 'week.days.short.2': return 'We';
@@ -717,6 +755,11 @@ extension on _TranslationsEn {
 extension on _TranslationsRu {
 	dynamic _flatMapFunction(String path) {
 		switch (path) {
+			case 'dialog.wrong': return 'Неправильно';
+			case 'dialog.initials': return 'Фамилия Имя Отчество';
+			case 'dialog.start': return 'Начало';
+			case 'dialog.end': return 'Конец';
+			case 'dialog.number': return 'Номер пары';
 			case 'auth.signIn': return 'Вход';
 			case 'auth.signUp': return 'Зарегистрироваться';
 			case 'auth.account': return 'аккаунт';
@@ -790,6 +833,7 @@ extension on _TranslationsRu {
 			case 'week.title': return 'неделя';
 			case 'week.isEven.0': return 'Чётная ${_root.week.title}';
 			case 'week.isEven.1': return 'Нечётная ${_root.week.title}';
+			case 'week.isEven.2': return 'Обычная ${_root.week.title}';
 			case 'week.days.short.0': return 'Пн';
 			case 'week.days.short.1': return 'Вт';
 			case 'week.days.short.2': return 'Ср';

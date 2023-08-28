@@ -1,6 +1,6 @@
+import 'package:daylist/presentation/extensions/theme/context.dart';
 import 'package:daylist/presentation/res/values.dart';
 import 'package:flutter/material.dart';
-import 'package:daylist/presentation/extensions/context.dart';
 
 class SectionWidget extends StatelessWidget {
   final String? title;

@@ -1,4 +1,5 @@
 import 'package:daylist/data/api/api_util.dart';
+import 'package:daylist/data/api/request/add/add_title_body.dart';
 import 'package:daylist/data/api/request/get/get_titles_body.dart';
 import 'package:daylist/data/storage/model/storage_title.dart';
 import 'package:daylist/data/storage/storage_util.dart';
@@ -25,5 +26,15 @@ class TitleDataRepository extends TitleRepository {
     } else {
       return titles;
     }
+  }
+
+  @override
+  Future addTitle({required AddTitleBody body}) async {
+    return await _apiUtil.addTitle(body: body).then((value) async =>
+        await _storageUtil.addTitle(
+            title: StorageTitle(
+                id: body.title.id,
+                title: body.title.title,
+                createdBy: body.title.createdBy)));
   }
 }

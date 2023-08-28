@@ -1,9 +1,10 @@
-import 'package:daylist/presentation/res/values.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
 import 'package:daylist/domain/model/city.dart';
 import 'package:daylist/domain/model/group.dart';
 import 'package:daylist/domain/model/institution.dart';
+import 'package:daylist/presentation/res/values.dart';
 
 class Settings {
   City? city;
@@ -45,7 +46,7 @@ class Settings {
         institution: Institution.fromMap(map['institution']),
         group: Group.fromMap(map['group']),
         undergroup: map['undergroup'] ?? 1,
-        isDark: map['isDark'] as bool,
+        isDark: map['isDark'] ?? false,
         primaryColor: map['primaryColor'] != null
             ? Color(map['primaryColor'] as int)
             : null,
@@ -53,5 +54,10 @@ class Settings {
             ? Color(map['backgroundColor'] as int)
             : null,
         radius: map['radius'] ?? kDefaultRadius);
+  }
+
+  @override
+  String toString() {
+    return 'Settings(city: $city, institution: $institution, group: $group, undergroup: $undergroup, isDark: $isDark, primaryColor: $primaryColor, backgroundColor: $backgroundColor, radius: $radius)';
   }
 }

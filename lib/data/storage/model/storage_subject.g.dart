@@ -17,33 +17,38 @@ const StorageSubjectSchema = CollectionSchema(
   name: r'StorageSubject',
   id: -9038469283834222307,
   properties: {
-    r'groupId': PropertySchema(
+    r'createdBy': PropertySchema(
       id: 0,
+      name: r'createdBy',
+      type: IsarType.string,
+    ),
+    r'groupId': PropertySchema(
+      id: 1,
       name: r'groupId',
       type: IsarType.string,
     ),
     r'id': PropertySchema(
-      id: 1,
+      id: 2,
       name: r'id',
       type: IsarType.string,
     ),
     r'isEven': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'isEven',
       type: IsarType.bool,
     ),
     r'teacherId': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'teacherId',
       type: IsarType.string,
     ),
     r'timeId': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'timeId',
       type: IsarType.string,
     ),
     r'weekday': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'weekday',
       type: IsarType.long,
     )
@@ -68,6 +73,12 @@ int _storageSubjectEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  {
+    final value = object.createdBy;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   bytesCount += 3 + object.groupId.length * 3;
   bytesCount += 3 + object.id.length * 3;
   bytesCount += 3 + object.teacherId.length * 3;
@@ -81,12 +92,13 @@ void _storageSubjectSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeString(offsets[0], object.groupId);
-  writer.writeString(offsets[1], object.id);
-  writer.writeBool(offsets[2], object.isEven);
-  writer.writeString(offsets[3], object.teacherId);
-  writer.writeString(offsets[4], object.timeId);
-  writer.writeLong(offsets[5], object.weekday);
+  writer.writeString(offsets[0], object.createdBy);
+  writer.writeString(offsets[1], object.groupId);
+  writer.writeString(offsets[2], object.id);
+  writer.writeBool(offsets[3], object.isEven);
+  writer.writeString(offsets[4], object.teacherId);
+  writer.writeString(offsets[5], object.timeId);
+  writer.writeLong(offsets[6], object.weekday);
 }
 
 StorageSubject _storageSubjectDeserialize(
@@ -96,12 +108,13 @@ StorageSubject _storageSubjectDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = StorageSubject(
-    groupId: reader.readString(offsets[0]),
-    id: reader.readString(offsets[1]),
-    isEven: reader.readBoolOrNull(offsets[2]),
-    teacherId: reader.readString(offsets[3]),
-    timeId: reader.readString(offsets[4]),
-    weekday: reader.readLong(offsets[5]),
+    createdBy: reader.readStringOrNull(offsets[0]),
+    groupId: reader.readString(offsets[1]),
+    id: reader.readString(offsets[2]),
+    isEven: reader.readBoolOrNull(offsets[3]),
+    teacherId: reader.readString(offsets[4]),
+    timeId: reader.readString(offsets[5]),
+    weekday: reader.readLong(offsets[6]),
   );
   return object;
 }
@@ -114,16 +127,18 @@ P _storageSubjectDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 1:
       return (reader.readString(offset)) as P;
     case 2:
-      return (reader.readBoolOrNull(offset)) as P;
-    case 3:
       return (reader.readString(offset)) as P;
+    case 3:
+      return (reader.readBoolOrNull(offset)) as P;
     case 4:
       return (reader.readString(offset)) as P;
     case 5:
+      return (reader.readString(offset)) as P;
+    case 6:
       return (reader.readLong(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -223,6 +238,160 @@ extension StorageSubjectQueryWhere
 
 extension StorageSubjectQueryFilter
     on QueryBuilder<StorageSubject, StorageSubject, QFilterCondition> {
+  QueryBuilder<StorageSubject, StorageSubject, QAfterFilterCondition>
+      createdByIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'createdBy',
+      ));
+    });
+  }
+
+  QueryBuilder<StorageSubject, StorageSubject, QAfterFilterCondition>
+      createdByIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'createdBy',
+      ));
+    });
+  }
+
+  QueryBuilder<StorageSubject, StorageSubject, QAfterFilterCondition>
+      createdByEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'createdBy',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageSubject, StorageSubject, QAfterFilterCondition>
+      createdByGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'createdBy',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageSubject, StorageSubject, QAfterFilterCondition>
+      createdByLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'createdBy',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageSubject, StorageSubject, QAfterFilterCondition>
+      createdByBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'createdBy',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageSubject, StorageSubject, QAfterFilterCondition>
+      createdByStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'createdBy',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageSubject, StorageSubject, QAfterFilterCondition>
+      createdByEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'createdBy',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageSubject, StorageSubject, QAfterFilterCondition>
+      createdByContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'createdBy',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageSubject, StorageSubject, QAfterFilterCondition>
+      createdByMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'createdBy',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageSubject, StorageSubject, QAfterFilterCondition>
+      createdByIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'createdBy',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<StorageSubject, StorageSubject, QAfterFilterCondition>
+      createdByIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'createdBy',
+        value: '',
+      ));
+    });
+  }
+
   QueryBuilder<StorageSubject, StorageSubject, QAfterFilterCondition>
       groupIdEqualTo(
     String value, {
@@ -915,6 +1084,19 @@ extension StorageSubjectQueryLinks
 
 extension StorageSubjectQuerySortBy
     on QueryBuilder<StorageSubject, StorageSubject, QSortBy> {
+  QueryBuilder<StorageSubject, StorageSubject, QAfterSortBy> sortByCreatedBy() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'createdBy', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StorageSubject, StorageSubject, QAfterSortBy>
+      sortByCreatedByDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'createdBy', Sort.desc);
+    });
+  }
+
   QueryBuilder<StorageSubject, StorageSubject, QAfterSortBy> sortByGroupId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'groupId', Sort.asc);
@@ -995,6 +1177,19 @@ extension StorageSubjectQuerySortBy
 
 extension StorageSubjectQuerySortThenBy
     on QueryBuilder<StorageSubject, StorageSubject, QSortThenBy> {
+  QueryBuilder<StorageSubject, StorageSubject, QAfterSortBy> thenByCreatedBy() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'createdBy', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StorageSubject, StorageSubject, QAfterSortBy>
+      thenByCreatedByDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'createdBy', Sort.desc);
+    });
+  }
+
   QueryBuilder<StorageSubject, StorageSubject, QAfterSortBy> thenByGroupId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'groupId', Sort.asc);
@@ -1088,6 +1283,13 @@ extension StorageSubjectQuerySortThenBy
 
 extension StorageSubjectQueryWhereDistinct
     on QueryBuilder<StorageSubject, StorageSubject, QDistinct> {
+  QueryBuilder<StorageSubject, StorageSubject, QDistinct> distinctByCreatedBy(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'createdBy', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<StorageSubject, StorageSubject, QDistinct> distinctByGroupId(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1134,6 +1336,12 @@ extension StorageSubjectQueryProperty
   QueryBuilder<StorageSubject, int, QQueryOperations> localIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'localId');
+    });
+  }
+
+  QueryBuilder<StorageSubject, String?, QQueryOperations> createdByProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'createdBy');
     });
   }
 

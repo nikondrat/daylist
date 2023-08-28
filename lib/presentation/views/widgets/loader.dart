@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-
-import 'package:daylist/presentation/extensions/context.dart';
+import 'package:daylist/presentation/extensions/theme/context.dart';
 
 class _LoadingWidget extends StatelessWidget {
   const _LoadingWidget();

@@ -22,23 +22,28 @@ const StorageTeacherSchema = CollectionSchema(
       name: r'classroom',
       type: IsarType.long,
     ),
-    r'id': PropertySchema(
+    r'createdBy': PropertySchema(
       id: 1,
+      name: r'createdBy',
+      type: IsarType.string,
+    ),
+    r'id': PropertySchema(
+      id: 2,
       name: r'id',
       type: IsarType.string,
     ),
     r'initials': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'initials',
       type: IsarType.string,
     ),
     r'institutionId': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'institutionId',
       type: IsarType.string,
     ),
     r'titleId': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'titleId',
       type: IsarType.string,
     )
@@ -63,6 +68,12 @@ int _storageTeacherEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  {
+    final value = object.createdBy;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   bytesCount += 3 + object.id.length * 3;
   bytesCount += 3 + object.initials.length * 3;
   bytesCount += 3 + object.institutionId.length * 3;
@@ -77,10 +88,11 @@ void _storageTeacherSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeLong(offsets[0], object.classroom);
-  writer.writeString(offsets[1], object.id);
-  writer.writeString(offsets[2], object.initials);
-  writer.writeString(offsets[3], object.institutionId);
-  writer.writeString(offsets[4], object.titleId);
+  writer.writeString(offsets[1], object.createdBy);
+  writer.writeString(offsets[2], object.id);
+  writer.writeString(offsets[3], object.initials);
+  writer.writeString(offsets[4], object.institutionId);
+  writer.writeString(offsets[5], object.titleId);
 }
 
 StorageTeacher _storageTeacherDeserialize(
@@ -91,10 +103,11 @@ StorageTeacher _storageTeacherDeserialize(
 ) {
   final object = StorageTeacher(
     classroom: reader.readLong(offsets[0]),
-    id: reader.readString(offsets[1]),
-    initials: reader.readString(offsets[2]),
-    institutionId: reader.readString(offsets[3]),
-    titleId: reader.readString(offsets[4]),
+    createdBy: reader.readStringOrNull(offsets[1]),
+    id: reader.readString(offsets[2]),
+    initials: reader.readString(offsets[3]),
+    institutionId: reader.readString(offsets[4]),
+    titleId: reader.readString(offsets[5]),
   );
   return object;
 }
@@ -109,12 +122,14 @@ P _storageTeacherDeserializeProp<P>(
     case 0:
       return (reader.readLong(offset)) as P;
     case 1:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 2:
       return (reader.readString(offset)) as P;
     case 3:
       return (reader.readString(offset)) as P;
     case 4:
+      return (reader.readString(offset)) as P;
+    case 5:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -266,6 +281,160 @@ extension StorageTeacherQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageTeacher, StorageTeacher, QAfterFilterCondition>
+      createdByIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'createdBy',
+      ));
+    });
+  }
+
+  QueryBuilder<StorageTeacher, StorageTeacher, QAfterFilterCondition>
+      createdByIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'createdBy',
+      ));
+    });
+  }
+
+  QueryBuilder<StorageTeacher, StorageTeacher, QAfterFilterCondition>
+      createdByEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'createdBy',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageTeacher, StorageTeacher, QAfterFilterCondition>
+      createdByGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'createdBy',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageTeacher, StorageTeacher, QAfterFilterCondition>
+      createdByLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'createdBy',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageTeacher, StorageTeacher, QAfterFilterCondition>
+      createdByBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'createdBy',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageTeacher, StorageTeacher, QAfterFilterCondition>
+      createdByStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'createdBy',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageTeacher, StorageTeacher, QAfterFilterCondition>
+      createdByEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'createdBy',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageTeacher, StorageTeacher, QAfterFilterCondition>
+      createdByContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'createdBy',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageTeacher, StorageTeacher, QAfterFilterCondition>
+      createdByMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'createdBy',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageTeacher, StorageTeacher, QAfterFilterCondition>
+      createdByIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'createdBy',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<StorageTeacher, StorageTeacher, QAfterFilterCondition>
+      createdByIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'createdBy',
+        value: '',
       ));
     });
   }
@@ -891,6 +1060,19 @@ extension StorageTeacherQuerySortBy
     });
   }
 
+  QueryBuilder<StorageTeacher, StorageTeacher, QAfterSortBy> sortByCreatedBy() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'createdBy', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StorageTeacher, StorageTeacher, QAfterSortBy>
+      sortByCreatedByDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'createdBy', Sort.desc);
+    });
+  }
+
   QueryBuilder<StorageTeacher, StorageTeacher, QAfterSortBy> sortById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -956,6 +1138,19 @@ extension StorageTeacherQuerySortThenBy
       thenByClassroomDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'classroom', Sort.desc);
+    });
+  }
+
+  QueryBuilder<StorageTeacher, StorageTeacher, QAfterSortBy> thenByCreatedBy() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'createdBy', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StorageTeacher, StorageTeacher, QAfterSortBy>
+      thenByCreatedByDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'createdBy', Sort.desc);
     });
   }
 
@@ -1034,6 +1229,13 @@ extension StorageTeacherQueryWhereDistinct
     });
   }
 
+  QueryBuilder<StorageTeacher, StorageTeacher, QDistinct> distinctByCreatedBy(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'createdBy', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<StorageTeacher, StorageTeacher, QDistinct> distinctById(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1075,6 +1277,12 @@ extension StorageTeacherQueryProperty
   QueryBuilder<StorageTeacher, int, QQueryOperations> classroomProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'classroom');
+    });
+  }
+
+  QueryBuilder<StorageTeacher, String?, QQueryOperations> createdByProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'createdBy');
     });
   }
 

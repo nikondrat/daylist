@@ -1,16 +1,14 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:daylist/domain/state/auth/auth_state.dart';
+import 'package:daylist/presentation/extensions/theme/context.dart';
 import 'package:daylist/presentation/utils/validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:unicons/unicons.dart';
 
-import 'package:daylist/presentation/extensions/context.dart';
 import 'package:daylist/presentation/res/values.dart';
 import 'package:daylist/presentation/translations/translations.g.dart';
-import 'package:daylist/presentation/views/router.dart';
 import 'package:daylist/presentation/views/widgets/adaptive.dart';
 
 class LoginView extends StatefulHookConsumerWidget {
@@ -223,7 +221,7 @@ class _Helper extends HookConsumerWidget {
                       ref
                           .read(isShowPasswordProvider.notifier)
                           .update((state) => false);
-                      context.goNamed(ViewsNames.signUp);
+                      // context.goNamed(ViewsNames.signUp);
                     })))
         ]));
   }

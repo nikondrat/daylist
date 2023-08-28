@@ -9,6 +9,10 @@ import 'package:daylist/data/api/model/api_title.dart';
 import 'package:daylist/data/api/request/add/add_city_body.dart';
 import 'package:daylist/data/api/request/add/add_group_body.dart';
 import 'package:daylist/data/api/request/add/add_institution_body.dart';
+import 'package:daylist/data/api/request/add/add_subject_body.dart';
+import 'package:daylist/data/api/request/add/add_teacher_body.dart';
+import 'package:daylist/data/api/request/add/add_time_body.dart';
+import 'package:daylist/data/api/request/add/add_title_body.dart';
 import 'package:daylist/data/api/request/get/get_cities_body.dart';
 import 'package:daylist/data/api/request/get/get_groups_body.dart';
 import 'package:daylist/data/api/request/get/get_institutions_body.dart';
@@ -84,6 +88,10 @@ class ApiUtil {
     return convertedList;
   }
 
+  Future addTitle({required AddTitleBody body}) async {
+    return _appwriteService.addTitle(body: body);
+  }
+
   Future<List<Teacher>> getTeachers({required GetTeachersBody body}) async {
     final List<ApiTeacher> result =
         await _appwriteService.getTeachers(body: body);
@@ -91,6 +99,10 @@ class ApiUtil {
         result.map((e) => TeacherMapper.fromApi(e)).toList();
 
     return convertedList;
+  }
+
+  Future addTeacher({required AddTecherBody body}) async {
+    return _appwriteService.addTeacher(body: body);
   }
 
   Future<List<Time>> getTimes({required GetTimesBody body}) async {
@@ -101,6 +113,10 @@ class ApiUtil {
     return convertedList;
   }
 
+  Future addTime({required AddTimeBody body}) async {
+    return _appwriteService.addTime(body: body);
+  }
+
   Future<List<Subject>> getSubjects({required GetSubjectsBody body}) async {
     final List<ApiSubject> result =
         await _appwriteService.getSubjects(body: body);
@@ -108,6 +124,10 @@ class ApiUtil {
         result.map((e) => SubjectMapper.fromApi(e)).toList();
 
     return convertedList;
+  }
+
+  Future addSubject({required AddSubjectBody body}) async {
+    return _appwriteService.addSubject(body: body);
   }
 
   Future<List<Replacement>> getReplacements(

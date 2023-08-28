@@ -1,4 +1,5 @@
 import 'package:daylist/data/api/api_util.dart';
+import 'package:daylist/data/api/request/add/add_time_body.dart';
 import 'package:daylist/data/api/request/get/get_times_body.dart';
 import 'package:daylist/data/storage/model/storage_time.dart';
 import 'package:daylist/data/storage/storage_util.dart';
@@ -13,9 +14,9 @@ class TimeDataRepository extends TimeRepository {
 
   @override
   Future<List<Time>> getTimes({required GetTimesBody body}) async {
-    final List<Time> teachers = await _storageUtil.getTimes();
+    final List<Time> times = await _storageUtil.getTimes();
 
-    if (teachers.isEmpty) {
+    if (times.isEmpty) {
       final List<Time> result = await _apiUtil.getTimes(body: body);
       final List<StorageTime> convertedList =
           result.map((e) => StorageTime.fromApi(e)).toList();
@@ -23,7 +24,19 @@ class TimeDataRepository extends TimeRepository {
 
       return result;
     } else {
-      return teachers;
+      return times;
     }
+  }
+
+  @override
+  Future addTime({required AddTimeBody body}) async {
+    return await _apiUtil.addTime(body: body).then((value) async =>
+        await _storageUtil.addTime(
+            time: StorageTime(
+                id: body.time.id,
+                start: body.time.start,
+                end: body.time.end,
+                number: body.time.number,
+                createdBy: body.time.createdBy)));
   }
 }

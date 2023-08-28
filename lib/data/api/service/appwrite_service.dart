@@ -13,6 +13,10 @@ import 'package:daylist/data/api/model/api_title.dart';
 import 'package:daylist/data/api/request/add/add_city_body.dart';
 import 'package:daylist/data/api/request/add/add_group_body.dart';
 import 'package:daylist/data/api/request/add/add_institution_body.dart';
+import 'package:daylist/data/api/request/add/add_subject_body.dart';
+import 'package:daylist/data/api/request/add/add_teacher_body.dart';
+import 'package:daylist/data/api/request/add/add_time_body.dart';
+import 'package:daylist/data/api/request/add/add_title_body.dart';
 import 'package:daylist/data/api/request/auth/sign_up_body.dart';
 import 'package:daylist/data/api/request/get/get_cities_body.dart';
 import 'package:daylist/data/api/request/get/get_groups_body.dart';
@@ -95,6 +99,14 @@ class AppwriteService {
     return docs.documents.map((e) => ApiTitle.fromApi(e.data)).toList();
   }
 
+  Future addTitle({required AddTitleBody body}) async {
+    return _databases.createDocument(
+        databaseId: body.databaseId,
+        collectionId: body.collectionId,
+        documentId: body.title.id,
+        data: {'title': body.title.title, 'createdBy': body.title.createdBy});
+  }
+
   Future<List<ApiTeacher>> getTeachers({required GetTeachersBody body}) async {
     final DocumentList docs = await _databases.listDocuments(
         databaseId: body.databaseId,
@@ -104,11 +116,38 @@ class AppwriteService {
     return docs.documents.map((e) => ApiTeacher.fromApi(e.data)).toList();
   }
 
+  Future addTeacher({required AddTecherBody body}) async {
+    return _databases.createDocument(
+        databaseId: body.databaseId,
+        collectionId: body.collectionId,
+        documentId: body.teacher.id,
+        data: {
+          'titleId': body.teacher.titleId,
+          'initials': body.teacher.initials,
+          'classroom': body.teacher.classroom,
+          'institutionId': body.teacher.institutionId,
+          'createdBy': body.teacher.createdBy
+        });
+  }
+
   Future<List<ApiTime>> getTimes({required GetTimesBody body}) async {
     final DocumentList docs = await _databases.listDocuments(
         databaseId: body.databaseId, collectionId: body.collectionId);
 
     return docs.documents.map((e) => ApiTime.fromApi(e.data)).toList();
+  }
+
+  Future addTime({required AddTimeBody body}) async {
+    return _databases.createDocument(
+        databaseId: body.databaseId,
+        collectionId: body.collectionId,
+        documentId: body.time.id,
+        data: {
+          'start': body.time.start,
+          'end': body.time.end,
+          'number': body.time.number,
+          'createdBy': body.time.createdBy
+        });
   }
 
   Future<List<ApiSubject>> getSubjects({required GetSubjectsBody body}) async {
@@ -118,6 +157,21 @@ class AppwriteService {
         queries: [Query.equal('groupId', body.groupId)]);
 
     return docs.documents.map((e) => ApiSubject.fromApi(e.data)).toList();
+  }
+
+  Future addSubject({required AddSubjectBody body}) async {
+    return _databases.createDocument(
+        databaseId: body.databaseId,
+        collectionId: body.collectionId,
+        documentId: body.subject.id,
+        data: {
+          'teacherId': body.subject.teacherId,
+          'groupId': body.subject.groupId,
+          'timeId': body.subject.timeId,
+          'isEven': body.subject.isEven,
+          'weekday': body.subject.weekday,
+          'createdBy': body.subject.createdBy
+        });
   }
 
   Future<List<ApiReplacement>> getReplacements(

@@ -8,8 +8,10 @@ class SubjectMapper {
         id: subject.id,
         teacherId: subject.teacherId,
         timeId: subject.timeId,
+        isEven: subject.isEven,
         groupId: subject.groupId,
-        weekday: subject.weekday);
+        weekday: subject.weekday,
+        createdBy: subject.createdBy);
   }
 
   static Subject fromStorage(StorageSubject subject) {
@@ -17,7 +19,9 @@ class SubjectMapper {
         id: subject.id,
         teacherId: subject.teacherId,
         timeId: subject.timeId,
+        isEven: subject.isEven,
         groupId: subject.groupId,
-        weekday: subject.weekday);
+        weekday: subject.weekday,
+        createdBy: subject.createdBy);
   }
 }

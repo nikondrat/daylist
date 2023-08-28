@@ -1,6 +1,5 @@
+import 'package:daylist/presentation/res/colors.dart';
 import 'package:flutter/material.dart';
-
-import '../res/colors.dart';
 
 class ThemeColors extends ThemeExtension<ThemeColors> {
   Color backgroundColor;

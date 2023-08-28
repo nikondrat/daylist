@@ -89,6 +89,11 @@ class IsarService {
     db.writeTxnSync(() => db.storageSubjects.putAllSync(subjects));
   }
 
+  Future addSubject({required StorageSubject subject}) async {
+    final Isar db = await _db;
+    db.writeTxnSync(() => db.storageSubjects.putSync(subject));
+  }
+
   Future<List<StorageTeacher>> getTeachers() async {
     final Isar db = await _db;
     return db.storageTeachers.where().findAllSync();
@@ -97,6 +102,11 @@ class IsarService {
   Future putTeachers({required List<StorageTeacher> teachers}) async {
     final Isar db = await _db;
     db.writeTxnSync(() => db.storageTeachers.putAllSync(teachers));
+  }
+
+  Future addTeacher({required StorageTeacher teacher}) async {
+    final Isar db = await _db;
+    db.writeTxnSync(() => db.storageTeachers.putSync(teacher));
   }
 
   Future<List<StorageTime>> getTimes() async {
@@ -109,6 +119,11 @@ class IsarService {
     db.writeTxnSync(() => db.storageTimes.putAllSync(times));
   }
 
+  Future addTime({required StorageTime time}) async {
+    final Isar db = await _db;
+    db.writeTxnSync(() => db.storageTimes.putSync(time));
+  }
+
   Future<List<StorageTitle>> getTitles() async {
     final Isar db = await _db;
     return db.storageTitles.where().findAllSync();
@@ -117,6 +132,11 @@ class IsarService {
   Future putTitles({required List<StorageTitle> titles}) async {
     final Isar db = await _db;
     db.writeTxnSync(() => db.storageTitles.putAllSync(titles));
+  }
+
+  Future addTitle({required StorageTitle title}) async {
+    final Isar db = await _db;
+    db.writeTxnSync(() => db.storageTitles.putSync(title));
   }
 
   Future<Isar> _openDB() async {

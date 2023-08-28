@@ -6,7 +6,7 @@ import 'package:daylist/domain/model/subject.dart';
 import 'package:daylist/domain/model/teacher.dart';
 import 'package:daylist/domain/model/time.dart';
 import 'package:daylist/domain/model/title.dart';
-import 'package:daylist/presentation/extensions/context.dart';
+import 'package:daylist/presentation/extensions/theme/context.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class SubsectionSubject {

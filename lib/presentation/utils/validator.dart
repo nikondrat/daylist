@@ -12,9 +12,14 @@ class Validator {
 
   String? initials(String? v, {bool checkLen = true}) {
     if (standart(v, checkLen: checkLen) == null) {
-      final RegExp regex = RegExp(r"\d");
+      final RegExp digits = RegExp(r"\d");
+      final RegExp initials = RegExp(r"[^\s]+");
 
-      if (regex.hasMatch(v!)) return t.auth.errors.digits;
+      if (digits.hasMatch(v!)) {
+        return t.auth.errors.digits;
+      } else if (initials.hasMatch(v) && initials.allMatches(v).length != 3) {
+        return t.dialog.wrong;
+      }
     } else {
       return standart(v);
     }

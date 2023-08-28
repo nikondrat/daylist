@@ -62,14 +62,14 @@ class SettingsNotifier extends ChangeNotifier {
 
   Color? get primaryColor => _settings?.primaryColor;
   set primaryColor(Color? v) {
-    _settings?.primaryColor = v;
+    _settings!.primaryColor = v;
     UserDataRepository(Dependencies().getIt.get()).setSettings(_settings!);
     notifyListeners();
   }
 
   Color? get backgroundColor => _settings?.backgroundColor;
   set backgroundColor(Color? v) {
-    _settings?.backgroundColor = v;
+    _settings!.backgroundColor = v;
     UserDataRepository(Dependencies().getIt.get()).setSettings(_settings!);
     notifyListeners();
   }

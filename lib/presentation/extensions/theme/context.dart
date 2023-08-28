@@ -1,6 +1,6 @@
+import 'package:daylist/presentation/res/colors.dart';
 import 'package:flutter/material.dart';
 
-import '../res/colors.dart';
 import 'colors.dart';
 import 'text.dart';
 import 'values.dart';

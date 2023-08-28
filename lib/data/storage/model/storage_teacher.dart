@@ -11,18 +11,21 @@ class StorageTeacher {
   final String institutionId;
   final String titleId;
   final int classroom;
+  final String? createdBy;
 
   StorageTeacher(
       {required this.id,
       required this.initials,
       required this.institutionId,
       required this.titleId,
-      required this.classroom});
+      required this.classroom,
+      required this.createdBy});
 
   StorageTeacher.fromApi(Teacher teacher)
       : id = teacher.id,
         initials = teacher.initials,
         institutionId = teacher.institutionId,
         titleId = teacher.titleId,
-        classroom = teacher.classroom;
+        classroom = teacher.classroom,
+        createdBy = teacher.createdBy;
 }

@@ -1,4 +1,4 @@
-import 'package:daylist/presentation/extensions/context.dart';
+import 'package:daylist/presentation/extensions/theme/context.dart';
 import 'package:daylist/presentation/translations/translations.g.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';

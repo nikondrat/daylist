@@ -1,9 +1,9 @@
+import 'package:daylist/presentation/extensions/theme/colors.dart';
+import 'package:daylist/presentation/extensions/theme/text.dart';
+import 'package:daylist/presentation/extensions/theme/values.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../extensions/colors.dart';
-import '../extensions/text.dart';
-import '../extensions/values.dart';
 import 'colors.dart';
 import 'text.dart';
 import 'values.dart';

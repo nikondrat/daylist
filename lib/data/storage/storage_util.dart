@@ -112,6 +112,10 @@ class StorageUtil {
     await _db.putSubjects(subjects: subjects);
   }
 
+  Future addSubject({required StorageSubject subject}) async {
+    return await _db.addSubject(subject: subject);
+  }
+
   Future<List<Teacher>> getTeachers() async {
     final List<StorageTeacher> result = await _db.getTeachers();
     final List<Teacher> convertedList =
@@ -122,6 +126,10 @@ class StorageUtil {
 
   Future putTeachers({required List<StorageTeacher> teachers}) async {
     await _db.putTeachers(teachers: teachers);
+  }
+
+  Future addTeacher({required StorageTeacher teacher}) async {
+    return await _db.addTeacher(teacher: teacher);
   }
 
   Future<List<Time>> getTimes() async {
@@ -136,6 +144,10 @@ class StorageUtil {
     await _db.putTimes(times: times);
   }
 
+  Future addTime({required StorageTime time}) async {
+    return await _db.addTime(time: time);
+  }
+
   Future<List<SubjectTitle>> getTitles() async {
     final List<StorageTitle> result = await _db.getTitles();
     final List<SubjectTitle> convertedList =
@@ -146,5 +158,9 @@ class StorageUtil {
 
   Future putTitles({required List<StorageTitle> titles}) async {
     await _db.putTitles(titles: titles);
+  }
+
+  Future addTitle({required StorageTitle title}) async {
+    return await _db.addTitle(title: title);
   }
 }
