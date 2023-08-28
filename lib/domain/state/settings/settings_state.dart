@@ -80,6 +80,13 @@ class SettingsNotifier extends ChangeNotifier {
     UserDataRepository(Dependencies().getIt.get()).setSettings(_settings!);
     notifyListeners();
   }
+
+  bool get isShowTime => _settings?.isShowTime ?? false;
+  set showTime(bool v) {
+    _settings!.isShowTime = v;
+    UserDataRepository(Dependencies().getIt.get()).setSettings(_settings!);
+    notifyListeners();
+  }
 }
 
 final settingsProvider = ChangeNotifierProvider<SettingsNotifier>((ref) {

@@ -13,6 +13,7 @@ class Settings {
   int undergroup;
 
   bool isDark;
+  bool isShowTime;
   Color? primaryColor;
   Color? backgroundColor;
   double radius;
@@ -21,10 +22,11 @@ class Settings {
       {this.city,
       this.institution,
       this.group,
-      this.undergroup = 1,
-      this.isDark = false,
       this.primaryColor,
+      this.isDark = false,
+      this.undergroup = 1,
       this.backgroundColor,
+      this.isShowTime = false,
       this.radius = kDefaultRadius});
 
   Map<String, dynamic> toMap() {
@@ -34,6 +36,7 @@ class Settings {
       'group': group!.toMap(),
       'undergroup': undergroup,
       'isDark': isDark,
+      'isShowTime': isShowTime,
       'primaryColor': primaryColor?.value,
       'backgroundColor': backgroundColor?.value,
       'radius': radius
@@ -47,6 +50,7 @@ class Settings {
         group: Group.fromMap(map['group']),
         undergroup: map['undergroup'] ?? 1,
         isDark: map['isDark'] ?? false,
+        isShowTime: map['isShowTime'] ?? false,
         primaryColor: map['primaryColor'] != null
             ? Color(map['primaryColor'] as int)
             : null,
