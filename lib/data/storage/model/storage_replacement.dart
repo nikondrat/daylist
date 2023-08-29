@@ -26,5 +26,5 @@ class StorageReplacement {
         groupId = replacement.groupId,
         timeId = replacement.timeId,
         date = replacement.date,
-        mode = replacement.mode;
+        mode = replacement.mode.name;
 }

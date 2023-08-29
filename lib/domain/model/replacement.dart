@@ -1,9 +1,11 @@
+enum ReplacementMode { usual, exam, practice, laboratory, test, cancel }
+
 class Replacement {
   final String teacherId;
   final String groupId;
   final String timeId;
   final String date;
-  final String mode;
+  final ReplacementMode mode;
 
   Replacement({
     required this.teacherId,
@@ -29,7 +31,7 @@ class Replacement {
       groupId: map['groupId'] as String,
       timeId: map['timeId'] as String,
       date: map['date'],
-      mode: map['mode'] as String,
+      mode: map['mode'] as ReplacementMode,
     );
   }
 }

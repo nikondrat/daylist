@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 150 (75 per locale)
+/// Strings: 162 (81 per locale)
 ///
-/// Built on 2023-08-28 at 17:15 UTC
+/// Built on 2023-08-29 at 18:12 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -179,6 +179,14 @@ class _TranslationsDialogEn {
 	String get start => 'Start';
 	String get end => 'End';
 	String get number => 'Number of subject';
+	List<String> get subject_mode => [
+		'usual',
+		'exam',
+		'practice',
+		'laboratory',
+		'test',
+		'cancel',
+	];
 }
 
 // Path: auth
@@ -436,6 +444,14 @@ class _TranslationsDialogRu implements _TranslationsDialogEn {
 	@override String get start => 'Начало';
 	@override String get end => 'Конец';
 	@override String get number => 'Номер пары';
+	@override List<String> get subject_mode => [
+		'Обычный',
+		'Экзамен',
+		'Практика',
+		'Лабораторная',
+		'Тест',
+		'Отмена',
+	];
 }
 
 // Path: auth
@@ -658,6 +674,12 @@ extension on _TranslationsEn {
 			case 'dialog.start': return 'Start';
 			case 'dialog.end': return 'End';
 			case 'dialog.number': return 'Number of subject';
+			case 'dialog.subject_mode.0': return 'usual';
+			case 'dialog.subject_mode.1': return 'exam';
+			case 'dialog.subject_mode.2': return 'practice';
+			case 'dialog.subject_mode.3': return 'laboratory';
+			case 'dialog.subject_mode.4': return 'test';
+			case 'dialog.subject_mode.5': return 'cancel';
 			case 'auth.signIn': return 'Sign in';
 			case 'auth.signUp': return 'Sign up';
 			case 'auth.account': return 'account';
@@ -760,6 +782,12 @@ extension on _TranslationsRu {
 			case 'dialog.start': return 'Начало';
 			case 'dialog.end': return 'Конец';
 			case 'dialog.number': return 'Номер пары';
+			case 'dialog.subject_mode.0': return 'Обычный';
+			case 'dialog.subject_mode.1': return 'Экзамен';
+			case 'dialog.subject_mode.2': return 'Практика';
+			case 'dialog.subject_mode.3': return 'Лабораторная';
+			case 'dialog.subject_mode.4': return 'Тест';
+			case 'dialog.subject_mode.5': return 'Отмена';
 			case 'auth.signIn': return 'Вход';
 			case 'auth.signUp': return 'Зарегистрироваться';
 			case 'auth.account': return 'аккаунт';

@@ -9,7 +9,8 @@ class ReplacementMapper {
         groupId: replacement.groupId,
         timeId: replacement.timeId,
         date: replacement.date,
-        mode: replacement.mode);
+        mode: ReplacementMode.values
+            .firstWhere((e) => e.name == replacement.mode));
   }
 
   static Replacement fromStorage(StorageReplacement replacement) {
@@ -18,6 +19,7 @@ class ReplacementMapper {
         groupId: replacement.groupId,
         timeId: replacement.timeId,
         date: replacement.date,
-        mode: replacement.mode);
+        mode: ReplacementMode.values
+            .firstWhere((e) => e.name == replacement.mode));
   }
 }

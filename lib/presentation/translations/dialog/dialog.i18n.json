@@ -3,5 +3,13 @@
     "initials": "Surname Name Patronymic",
     "start": "Start",
     "end": "End",
-    "number": "Number of subject"
+    "number": "Number of subject",
+    "subject_mode": [
+        "usual",
+        "exam",
+        "practice",
+        "laboratory",
+        "test",
+        "cancel"
+    ]
 }

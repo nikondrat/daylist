@@ -67,3 +67,7 @@ final replacementsProvider = FutureProvider<List<Replacement>>((ref) async {
 
   return replacements;
 });
+
+final isChangeScheduleProvider = StateProvider<bool>((ref) {
+  return false;
+});
