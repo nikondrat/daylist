@@ -225,39 +225,39 @@ class _ThemeSectionWidget extends HookConsumerWidget {
   }
 }
 
-class _Mobile extends StatelessWidget {
-  const _Mobile();
+// class _Mobile extends StatelessWidget {
+//   const _Mobile();
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(title: Text(t.settings.title)),
-        body: ScrollConfiguration(
-            behavior: ScrollConfiguration.of(context).copyWith(dragDevices: {
-              PointerDeviceKind.mouse,
-              PointerDeviceKind.touch
-            }),
-            child: ListView(
-                physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.symmetric(horizontal: Insets.small),
-                children: [_GeneralSectionWidget(), _ThemeSectionWidget()])));
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//         appBar: AppBar(title: Text(t.settings.title)),
+//         body: ScrollConfiguration(
+//             behavior: ScrollConfiguration.of(context).copyWith(dragDevices: {
+//               PointerDeviceKind.mouse,
+//               PointerDeviceKind.touch
+//             }),
+//             child: ListView(
+//                 physics: const BouncingScrollPhysics(),
+//                 padding: const EdgeInsets.symmetric(horizontal: Insets.small),
+//                 children: [_GeneralSectionWidget(), _ThemeSectionWidget()])));
+//   }
+// }
 
-class _Tablet extends StatelessWidget {
-  const _Tablet();
+// class _Tablet extends StatelessWidget {
+//   const _Tablet();
 
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold();
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return const Scaffold();
+//   }
+// }
 
-class _Desktop extends StatelessWidget {
-  const _Desktop();
+// class _Desktop extends StatelessWidget {
+//   const _Desktop();
 
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold();
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return const Scaffold();
+//   }
+// }
