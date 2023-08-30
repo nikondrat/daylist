@@ -78,7 +78,7 @@ class _AddTeacherDialogState extends ConsumerState<AddTeacherDialog> {
                       initials: initials.text,
                       institutionId: institutionId,
                       titleId: titleId!,
-                      classroom: int.parse(classroom.text.trim()),
+                      classroom: classroom.text.trim(),
                       createdBy: user.$id)))
           .then((value) {
         ref.invalidate(teachersProvider);

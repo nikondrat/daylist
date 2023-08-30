@@ -3,7 +3,7 @@ class Teacher {
   final String initials;
   final String institutionId;
   final String titleId;
-  final int classroom;
+  final String classroom;
   final String? createdBy;
 
   Teacher(
@@ -37,7 +37,7 @@ class Teacher {
         initials: map['initials'] as String,
         institutionId: map['institutionId'] as String,
         titleId: map['titleId'] as String,
-        classroom: map['classroom'] as int,
+        classroom: map['classroom'] as String,
         createdBy: map['createdBy']);
   }
 }

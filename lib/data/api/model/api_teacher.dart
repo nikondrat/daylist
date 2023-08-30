@@ -3,7 +3,7 @@ class ApiTeacher {
   final String initials;
   final String institutionId;
   final String titleId;
-  final int classroom;
+  final String classroom;
   final String? createdBy;
 
   ApiTeacher.fromApi(Map<String, dynamic> map)

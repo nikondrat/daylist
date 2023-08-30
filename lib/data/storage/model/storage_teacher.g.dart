@@ -20,7 +20,7 @@ const StorageTeacherSchema = CollectionSchema(
     r'classroom': PropertySchema(
       id: 0,
       name: r'classroom',
-      type: IsarType.long,
+      type: IsarType.string,
     ),
     r'createdBy': PropertySchema(
       id: 1,
@@ -68,6 +68,7 @@ int _storageTeacherEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  bytesCount += 3 + object.classroom.length * 3;
   {
     final value = object.createdBy;
     if (value != null) {
@@ -87,7 +88,7 @@ void _storageTeacherSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeLong(offsets[0], object.classroom);
+  writer.writeString(offsets[0], object.classroom);
   writer.writeString(offsets[1], object.createdBy);
   writer.writeString(offsets[2], object.id);
   writer.writeString(offsets[3], object.initials);
@@ -102,7 +103,7 @@ StorageTeacher _storageTeacherDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = StorageTeacher(
-    classroom: reader.readLong(offsets[0]),
+    classroom: reader.readString(offsets[0]),
     createdBy: reader.readStringOrNull(offsets[1]),
     id: reader.readString(offsets[2]),
     initials: reader.readString(offsets[3]),
@@ -120,7 +121,7 @@ P _storageTeacherDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readLong(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 1:
       return (reader.readStringOrNull(offset)) as P;
     case 2:
@@ -230,49 +231,58 @@ extension StorageTeacherQueryWhere
 extension StorageTeacherQueryFilter
     on QueryBuilder<StorageTeacher, StorageTeacher, QFilterCondition> {
   QueryBuilder<StorageTeacher, StorageTeacher, QAfterFilterCondition>
-      classroomEqualTo(int value) {
+      classroomEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'classroom',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<StorageTeacher, StorageTeacher, QAfterFilterCondition>
       classroomGreaterThan(
-    int value, {
+    String value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'classroom',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<StorageTeacher, StorageTeacher, QAfterFilterCondition>
       classroomLessThan(
-    int value, {
+    String value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'classroom',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<StorageTeacher, StorageTeacher, QAfterFilterCondition>
       classroomBetween(
-    int lower,
-    int upper, {
+    String lower,
+    String upper, {
     bool includeLower = true,
     bool includeUpper = true,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -281,6 +291,77 @@ extension StorageTeacherQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageTeacher, StorageTeacher, QAfterFilterCondition>
+      classroomStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'classroom',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageTeacher, StorageTeacher, QAfterFilterCondition>
+      classroomEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'classroom',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageTeacher, StorageTeacher, QAfterFilterCondition>
+      classroomContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'classroom',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageTeacher, StorageTeacher, QAfterFilterCondition>
+      classroomMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'classroom',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageTeacher, StorageTeacher, QAfterFilterCondition>
+      classroomIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'classroom',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<StorageTeacher, StorageTeacher, QAfterFilterCondition>
+      classroomIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'classroom',
+        value: '',
       ));
     });
   }
@@ -1222,10 +1303,10 @@ extension StorageTeacherQuerySortThenBy
 
 extension StorageTeacherQueryWhereDistinct
     on QueryBuilder<StorageTeacher, StorageTeacher, QDistinct> {
-  QueryBuilder<StorageTeacher, StorageTeacher, QDistinct>
-      distinctByClassroom() {
+  QueryBuilder<StorageTeacher, StorageTeacher, QDistinct> distinctByClassroom(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'classroom');
+      return query.addDistinctBy(r'classroom', caseSensitive: caseSensitive);
     });
   }
 
@@ -1274,7 +1355,7 @@ extension StorageTeacherQueryProperty
     });
   }
 
-  QueryBuilder<StorageTeacher, int, QQueryOperations> classroomProperty() {
+  QueryBuilder<StorageTeacher, String, QQueryOperations> classroomProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'classroom');
     });
