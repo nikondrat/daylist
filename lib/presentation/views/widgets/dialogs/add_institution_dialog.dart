@@ -10,7 +10,7 @@ import 'package:daylist/domain/state/settings/settings_state.dart';
 import 'package:daylist/internal/dependencies/dependencies.dart';
 import 'package:daylist/presentation/res/values.dart';
 import 'package:daylist/presentation/translations/translations.g.dart';
-import 'package:daylist/presentation/utils/string_gen.dart';
+import 'package:daylist/presentation/utils/generator.dart';
 import 'package:daylist/presentation/utils/validator.dart';
 import 'package:daylist/presentation/views/widgets/dialog.dart';
 import 'package:flutter/material.dart';
@@ -65,7 +65,7 @@ class __AddInstitutionState extends ConsumerState<AddInstitutionDialog> {
                   databaseId: databaseId,
                   collectionId: institutionsCollectionId,
                   institution: Institution(
-                      id: ID.custom(StringGenerator.generate()),
+                      id: ID.custom(Generator.generateId()),
                       title: title.text.trim(),
                       shortTitle: shortTitle.text.trim(),
                       createdBy: user.$id,

@@ -9,10 +9,12 @@ import 'package:daylist/data/api/model/api_title.dart';
 import 'package:daylist/data/api/request/add/add_city_body.dart';
 import 'package:daylist/data/api/request/add/add_group_body.dart';
 import 'package:daylist/data/api/request/add/add_institution_body.dart';
+import 'package:daylist/data/api/request/add/add_replacement_body.dart';
 import 'package:daylist/data/api/request/add/add_subject_body.dart';
 import 'package:daylist/data/api/request/add/add_teacher_body.dart';
 import 'package:daylist/data/api/request/add/add_time_body.dart';
 import 'package:daylist/data/api/request/add/add_title_body.dart';
+import 'package:daylist/data/api/request/delete/delete_replacement_body.dart';
 import 'package:daylist/data/api/request/get/get_cities_body.dart';
 import 'package:daylist/data/api/request/get/get_groups_body.dart';
 import 'package:daylist/data/api/request/get/get_institutions_body.dart';
@@ -138,6 +140,14 @@ class ApiUtil {
         result.map((e) => ReplacementMapper.fromApi(e)).toList();
 
     return convertedList;
+  }
+
+  Future addReplacement({required AddReplacementBody body}) async {
+    return _appwriteService.addReplacement(body: body);
+  }
+
+  Future deleteReplacement({required DeleteReplacementBody body}) async {
+    return _appwriteService.deleteReplacement(body: body);
   }
 
   // Future signUp({required SignUpBody body}) async {

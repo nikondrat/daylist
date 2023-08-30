@@ -1,4 +1,5 @@
 import 'package:daylist/domain/model/time.dart';
+import 'package:daylist/domain/state/dialogs/subject_dialog_state.dart';
 import 'package:daylist/domain/state/dialogs/time_dialog_state.dart';
 import 'package:daylist/domain/state/week/week_state.dart';
 import 'package:daylist/presentation/extensions/theme/context.dart';
@@ -10,18 +11,21 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class TimeDropdownWidget extends HookConsumerWidget {
-  final Function(String?) onSelected;
-  const TimeDropdownWidget({super.key, required this.onSelected});
+  const TimeDropdownWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final AsyncValue<List<Time>> times = ref.watch(timesProvider);
 
+    final String? timeId = ref.watch(selectedTimeProvider);
+
     return LoaderWidget(
         config: times,
         builder: (v) => Padding(
             padding: const EdgeInsets.only(top: Insets.small),
-            child: DropdownButtonFormField(
+            child: DropdownButton(
+                isExpanded: true,
+                value: timeId,
                 icon: GestureDetector(
                     onTap: () => showDialog(
                                 context: context,
@@ -40,6 +44,8 @@ class TimeDropdownWidget extends HookConsumerWidget {
                     .map((e) => DropdownMenuItem(
                         value: e.id, child: Text('${e.start} - ${e.end}')))
                     .toList(),
-                onChanged: onSelected)));
+                onChanged: (v) {
+                  ref.read(selectedTimeProvider.notifier).update((state) => v);
+                })));
   }
 }

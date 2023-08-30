@@ -1,7 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:daylist/domain/model/subject.dart';
 import 'package:daylist/presentation/extensions/theme/context.dart';
-import 'package:daylist/presentation/views/widgets/dialogs/add_replacement_dialog.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -9,14 +6,17 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:unicons/unicons.dart';
 
 import 'package:daylist/domain/model/replacement.dart';
+import 'package:daylist/domain/model/subject.dart';
 import 'package:daylist/domain/model/teacher.dart';
 import 'package:daylist/domain/model/time.dart';
 import 'package:daylist/domain/model/title.dart';
+import 'package:daylist/domain/state/dialogs/subject_dialog_state.dart';
 import 'package:daylist/domain/state/home/home_state.dart';
 import 'package:daylist/domain/state/week/week_state.dart';
 import 'package:daylist/presentation/res/values.dart';
 import 'package:daylist/presentation/translations/translations.g.dart';
 import 'package:daylist/presentation/views/router.dart';
+import 'package:daylist/presentation/views/widgets/dialogs/add_replacement_dialog.dart';
 import 'package:daylist/presentation/views/widgets/loader.dart';
 import 'package:daylist/presentation/views/widgets/section.dart';
 import 'package:daylist/presentation/views/widgets/subsection.dart';
@@ -75,7 +75,7 @@ class _Loader extends HookConsumerWidget {
   }
 }
 
-class _Body extends StatelessWidget {
+class _Body extends HookConsumerWidget {
   final List<Time> times;
   final List<SubjectTitle> titles;
   final List<Teacher> teachers;
@@ -92,13 +92,14 @@ class _Body extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final DateTime now = DateTime.now();
 
     return Scaffold(
         appBar: AppBar(
             leading: IconButton(
                 onPressed: () => context.goNamed(ViewsNames.settings),
+                splashRadius: 20,
                 icon: const Icon(UniconsLine.setting)),
             title: Text(t.settings.app_name),
             actions: [
@@ -107,6 +108,7 @@ class _Body extends StatelessWidget {
                   child: IconButton(
                       onPressed: () => context.goNamed(ViewsNames.week),
                       color: context.color.primaryColor,
+                      splashRadius: 20,
                       icon: const Icon(UniconsLine.schedule))),
             ]),
         body: ScrollConfiguration(
@@ -160,40 +162,121 @@ class _SubjectsSection extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bool isChangeSchedule = ref.watch(isChangeScheduleProvider);
+    final bool isChange = ref.watch(isChangeScheduleProvider);
 
     return Padding(
         padding: const EdgeInsets.only(bottom: Insets.small),
-        child: SectionWidget(
-            title: title,
-            actions: [
-              InkWell(
-                  onTap: () {
-                    showDialog(
-                        context: context,
-                        builder: (context) => const AddReplacementDialog());
-                  },
-                  child: const Icon(Icons.add)),
-              InkWell(onTap: () {}, child: const Icon(Icons.abc))
-            ],
-            children: subjects
-                .where((e) => e.weekday == dateTime.weekday)
-                // int.parse(e.date.split('.').first) == dateTime.weekday)
-                .map((s) {
-              // final bool isReplacement = replacements
-              //     .where((e) =>
-              //         int.parse(e.date.split('.').first) == dateTime.weekday &&
-              //         e.timeId == s.timeId)
-              //     .isNotEmpty;
-              final Time time = times.firstWhere((e) => e.id == s.timeId);
-              final Teacher teacher =
-                  teachers.firstWhere((e) => e.id == s.teacherId);
-              final SubjectTitle title =
-                  titles.firstWhere((e) => e.id == teacher.titleId);
+        child: SectionWidget(title: title, actions: [
+          InkWell(
+              onTap: () {
+                ref
+                    .read(isChangeScheduleProvider.notifier)
+                    .update((state) => !state);
+              },
+              child:
+                  isChange ? const Icon(Icons.close) : const Icon(Icons.edit))
+        ], children: [
+          _Items(
+              title: title,
+              dateTime: dateTime,
+              times: times,
+              titles: titles,
+              teachers: teachers,
+              subjects: subjects,
+              replacements: replacements),
+          isChange
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: Insets.small, vertical: Insets.small / 2),
+                  child: Row(children: [
+                    Expanded(
+                        child: TextButton(
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => AddReplacementDialog(
+                                      dateTime: dateTime)).then((value) {
+                                ref
+                                    .read(selectedTeacherProvider.notifier)
+                                    .update((state) => null);
+                                ref
+                                    .read(selectedSubjectTitleProvider.notifier)
+                                    .update((state) => null);
+                              });
+                            },
+                            child: Text(t.selection.add))),
+                  ]))
+              : const SizedBox.shrink()
+        ]));
+  }
+}
 
-              return SubsectionWidget(
-                  subsectionSubject: SubsectionSubject(
-                      time: time, teacher: teacher, title: title));
-            }).toList()));
+class _Items extends StatelessWidget {
+  final String title;
+  final DateTime dateTime;
+  final List<Time> times;
+  final List<SubjectTitle> titles;
+  final List<Teacher> teachers;
+  final List<Subject> subjects;
+  final List<Replacement> replacements;
+
+  const _Items({
+    Key? key,
+    required this.title,
+    required this.dateTime,
+    required this.times,
+    required this.titles,
+    required this.teachers,
+    required this.subjects,
+    required this.replacements,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+        children: List.generate(6, (int i) => i++, growable: false).map((s) {
+      final Time? time = times.where((e) => e.number == s + 1).isNotEmpty
+          ? times.firstWhere((e) => e.number == s + 1)
+          : null;
+
+      if (time != null) {
+        final Replacement? replacement = replacements
+                .where((r) =>
+                    int.parse(r.date.split('/')[1]) == dateTime.day &&
+                    r.timeId == time.id)
+                .isNotEmpty
+            ? replacements.firstWhere((e) =>
+                int.parse(e.date.split('/')[1]) == dateTime.day &&
+                e.timeId == time.id)
+            : null;
+
+        final Subject? subject = subjects
+                .where(
+                    (s) => s.weekday == dateTime.weekday && s.timeId == time.id)
+                .isNotEmpty
+            ? subjects.firstWhere(
+                (s) => s.weekday == dateTime.weekday && s.timeId == time.id)
+            : null;
+
+        if (subject != null || replacement != null) {
+          final Teacher teacher = teachers.firstWhere((e) => replacement != null
+              ? e.id == replacement.teacherId
+              : e.id == subject!.teacherId);
+          final SubjectTitle title =
+              titles.firstWhere((e) => e.id == teacher.titleId);
+
+          return SubsectionWidget(
+              subsectionSubject: SubsectionSubject(
+                  time: time,
+                  teacher: teacher,
+                  isHomeView: true,
+                  title: title,
+                  dateTime: dateTime,
+                  replacement: replacement));
+        }
+      }
+
+      return const SizedBox.shrink();
+    }).toList());
   }
 }

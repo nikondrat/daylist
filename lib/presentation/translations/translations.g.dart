@@ -6,7 +6,7 @@
 /// Locales: 2
 /// Strings: 162 (81 per locale)
 ///
-/// Built on 2023-08-29 at 18:12 UTC
+/// Built on 2023-08-30 at 14:24 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -185,7 +185,6 @@ class _TranslationsDialogEn {
 		'practice',
 		'laboratory',
 		'test',
-		'cancel',
 	];
 }
 
@@ -270,6 +269,7 @@ class _TranslationsSettingsEn {
 	String get primary_color => 'Main color';
 	String get background_color => 'Background color';
 	String get radius => 'Block angle';
+	String get short_initials => 'Abbreviated name of the teacher';
 	String get show_time => 'Show time';
 }
 
@@ -450,7 +450,6 @@ class _TranslationsDialogRu implements _TranslationsDialogEn {
 		'Практика',
 		'Лабораторная',
 		'Тест',
-		'Отмена',
 	];
 }
 
@@ -535,6 +534,7 @@ class _TranslationsSettingsRu implements _TranslationsSettingsEn {
 	@override String get primary_color => 'Главный цвет';
 	@override String get background_color => 'Цвет фона';
 	@override String get radius => 'Угол блоков';
+	@override String get short_initials => 'Сокращённое имя преподавателя';
 	@override String get show_time => 'Показывать время';
 }
 
@@ -679,7 +679,6 @@ extension on _TranslationsEn {
 			case 'dialog.subject_mode.2': return 'practice';
 			case 'dialog.subject_mode.3': return 'laboratory';
 			case 'dialog.subject_mode.4': return 'test';
-			case 'dialog.subject_mode.5': return 'cancel';
 			case 'auth.signIn': return 'Sign in';
 			case 'auth.signUp': return 'Sign up';
 			case 'auth.account': return 'account';
@@ -749,6 +748,7 @@ extension on _TranslationsEn {
 			case 'settings.primary_color': return 'Main color';
 			case 'settings.background_color': return 'Background color';
 			case 'settings.radius': return 'Block angle';
+			case 'settings.short_initials': return 'Abbreviated name of the teacher';
 			case 'settings.show_time': return 'Show time';
 			case 'week.title': return 'week';
 			case 'week.isEven.0': return 'Even ${_root.week.title}';
@@ -787,7 +787,6 @@ extension on _TranslationsRu {
 			case 'dialog.subject_mode.2': return 'Практика';
 			case 'dialog.subject_mode.3': return 'Лабораторная';
 			case 'dialog.subject_mode.4': return 'Тест';
-			case 'dialog.subject_mode.5': return 'Отмена';
 			case 'auth.signIn': return 'Вход';
 			case 'auth.signUp': return 'Зарегистрироваться';
 			case 'auth.account': return 'аккаунт';
@@ -857,6 +856,7 @@ extension on _TranslationsRu {
 			case 'settings.primary_color': return 'Главный цвет';
 			case 'settings.background_color': return 'Цвет фона';
 			case 'settings.radius': return 'Угол блоков';
+			case 'settings.short_initials': return 'Сокращённое имя преподавателя';
 			case 'settings.show_time': return 'Показывать время';
 			case 'week.title': return 'неделя';
 			case 'week.isEven.0': return 'Чётная ${_root.week.title}';

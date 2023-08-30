@@ -11,7 +11,7 @@ import 'package:daylist/internal/dependencies/dependencies.dart';
 import 'package:daylist/presentation/extensions/theme/context.dart';
 import 'package:daylist/presentation/res/values.dart';
 import 'package:daylist/presentation/translations/translations.g.dart';
-import 'package:daylist/presentation/utils/string_gen.dart';
+import 'package:daylist/presentation/utils/generator.dart';
 import 'package:daylist/presentation/utils/validator.dart';
 import 'package:daylist/presentation/views/widgets/dialog.dart';
 import 'package:daylist/presentation/views/widgets/dialogs/add_institution_dialog.dart';
@@ -74,7 +74,7 @@ class _AddTeacherDialogState extends ConsumerState<AddTeacherDialog> {
                   databaseId: databaseId,
                   collectionId: teachersCollectionId,
                   teacher: Teacher(
-                      id: ID.custom(StringGenerator.generate()),
+                      id: ID.custom(Generator.generateId()),
                       initials: initials.text,
                       institutionId: institutionId,
                       titleId: titleId!,

@@ -10,7 +10,7 @@ import 'package:daylist/internal/dependencies/dependencies.dart';
 import 'package:daylist/presentation/extensions/theme/context.dart';
 import 'package:daylist/presentation/res/values.dart';
 import 'package:daylist/presentation/translations/translations.g.dart';
-import 'package:daylist/presentation/utils/string_gen.dart';
+import 'package:daylist/presentation/utils/generator.dart';
 import 'package:daylist/presentation/views/widgets/dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -39,7 +39,7 @@ class _AddTimeDialogState extends ConsumerState<AddTimeDialog> {
                     databaseId: databaseId,
                     collectionId: timesCollectionId,
                     time: Time(
-                        id: StringGenerator.generate(),
+                        id: Generator.generateId(),
                         start:
                             '${'${start.hour}'.padLeft(2, '0')}:${'${start.minute}'.padLeft(2, '0')}',
                         end:
@@ -91,22 +91,25 @@ class _AddTimeDialogState extends ConsumerState<AddTimeDialog> {
                                 initialTime: start ??
                                     const TimeOfDay(hour: 8, minute: 15))
                             .then((value) {
-                          ref
-                              .read(startTimeProvider.notifier)
-                              .update((state) => value);
+                          if (value != null) {
+                            ref
+                                .read(startTimeProvider.notifier)
+                                .update((state) => value);
 
-                          DateTime today = DateTime.now();
-                          final DateTime dateTime = DateTime(
-                              today.year,
-                              today.month,
-                              today.day,
-                              value!.hour,
-                              value.minute);
-                          final TimeOfDay end = TimeOfDay.fromDateTime(dateTime
-                              .add(const Duration(hours: 1, minutes: 30)));
-                          ref
-                              .read(endTimeProvider.notifier)
-                              .update((state) => end);
+                            DateTime today = DateTime.now();
+                            final DateTime dateTime = DateTime(
+                                today.year,
+                                today.month,
+                                today.day,
+                                value.hour,
+                                value.minute);
+                            final TimeOfDay end = TimeOfDay.fromDateTime(
+                                dateTime.add(
+                                    const Duration(hours: 1, minutes: 30)));
+                            ref
+                                .read(endTimeProvider.notifier)
+                                .update((state) => end);
+                          }
                         });
                       },
                       child: Text(start != null

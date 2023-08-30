@@ -15,6 +15,7 @@ import 'package:daylist/domain/model/institution.dart';
 import 'package:daylist/domain/model/replacement.dart';
 import 'package:daylist/domain/state/settings/settings_state.dart';
 import 'package:daylist/internal/dependencies/dependencies.dart';
+import 'package:intl/intl.dart';
 
 final citiesProvider = FutureProvider<List<City>>((ref) async {
   final List<City> cities = await CityDataRepository(
@@ -57,13 +58,18 @@ final groupsProvider = FutureProvider<List<Group>>((ref) async {
 final replacementsProvider = FutureProvider<List<Replacement>>((ref) async {
   final String groupId = ref.watch(settingsProvider).group!.id;
 
-  final List<Replacement> replacements =
-      await ReplacementDataRepository(Dependencies().getIt.get())
-          .getReplacements(
-              body: GetReplacementsBody(
-                  databaseId: databaseId,
-                  collectionId: replacementsCollectionId,
-                  groupId: groupId));
+  final DateTime today = DateTime.now();
+  final DateTime tomorrow = today.add(const Duration(days: 1));
+
+  final List<Replacement> replacements = await ReplacementDataRepository(
+          Dependencies().getIt.get(), Dependencies().getIt.get())
+      .getReplacements(
+          body: GetReplacementsBody(
+              databaseId: databaseId,
+              collectionId: replacementsCollectionId,
+              groupId: groupId,
+              today: DateFormat.yMd().format(today),
+              tomorrow: DateFormat.yMd().format(tomorrow)));
 
   return replacements;
 });

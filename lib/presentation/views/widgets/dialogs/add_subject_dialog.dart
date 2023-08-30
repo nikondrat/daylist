@@ -12,7 +12,7 @@ import 'package:daylist/internal/dependencies/dependencies.dart';
 import 'package:daylist/presentation/extensions/theme/context.dart';
 import 'package:daylist/presentation/res/values.dart';
 import 'package:daylist/presentation/translations/translations.g.dart';
-import 'package:daylist/presentation/utils/string_gen.dart';
+import 'package:daylist/presentation/utils/generator.dart';
 import 'package:daylist/presentation/views/widgets/dialog.dart';
 import 'package:daylist/presentation/views/widgets/dialogs/widgets/teachers_dropdown.dart';
 import 'package:daylist/presentation/views/widgets/dialogs/widgets/time_dropdown.dart';
@@ -30,7 +30,6 @@ class AddSubjectDialog extends StatefulHookConsumerWidget {
 }
 
 class __AddSubjectDialogState extends ConsumerState<AddSubjectDialog> {
-  String? timeId;
   bool? isEven;
   int weekday = 1;
 
@@ -41,6 +40,7 @@ class __AddSubjectDialogState extends ConsumerState<AddSubjectDialog> {
 
     final Teacher? teacher = ref.watch(selectedTeacherProvider);
     final String? titleId = ref.watch(selectedSubjectTitleProvider);
+    final String? timeId = ref.watch(selectedTimeProvider);
 
     if (titleId != null && teacher != null && context.mounted) {
       try {
@@ -51,7 +51,7 @@ class __AddSubjectDialogState extends ConsumerState<AddSubjectDialog> {
                     databaseId: databaseId,
                     collectionId: subjectsCollectionId,
                     subject: Subject(
-                        id: StringGenerator.generate(),
+                        id: Generator.generateId(),
                         teacherId: teacher.id,
                         timeId: timeId!,
                         isEven: isEven,
@@ -77,7 +77,7 @@ class __AddSubjectDialogState extends ConsumerState<AddSubjectDialog> {
         children: [
           const TitleDropdownWidget(),
           const TeachersDropdownWidget(),
-          TimeDropdownWidget(onSelected: (v) => timeId = v),
+          const TimeDropdownWidget(),
           Padding(
               padding: const EdgeInsets.only(top: Insets.small),
               child: DropdownButtonFormField(

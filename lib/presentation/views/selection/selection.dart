@@ -161,7 +161,7 @@ class _AddButtonWidget extends StatelessWidget {
   }
 }
 
-class _List<T> extends StatelessWidget {
+class _List<T> extends HookConsumerWidget {
   final _Type type;
   final List<T> data;
   final Widget Function(T) itemBuilder;
@@ -174,7 +174,9 @@ class _List<T> extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final double radius = ref.watch(settingsProvider).radius;
+
     return ScrollConfiguration(
         behavior: ScrollConfiguration.of(context).copyWith(
             dragDevices: {PointerDeviceKind.mouse, PointerDeviceKind.touch}),
@@ -191,8 +193,7 @@ class _List<T> extends StatelessWidget {
                         decoration: BoxDecoration(
                             border:
                                 Border.all(color: context.color.primaryColor),
-                            borderRadius:
-                                BorderRadius.circular(context.value.radius)),
+                            borderRadius: BorderRadius.circular(radius)),
                         child: _AddButtonWidget(type: type)))));
   }
 }
@@ -219,7 +220,7 @@ class _Mobile<T> extends StatelessWidget {
   }
 }
 
-class _Tablet<T> extends StatelessWidget {
+class _Tablet<T> extends HookConsumerWidget {
   final _Type type;
   final String title;
   final List<T> data;
@@ -235,15 +236,17 @@ class _Tablet<T> extends StatelessWidget {
       : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final double radius = ref.watch(settingsProvider).radius;
+
     return Scaffold(
         body: Row(children: [
       Expanded(
           child: DecoratedBox(
               decoration: BoxDecoration(
                   color: context.color.primaryColor,
-                  borderRadius: BorderRadius.horizontal(
-                      right: Radius.circular(context.value.radius))),
+                  borderRadius:
+                      BorderRadius.horizontal(right: Radius.circular(radius))),
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -270,7 +273,7 @@ class _Tablet<T> extends StatelessWidget {
   }
 }
 
-class _Desktop<T> extends StatelessWidget {
+class _Desktop<T> extends HookConsumerWidget {
   final _Type type;
   final String title;
   final List<T> data;
@@ -286,7 +289,9 @@ class _Desktop<T> extends StatelessWidget {
       : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final double radius = ref.watch(settingsProvider).radius;
+
     return Scaffold(
         body: Row(children: [
       Expanded(
@@ -294,8 +299,8 @@ class _Desktop<T> extends StatelessWidget {
           child: DecoratedBox(
               decoration: BoxDecoration(
                   color: context.color.primaryColor,
-                  borderRadius: BorderRadius.horizontal(
-                      right: Radius.circular(context.value.radius))),
+                  borderRadius:
+                      BorderRadius.horizontal(right: Radius.circular(radius))),
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

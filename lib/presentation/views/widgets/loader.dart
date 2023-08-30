@@ -1,13 +1,13 @@
+import 'package:daylist/presentation/extensions/theme/context.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:daylist/presentation/extensions/theme/context.dart';
 
-class _LoadingWidget extends StatelessWidget {
+class _LoadingWidget extends HookConsumerWidget {
   const _LoadingWidget();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return LoadingAnimationWidget.fourRotatingDots(
         size: 40, color: context.color.primaryColor);
   }

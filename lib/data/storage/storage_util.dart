@@ -100,6 +100,14 @@ class StorageUtil {
     await _db.putReplacements(replacements: replacements);
   }
 
+  Future addReplacement({required StorageReplacement replacement}) async {
+    await _db.addReplacement(replacement: replacement);
+  }
+
+  Future deleteReplacement({required String id}) async {
+    await _db.deleteReplacement(id: id);
+  }
+
   Future<List<Subject>> getSubjects() async {
     final List<StorageSubject> result = await _db.getSubjects();
     final List<Subject> convertedList =

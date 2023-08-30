@@ -22,7 +22,8 @@ class TeachersDropdownWidget extends HookConsumerWidget {
         config: teachers,
         builder: (v) => Padding(
             padding: const EdgeInsets.only(top: Insets.small),
-            child: DropdownButtonFormField(
+            child: DropdownButton(
+                isExpanded: true,
                 icon: GestureDetector(
                     onTap: () => showDialog(
                         context: context,

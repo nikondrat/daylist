@@ -55,7 +55,7 @@ class SettingsNotifier extends ChangeNotifier {
 
   bool get isDark => _settings?.isDark ?? false;
   void switchTheme() {
-    _settings?.isDark = !_settings!.isDark;
+    _settings!.isDark = !_settings!.isDark;
     UserDataRepository(Dependencies().getIt.get()).setSettings(_settings!);
     notifyListeners();
   }
@@ -82,8 +82,15 @@ class SettingsNotifier extends ChangeNotifier {
   }
 
   bool get isShowTime => _settings?.isShowTime ?? false;
-  set showTime(bool v) {
+  set isShowTime(bool v) {
     _settings!.isShowTime = v;
+    UserDataRepository(Dependencies().getIt.get()).setSettings(_settings!);
+    notifyListeners();
+  }
+
+  bool get isShortInitials => _settings?.isShortInitials ?? false;
+  set isShortInitials(bool v) {
+    _settings!.isShortInitials = v;
     UserDataRepository(Dependencies().getIt.get()).setSettings(_settings!);
     notifyListeners();
   }

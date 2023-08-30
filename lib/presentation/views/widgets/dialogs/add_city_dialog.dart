@@ -8,7 +8,7 @@ import 'package:daylist/domain/model/city.dart';
 import 'package:daylist/domain/state/home/home_state.dart';
 import 'package:daylist/internal/dependencies/dependencies.dart';
 import 'package:daylist/presentation/translations/translations.g.dart';
-import 'package:daylist/presentation/utils/string_gen.dart';
+import 'package:daylist/presentation/utils/generator.dart';
 import 'package:daylist/presentation/utils/validator.dart';
 import 'package:daylist/presentation/views/widgets/dialog.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +54,7 @@ class _AddCityDialogState extends ConsumerState<AddCityDialog> {
                   databaseId: databaseId,
                   collectionId: citiesCollectionId,
                   city: City(
-                      id: ID.custom(StringGenerator.generate()),
+                      id: ID.custom(Generator.generateId()),
                       createdBy: user.$id,
                       title: controller.text)))
           .then((value) {

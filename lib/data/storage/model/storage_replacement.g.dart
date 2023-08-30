@@ -18,37 +18,52 @@ const StorageReplacementSchema = CollectionSchema(
   name: r'StorageReplacement',
   id: 2002702819915141662,
   properties: {
-    r'date': PropertySchema(
+    r'createdBy': PropertySchema(
       id: 0,
+      name: r'createdBy',
+      type: IsarType.string,
+    ),
+    r'date': PropertySchema(
+      id: 1,
       name: r'date',
       type: IsarType.string,
     ),
     r'groupId': PropertySchema(
-      id: 1,
+      id: 2,
       name: r'groupId',
       type: IsarType.string,
     ),
+    r'id': PropertySchema(
+      id: 3,
+      name: r'id',
+      type: IsarType.string,
+    ),
     r'mode': PropertySchema(
-      id: 2,
+      id: 4,
       name: r'mode',
       type: IsarType.string,
     ),
     r'teacherId': PropertySchema(
-      id: 3,
+      id: 5,
       name: r'teacherId',
       type: IsarType.string,
     ),
     r'timeId': PropertySchema(
-      id: 4,
+      id: 6,
       name: r'timeId',
       type: IsarType.string,
+    ),
+    r'undergroup': PropertySchema(
+      id: 7,
+      name: r'undergroup',
+      type: IsarType.long,
     )
   },
   estimateSize: _storageReplacementEstimateSize,
   serialize: _storageReplacementSerialize,
   deserialize: _storageReplacementDeserialize,
   deserializeProp: _storageReplacementDeserializeProp,
-  idName: r'localId',
+  idName: r'isarId',
   indexes: {},
   links: {},
   embeddedSchemas: {},
@@ -64,8 +79,15 @@ int _storageReplacementEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  {
+    final value = object.createdBy;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   bytesCount += 3 + object.date.length * 3;
   bytesCount += 3 + object.groupId.length * 3;
+  bytesCount += 3 + object.id.length * 3;
   bytesCount += 3 + object.mode.length * 3;
   bytesCount += 3 + object.teacherId.length * 3;
   bytesCount += 3 + object.timeId.length * 3;
@@ -78,11 +100,14 @@ void _storageReplacementSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeString(offsets[0], object.date);
-  writer.writeString(offsets[1], object.groupId);
-  writer.writeString(offsets[2], object.mode);
-  writer.writeString(offsets[3], object.teacherId);
-  writer.writeString(offsets[4], object.timeId);
+  writer.writeString(offsets[0], object.createdBy);
+  writer.writeString(offsets[1], object.date);
+  writer.writeString(offsets[2], object.groupId);
+  writer.writeString(offsets[3], object.id);
+  writer.writeString(offsets[4], object.mode);
+  writer.writeString(offsets[5], object.teacherId);
+  writer.writeString(offsets[6], object.timeId);
+  writer.writeLong(offsets[7], object.undergroup);
 }
 
 StorageReplacement _storageReplacementDeserialize(
@@ -92,11 +117,14 @@ StorageReplacement _storageReplacementDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = StorageReplacement(
-    date: reader.readString(offsets[0]),
-    groupId: reader.readString(offsets[1]),
-    mode: reader.readString(offsets[2]),
-    teacherId: reader.readString(offsets[3]),
-    timeId: reader.readString(offsets[4]),
+    createdBy: reader.readStringOrNull(offsets[0]),
+    date: reader.readString(offsets[1]),
+    groupId: reader.readString(offsets[2]),
+    id: reader.readString(offsets[3]),
+    mode: reader.readString(offsets[4]),
+    teacherId: reader.readString(offsets[5]),
+    timeId: reader.readString(offsets[6]),
+    undergroup: reader.readLongOrNull(offsets[7]),
   );
   return object;
 }
@@ -109,7 +137,7 @@ P _storageReplacementDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 1:
       return (reader.readString(offset)) as P;
     case 2:
@@ -118,13 +146,19 @@ P _storageReplacementDeserializeProp<P>(
       return (reader.readString(offset)) as P;
     case 4:
       return (reader.readString(offset)) as P;
+    case 5:
+      return (reader.readString(offset)) as P;
+    case 6:
+      return (reader.readString(offset)) as P;
+    case 7:
+      return (reader.readLongOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
 }
 
 Id _storageReplacementGetId(StorageReplacement object) {
-  return object.localId;
+  return object.isarId;
 }
 
 List<IsarLinkBase<dynamic>> _storageReplacementGetLinks(
@@ -138,7 +172,7 @@ void _storageReplacementAttach(
 extension StorageReplacementQueryWhereSort
     on QueryBuilder<StorageReplacement, StorageReplacement, QWhere> {
   QueryBuilder<StorageReplacement, StorageReplacement, QAfterWhere>
-      anyLocalId() {
+      anyIsarId() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(const IdWhereClause.any());
     });
@@ -148,68 +182,68 @@ extension StorageReplacementQueryWhereSort
 extension StorageReplacementQueryWhere
     on QueryBuilder<StorageReplacement, StorageReplacement, QWhereClause> {
   QueryBuilder<StorageReplacement, StorageReplacement, QAfterWhereClause>
-      localIdEqualTo(Id localId) {
+      isarIdEqualTo(Id isarId) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(
-        lower: localId,
-        upper: localId,
+        lower: isarId,
+        upper: isarId,
       ));
     });
   }
 
   QueryBuilder<StorageReplacement, StorageReplacement, QAfterWhereClause>
-      localIdNotEqualTo(Id localId) {
+      isarIdNotEqualTo(Id isarId) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
             .addWhereClause(
-              IdWhereClause.lessThan(upper: localId, includeUpper: false),
+              IdWhereClause.lessThan(upper: isarId, includeUpper: false),
             )
             .addWhereClause(
-              IdWhereClause.greaterThan(lower: localId, includeLower: false),
+              IdWhereClause.greaterThan(lower: isarId, includeLower: false),
             );
       } else {
         return query
             .addWhereClause(
-              IdWhereClause.greaterThan(lower: localId, includeLower: false),
+              IdWhereClause.greaterThan(lower: isarId, includeLower: false),
             )
             .addWhereClause(
-              IdWhereClause.lessThan(upper: localId, includeUpper: false),
+              IdWhereClause.lessThan(upper: isarId, includeUpper: false),
             );
       }
     });
   }
 
   QueryBuilder<StorageReplacement, StorageReplacement, QAfterWhereClause>
-      localIdGreaterThan(Id localId, {bool include = false}) {
+      isarIdGreaterThan(Id isarId, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
-        IdWhereClause.greaterThan(lower: localId, includeLower: include),
+        IdWhereClause.greaterThan(lower: isarId, includeLower: include),
       );
     });
   }
 
   QueryBuilder<StorageReplacement, StorageReplacement, QAfterWhereClause>
-      localIdLessThan(Id localId, {bool include = false}) {
+      isarIdLessThan(Id isarId, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
-        IdWhereClause.lessThan(upper: localId, includeUpper: include),
+        IdWhereClause.lessThan(upper: isarId, includeUpper: include),
       );
     });
   }
 
   QueryBuilder<StorageReplacement, StorageReplacement, QAfterWhereClause>
-      localIdBetween(
-    Id lowerLocalId,
-    Id upperLocalId, {
+      isarIdBetween(
+    Id lowerIsarId,
+    Id upperIsarId, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(
-        lower: lowerLocalId,
+        lower: lowerIsarId,
         includeLower: includeLower,
-        upper: upperLocalId,
+        upper: upperIsarId,
         includeUpper: includeUpper,
       ));
     });
@@ -218,6 +252,160 @@ extension StorageReplacementQueryWhere
 
 extension StorageReplacementQueryFilter
     on QueryBuilder<StorageReplacement, StorageReplacement, QFilterCondition> {
+  QueryBuilder<StorageReplacement, StorageReplacement, QAfterFilterCondition>
+      createdByIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'createdBy',
+      ));
+    });
+  }
+
+  QueryBuilder<StorageReplacement, StorageReplacement, QAfterFilterCondition>
+      createdByIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'createdBy',
+      ));
+    });
+  }
+
+  QueryBuilder<StorageReplacement, StorageReplacement, QAfterFilterCondition>
+      createdByEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'createdBy',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageReplacement, StorageReplacement, QAfterFilterCondition>
+      createdByGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'createdBy',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageReplacement, StorageReplacement, QAfterFilterCondition>
+      createdByLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'createdBy',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageReplacement, StorageReplacement, QAfterFilterCondition>
+      createdByBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'createdBy',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageReplacement, StorageReplacement, QAfterFilterCondition>
+      createdByStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'createdBy',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageReplacement, StorageReplacement, QAfterFilterCondition>
+      createdByEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'createdBy',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageReplacement, StorageReplacement, QAfterFilterCondition>
+      createdByContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'createdBy',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageReplacement, StorageReplacement, QAfterFilterCondition>
+      createdByMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'createdBy',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageReplacement, StorageReplacement, QAfterFilterCondition>
+      createdByIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'createdBy',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<StorageReplacement, StorageReplacement, QAfterFilterCondition>
+      createdByIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'createdBy',
+        value: '',
+      ));
+    });
+  }
+
   QueryBuilder<StorageReplacement, StorageReplacement, QAfterFilterCondition>
       dateEqualTo(
     String value, {
@@ -491,45 +679,181 @@ extension StorageReplacementQueryFilter
   }
 
   QueryBuilder<StorageReplacement, StorageReplacement, QAfterFilterCondition>
-      localIdEqualTo(Id value) {
+      idEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'localId',
+        property: r'id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageReplacement, StorageReplacement, QAfterFilterCondition>
+      idGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageReplacement, StorageReplacement, QAfterFilterCondition>
+      idLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageReplacement, StorageReplacement, QAfterFilterCondition>
+      idBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'id',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageReplacement, StorageReplacement, QAfterFilterCondition>
+      idStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageReplacement, StorageReplacement, QAfterFilterCondition>
+      idEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageReplacement, StorageReplacement, QAfterFilterCondition>
+      idContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageReplacement, StorageReplacement, QAfterFilterCondition>
+      idMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'id',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageReplacement, StorageReplacement, QAfterFilterCondition>
+      idIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'id',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<StorageReplacement, StorageReplacement, QAfterFilterCondition>
+      idIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'id',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<StorageReplacement, StorageReplacement, QAfterFilterCondition>
+      isarIdEqualTo(Id value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'isarId',
         value: value,
       ));
     });
   }
 
   QueryBuilder<StorageReplacement, StorageReplacement, QAfterFilterCondition>
-      localIdGreaterThan(
+      isarIdGreaterThan(
     Id value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'localId',
+        property: r'isarId',
         value: value,
       ));
     });
   }
 
   QueryBuilder<StorageReplacement, StorageReplacement, QAfterFilterCondition>
-      localIdLessThan(
+      isarIdLessThan(
     Id value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'localId',
+        property: r'isarId',
         value: value,
       ));
     });
   }
 
   QueryBuilder<StorageReplacement, StorageReplacement, QAfterFilterCondition>
-      localIdBetween(
+      isarIdBetween(
     Id lower,
     Id upper, {
     bool includeLower = true,
@@ -537,7 +861,7 @@ extension StorageReplacementQueryFilter
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'localId',
+        property: r'isarId',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -953,6 +1277,80 @@ extension StorageReplacementQueryFilter
       ));
     });
   }
+
+  QueryBuilder<StorageReplacement, StorageReplacement, QAfterFilterCondition>
+      undergroupIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'undergroup',
+      ));
+    });
+  }
+
+  QueryBuilder<StorageReplacement, StorageReplacement, QAfterFilterCondition>
+      undergroupIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'undergroup',
+      ));
+    });
+  }
+
+  QueryBuilder<StorageReplacement, StorageReplacement, QAfterFilterCondition>
+      undergroupEqualTo(int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'undergroup',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageReplacement, StorageReplacement, QAfterFilterCondition>
+      undergroupGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'undergroup',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageReplacement, StorageReplacement, QAfterFilterCondition>
+      undergroupLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'undergroup',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageReplacement, StorageReplacement, QAfterFilterCondition>
+      undergroupBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'undergroup',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
 }
 
 extension StorageReplacementQueryObject
@@ -963,6 +1361,20 @@ extension StorageReplacementQueryLinks
 
 extension StorageReplacementQuerySortBy
     on QueryBuilder<StorageReplacement, StorageReplacement, QSortBy> {
+  QueryBuilder<StorageReplacement, StorageReplacement, QAfterSortBy>
+      sortByCreatedBy() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'createdBy', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StorageReplacement, StorageReplacement, QAfterSortBy>
+      sortByCreatedByDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'createdBy', Sort.desc);
+    });
+  }
+
   QueryBuilder<StorageReplacement, StorageReplacement, QAfterSortBy>
       sortByDate() {
     return QueryBuilder.apply(this, (query) {
@@ -988,6 +1400,20 @@ extension StorageReplacementQuerySortBy
       sortByGroupIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'groupId', Sort.desc);
+    });
+  }
+
+  QueryBuilder<StorageReplacement, StorageReplacement, QAfterSortBy>
+      sortById() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'id', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StorageReplacement, StorageReplacement, QAfterSortBy>
+      sortByIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'id', Sort.desc);
     });
   }
 
@@ -1032,10 +1458,38 @@ extension StorageReplacementQuerySortBy
       return query.addSortBy(r'timeId', Sort.desc);
     });
   }
+
+  QueryBuilder<StorageReplacement, StorageReplacement, QAfterSortBy>
+      sortByUndergroup() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'undergroup', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StorageReplacement, StorageReplacement, QAfterSortBy>
+      sortByUndergroupDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'undergroup', Sort.desc);
+    });
+  }
 }
 
 extension StorageReplacementQuerySortThenBy
     on QueryBuilder<StorageReplacement, StorageReplacement, QSortThenBy> {
+  QueryBuilder<StorageReplacement, StorageReplacement, QAfterSortBy>
+      thenByCreatedBy() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'createdBy', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StorageReplacement, StorageReplacement, QAfterSortBy>
+      thenByCreatedByDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'createdBy', Sort.desc);
+    });
+  }
+
   QueryBuilder<StorageReplacement, StorageReplacement, QAfterSortBy>
       thenByDate() {
     return QueryBuilder.apply(this, (query) {
@@ -1065,16 +1519,30 @@ extension StorageReplacementQuerySortThenBy
   }
 
   QueryBuilder<StorageReplacement, StorageReplacement, QAfterSortBy>
-      thenByLocalId() {
+      thenById() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'localId', Sort.asc);
+      return query.addSortBy(r'id', Sort.asc);
     });
   }
 
   QueryBuilder<StorageReplacement, StorageReplacement, QAfterSortBy>
-      thenByLocalIdDesc() {
+      thenByIdDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'localId', Sort.desc);
+      return query.addSortBy(r'id', Sort.desc);
+    });
+  }
+
+  QueryBuilder<StorageReplacement, StorageReplacement, QAfterSortBy>
+      thenByIsarId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isarId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StorageReplacement, StorageReplacement, QAfterSortBy>
+      thenByIsarIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isarId', Sort.desc);
     });
   }
 
@@ -1119,10 +1587,31 @@ extension StorageReplacementQuerySortThenBy
       return query.addSortBy(r'timeId', Sort.desc);
     });
   }
+
+  QueryBuilder<StorageReplacement, StorageReplacement, QAfterSortBy>
+      thenByUndergroup() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'undergroup', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StorageReplacement, StorageReplacement, QAfterSortBy>
+      thenByUndergroupDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'undergroup', Sort.desc);
+    });
+  }
 }
 
 extension StorageReplacementQueryWhereDistinct
     on QueryBuilder<StorageReplacement, StorageReplacement, QDistinct> {
+  QueryBuilder<StorageReplacement, StorageReplacement, QDistinct>
+      distinctByCreatedBy({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'createdBy', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<StorageReplacement, StorageReplacement, QDistinct>
       distinctByDate({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1134,6 +1623,13 @@ extension StorageReplacementQueryWhereDistinct
       distinctByGroupId({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'groupId', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<StorageReplacement, StorageReplacement, QDistinct> distinctById(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'id', caseSensitive: caseSensitive);
     });
   }
 
@@ -1157,13 +1653,27 @@ extension StorageReplacementQueryWhereDistinct
       return query.addDistinctBy(r'timeId', caseSensitive: caseSensitive);
     });
   }
+
+  QueryBuilder<StorageReplacement, StorageReplacement, QDistinct>
+      distinctByUndergroup() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'undergroup');
+    });
+  }
 }
 
 extension StorageReplacementQueryProperty
     on QueryBuilder<StorageReplacement, StorageReplacement, QQueryProperty> {
-  QueryBuilder<StorageReplacement, int, QQueryOperations> localIdProperty() {
+  QueryBuilder<StorageReplacement, int, QQueryOperations> isarIdProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'localId');
+      return query.addPropertyName(r'isarId');
+    });
+  }
+
+  QueryBuilder<StorageReplacement, String?, QQueryOperations>
+      createdByProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'createdBy');
     });
   }
 
@@ -1176,6 +1686,12 @@ extension StorageReplacementQueryProperty
   QueryBuilder<StorageReplacement, String, QQueryOperations> groupIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'groupId');
+    });
+  }
+
+  QueryBuilder<StorageReplacement, String, QQueryOperations> idProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'id');
     });
   }
 
@@ -1195,6 +1711,13 @@ extension StorageReplacementQueryProperty
   QueryBuilder<StorageReplacement, String, QQueryOperations> timeIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'timeId');
+    });
+  }
+
+  QueryBuilder<StorageReplacement, int?, QQueryOperations>
+      undergroupProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'undergroup');
     });
   }
 }

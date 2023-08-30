@@ -18,5 +18,6 @@
     "primary_color": "Main color",
     "background_color": "Background color",
     "radius": "Block angle",
+    "short_initials": "Abbreviated name of the teacher",
     "show_time": "Show time"
 }

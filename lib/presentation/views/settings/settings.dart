@@ -84,12 +84,13 @@ class _ColorSelector extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final double radius = ref.watch(settingsProvider).radius;
+
     return AlertDialog(
         title: Text(t.settings.pick_color),
         content: SingleChildScrollView(
             child: ColorPicker(
-                pickerAreaBorderRadius:
-                    BorderRadius.circular(context.value.radius),
+                pickerAreaBorderRadius: BorderRadius.circular(radius),
                 pickerColor: pickerColor,
                 onColorChanged: onColorChanged)));
   }
@@ -102,6 +103,8 @@ class _ThemeSectionWidget extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     const Size circleSize = Size(30, 30);
     final bool isDark = ref.watch(settingsProvider).isDark;
+    final bool isShowTime = ref.watch(settingsProvider).isShowTime;
+    final bool isShortInitials = ref.watch(settingsProvider).isShortInitials;
 
     return SectionWidget(
         title: t.settings.theme,
@@ -176,12 +179,48 @@ class _ThemeSectionWidget extends HookConsumerWidget {
                     onChanged: (value) =>
                         ref.read(settingsProvider.notifier).switchTheme())
               ])),
-          SubsectionWidget(subsection: Subsection(title: 'Углы блоков')),
+          SubsectionWidget(
+              subsection: Subsection(title: t.settings.radius, trailing: [
+            ref.watch(settingsProvider).radius != kDefaultRadius
+                ? IconButton(
+                    onPressed: () => ref
+                        .read(settingsProvider.notifier)
+                        .radius = kDefaultRadius,
+                    splashRadius: 20,
+                    icon: const Icon(UniconsLine.history_alt))
+                : const SizedBox.shrink()
+          ])),
           Slider(
               max: 40,
               value: ref.watch(settingsProvider).radius,
               onChanged: (value) =>
                   ref.read(settingsProvider.notifier).radius = value),
+          SubsectionWidget(
+              subsection: Subsection(
+                  title: t.settings.show_time,
+                  icon: const Icon(UniconsLine.clock),
+                  trailing: [
+                    Switch(
+                        value: isShowTime,
+                        onChanged: (v) =>
+                            ref.read(settingsProvider.notifier).isShowTime = v)
+                  ],
+                  onTap: () => ref.read(settingsProvider.notifier).isShowTime =
+                      !isShowTime)),
+          SubsectionWidget(
+              subsection: Subsection(
+                  title: t.settings.short_initials,
+                  icon: const Icon(UniconsLine.text),
+                  trailing: [
+                    Switch(
+                        value: isShortInitials,
+                        onChanged: (v) => ref
+                            .read(settingsProvider.notifier)
+                            .isShortInitials = v)
+                  ],
+                  onTap: () => ref
+                      .read(settingsProvider.notifier)
+                      .isShortInitials = !isShortInitials)),
         ]);
   }
 }

@@ -5,6 +5,7 @@ import 'package:daylist/data/storage/model/storage_subject.dart';
 import 'package:daylist/data/storage/model/storage_teacher.dart';
 import 'package:daylist/data/storage/model/storage_time.dart';
 import 'package:daylist/data/storage/model/storage_title.dart';
+import 'package:daylist/presentation/utils/generator.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -77,6 +78,17 @@ class IsarService {
       {required List<StorageReplacement> replacements}) async {
     final Isar db = await _db;
     db.writeTxnSync(() => db.storageReplacements.putAllSync(replacements));
+  }
+
+  Future addReplacement({required StorageReplacement replacement}) async {
+    final Isar db = await _db;
+    db.writeTxnSync(() => db.storageReplacements.putSync(replacement));
+  }
+
+  Future deleteReplacement({required String id}) async {
+    final Isar db = await _db;
+    db.writeTxnSync(
+        () => db.storageReplacements.deleteSync(Generator.fastHash(id)));
   }
 
   Future<List<StorageSubject>> getSubjects() async {

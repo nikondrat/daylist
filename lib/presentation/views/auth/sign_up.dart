@@ -1,4 +1,5 @@
 import 'package:appwrite/appwrite.dart';
+import 'package:daylist/domain/state/settings/settings_state.dart';
 import 'package:daylist/presentation/extensions/theme/context.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -183,12 +184,12 @@ class _Fields extends HookConsumerWidget {
   }
 }
 
-class _SignUpButton extends StatelessWidget {
+class _SignUpButton extends HookConsumerWidget {
   final Future Function() signUp;
   const _SignUpButton({required this.signUp});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
         padding: EdgeInsets.only(top: context.value.padding),
         child: Row(children: [
@@ -248,7 +249,7 @@ class _Mobile extends StatelessWidget {
   }
 }
 
-class _Tablet extends StatelessWidget {
+class _Tablet extends HookConsumerWidget {
   final GlobalKey<FormState> emailState;
   final GlobalKey<FormState> passwordState;
   final TextEditingController email;
@@ -265,15 +266,17 @@ class _Tablet extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final double radius = ref.watch(settingsProvider).radius;
+
     return Scaffold(
         body: Row(children: [
       Expanded(
           child: DecoratedBox(
               decoration: BoxDecoration(
                   color: context.color.primaryColor,
-                  borderRadius: BorderRadius.horizontal(
-                      right: Radius.circular(context.value.radius))),
+                  borderRadius:
+                      BorderRadius.horizontal(right: Radius.circular(radius))),
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -321,7 +324,7 @@ class _Tablet extends StatelessWidget {
   }
 }
 
-class _Desktop extends StatelessWidget {
+class _Desktop extends HookConsumerWidget {
   final GlobalKey<FormState> emailState;
   final GlobalKey<FormState> passwordState;
   final TextEditingController email;
@@ -338,15 +341,17 @@ class _Desktop extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final double radius = ref.watch(settingsProvider).radius;
+
     return Scaffold(
         body: Row(children: [
       Expanded(
           child: DecoratedBox(
               decoration: BoxDecoration(
                   color: context.color.primaryColor,
-                  borderRadius: BorderRadius.horizontal(
-                      right: Radius.circular(context.value.radius))),
+                  borderRadius:
+                      BorderRadius.horizontal(right: Radius.circular(radius))),
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

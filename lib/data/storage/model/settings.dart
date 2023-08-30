@@ -14,6 +14,7 @@ class Settings {
 
   bool isDark;
   bool isShowTime;
+  bool isShortInitials;
   Color? primaryColor;
   Color? backgroundColor;
   double radius;
@@ -27,6 +28,7 @@ class Settings {
       this.undergroup = 1,
       this.backgroundColor,
       this.isShowTime = false,
+      this.isShortInitials = false,
       this.radius = kDefaultRadius});
 
   Map<String, dynamic> toMap() {
@@ -39,7 +41,8 @@ class Settings {
       'isShowTime': isShowTime,
       'primaryColor': primaryColor?.value,
       'backgroundColor': backgroundColor?.value,
-      'radius': radius
+      'radius': radius,
+      'isShortInitials': isShortInitials
     };
   }
 
@@ -51,6 +54,7 @@ class Settings {
         undergroup: map['undergroup'] ?? 1,
         isDark: map['isDark'] ?? false,
         isShowTime: map['isShowTime'] ?? false,
+        isShortInitials: map['isShortInitials'] ?? false,
         primaryColor: map['primaryColor'] != null
             ? Color(map['primaryColor'] as int)
             : null,

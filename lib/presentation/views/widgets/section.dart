@@ -1,6 +1,8 @@
+import 'package:daylist/domain/state/settings/settings_state.dart';
 import 'package:daylist/presentation/extensions/theme/context.dart';
 import 'package:daylist/presentation/res/values.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class SectionWidget extends StatelessWidget {
   final String? title;
@@ -23,19 +25,21 @@ class SectionWidget extends StatelessWidget {
   }
 }
 
-class _Decoration extends StatelessWidget {
+class _Decoration extends HookConsumerWidget {
   final Widget child;
   final EdgeInsets? margin;
   const _Decoration({required this.child, this.margin});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final double radius = ref.watch(settingsProvider).radius;
+
     return Container(
         margin: margin,
         decoration: BoxDecoration(
             border: Border.all(
                 width: context.value.width, color: context.color.primaryColor),
-            borderRadius: BorderRadius.circular(context.value.radius)),
+            borderRadius: BorderRadius.circular(radius)),
         child: child);
   }
 }

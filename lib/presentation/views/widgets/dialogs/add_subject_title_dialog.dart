@@ -8,7 +8,7 @@ import 'package:daylist/domain/model/title.dart';
 import 'package:daylist/domain/state/week/week_state.dart';
 import 'package:daylist/internal/dependencies/dependencies.dart';
 import 'package:daylist/presentation/translations/translations.g.dart';
-import 'package:daylist/presentation/utils/string_gen.dart';
+import 'package:daylist/presentation/utils/generator.dart';
 import 'package:daylist/presentation/utils/validator.dart';
 import 'package:daylist/presentation/views/widgets/dialog.dart';
 import 'package:flutter/material.dart';
@@ -55,7 +55,7 @@ class _AddSubjectTitleDialogState extends ConsumerState<AddSubjectTitleDialog> {
                   databaseId: databaseId,
                   collectionId: titlesCollectionId,
                   title: SubjectTitle(
-                      id: ID.custom(StringGenerator.generate()),
+                      id: ID.custom(Generator.generateId()),
                       title: controller.text.trim(),
                       createdBy: user.$id)))
           .then((value) {

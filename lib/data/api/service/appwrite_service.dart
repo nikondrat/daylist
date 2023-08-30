@@ -13,11 +13,13 @@ import 'package:daylist/data/api/model/api_title.dart';
 import 'package:daylist/data/api/request/add/add_city_body.dart';
 import 'package:daylist/data/api/request/add/add_group_body.dart';
 import 'package:daylist/data/api/request/add/add_institution_body.dart';
+import 'package:daylist/data/api/request/add/add_replacement_body.dart';
 import 'package:daylist/data/api/request/add/add_subject_body.dart';
 import 'package:daylist/data/api/request/add/add_teacher_body.dart';
 import 'package:daylist/data/api/request/add/add_time_body.dart';
 import 'package:daylist/data/api/request/add/add_title_body.dart';
 import 'package:daylist/data/api/request/auth/sign_up_body.dart';
+import 'package:daylist/data/api/request/delete/delete_replacement_body.dart';
 import 'package:daylist/data/api/request/get/get_cities_body.dart';
 import 'package:daylist/data/api/request/get/get_groups_body.dart';
 import 'package:daylist/data/api/request/get/get_institutions_body.dart';
@@ -179,9 +181,36 @@ class AppwriteService {
     final DocumentList docs = await _databases.listDocuments(
         databaseId: body.databaseId,
         collectionId: body.collectionId,
-        queries: [Query.equal('groupId', body.groupId)]);
+        queries: [
+          Query.equal('groupId', body.groupId),
+          // TODO
+          // Query.equal('date', body.today),
+          // Query.equal('tomorrow', body.tomorrow),
+        ]);
 
     return docs.documents.map((e) => ApiReplacement.fromApi(e.data)).toList();
+  }
+
+  Future addReplacement({required AddReplacementBody body}) async {
+    return _databases.createDocument(
+        databaseId: body.databaseId,
+        collectionId: body.collectionId,
+        documentId: body.replacement.id,
+        data: {
+          'teacherId': body.replacement.teacherId,
+          'groupId': body.replacement.groupId,
+          'timeId': body.replacement.timeId,
+          'date': body.replacement.date,
+          'mode': body.replacement.mode.name,
+          'createdBy': body.replacement.createdBy
+        });
+  }
+
+  Future deleteReplacement({required DeleteReplacementBody body}) async {
+    return _databases.deleteDocument(
+        databaseId: body.databaseId,
+        collectionId: body.collectionId,
+        documentId: body.id);
   }
 
   Future signUp({required SignUpBody body}) async {

@@ -18,5 +18,6 @@
     "primary_color": "Главный цвет",
     "background_color": "Цвет фона",
     "radius": "Угол блоков",
+    "short_initials": "Сокращённое имя преподавателя",
     "show_time": "Показывать время"
 }

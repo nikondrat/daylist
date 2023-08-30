@@ -1,6 +1,7 @@
 import 'package:daylist/domain/state/dialogs/subject_dialog_state.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:daylist/domain/model/subject.dart';
@@ -26,6 +27,10 @@ class WeekView extends HookConsumerWidget {
 
     return Scaffold(
         appBar: AppBar(
+            leading: IconButton(
+                onPressed: () => context.pop(),
+                splashRadius: 20,
+                icon: const Icon(Icons.arrow_back)),
             title: Text(isEven ? t.week.isEven[0] : t.week.isEven[1]),
             actions: [
               Padding(
@@ -42,6 +47,7 @@ class WeekView extends HookConsumerWidget {
                                 .read(selectedSubjectTitleProvider.notifier)
                                 .update((state) => null);
                           }),
+                      splashRadius: 20,
                       icon: const Icon(Icons.add)))
             ]),
         body: _Loader(

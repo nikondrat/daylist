@@ -4,8 +4,6 @@ import 'package:daylist/presentation/res/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
 
 import 'presentation/translations/translations.g.dart';
 import 'presentation/views/router.dart';
@@ -30,9 +28,9 @@ class MyApp extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bool isDark = ref.watch(settingsProvider).isDark;
+    final double radius = ref.watch(settingsProvider).radius;
     final Color? primaryColor = ref.watch(settingsProvider).primaryColor;
     final Color? backgroundColor = ref.watch(settingsProvider).backgroundColor;
-    final double radius = ref.watch(settingsProvider).radius;
 
     return MaterialApp.router(
         routerConfig: router,
