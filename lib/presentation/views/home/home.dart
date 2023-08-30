@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:daylist/domain/state/settings/settings_state.dart';
 import 'package:daylist/presentation/extensions/theme/context.dart';
+import 'package:daylist/presentation/views/widgets/ad.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -132,6 +135,7 @@ class _Body extends HookConsumerWidget {
                       teachers: teachers,
                       undergroup: undergroup,
                       replacements: replacements),
+                  if (Platform.isAndroid | Platform.isIOS) AdBannerWidget(),
                   _SubjectsSection(
                       title: t.home.tomorrow,
                       dateTime: now.add(const Duration(days: 1)),

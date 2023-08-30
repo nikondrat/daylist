@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 162 (81 per locale)
+/// Strings: 164 (82 per locale)
 ///
-/// Built on 2023-08-30 at 14:24 UTC
+/// Built on 2023-08-30 at 19:14 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -312,6 +312,7 @@ class _TranslationsAuthErrorsEn {
 	String get used => 'A user with such an email already exists';
 	String get wrong => 'Password or email don\'t match';
 	String get digits => 'The field must not contain numbers';
+	String get connection => 'No internet connection';
 }
 
 // Path: auth.helpers
@@ -577,6 +578,7 @@ class _TranslationsAuthErrorsRu implements _TranslationsAuthErrorsEn {
 	@override String get used => 'Пользователь с такой почтой уже существует';
 	@override String get wrong => 'Пароль или почта введены не верно';
 	@override String get digits => 'Поле не должно содержать цифры';
+	@override String get connection => 'Нет интернет соединения.';
 }
 
 // Path: auth.helpers
@@ -692,6 +694,7 @@ extension on _TranslationsEn {
 			case 'auth.errors.used': return 'A user with such an email already exists';
 			case 'auth.errors.wrong': return 'Password or email don\'t match';
 			case 'auth.errors.digits': return 'The field must not contain numbers';
+			case 'auth.errors.connection': return 'No internet connection';
 			case 'auth.helpers.titles.signIn': return 'Sign in to your account';
 			case 'auth.helpers.titles.signUp': return 'Create your account';
 			case 'auth.helpers.signUp': return ({required InlineSpanBuilder tapHere}) => TextSpan(children: [
@@ -800,6 +803,7 @@ extension on _TranslationsRu {
 			case 'auth.errors.used': return 'Пользователь с такой почтой уже существует';
 			case 'auth.errors.wrong': return 'Пароль или почта введены не верно';
 			case 'auth.errors.digits': return 'Поле не должно содержать цифры';
+			case 'auth.errors.connection': return 'Нет интернет соединения.';
 			case 'auth.helpers.titles.signIn': return 'Вход в аккаунт';
 			case 'auth.helpers.titles.signUp': return 'Создай новый аккаунт';
 			case 'auth.helpers.signUp': return ({required InlineSpanBuilder tapHere}) => TextSpan(children: [

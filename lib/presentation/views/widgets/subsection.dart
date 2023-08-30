@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -193,37 +194,49 @@ class _Delete extends HookConsumerWidget {
     return isChangeSchedule && subject.isHomeView
         ? IconButton(
             onPressed: () async {
-              final User user =
-                  await AuthDataRepository(Dependencies().getIt.get())
-                      .getUser();
+              final ConnectivityResult connectivityResult =
+                  await Connectivity().checkConnectivity();
 
-              if (subject.replacement != null) {
-                ReplacementDataRepository(
-                        Dependencies().getIt.get(), Dependencies().getIt.get())
-                    .deleteReplacement(
-                        body: DeleteReplacementBody(
-                            databaseId: databaseId,
-                            collectionId: replacementsCollectionId,
-                            id: subject.replacement!.id));
+              if (connectivityResult == ConnectivityResult.mobile ||
+                  connectivityResult == ConnectivityResult.wifi) {
+                final User user =
+                    await AuthDataRepository(Dependencies().getIt.get())
+                        .getUser();
+
+                if (subject.replacement != null) {
+                  ReplacementDataRepository(Dependencies().getIt.get(),
+                          Dependencies().getIt.get())
+                      .deleteReplacement(
+                          body: DeleteReplacementBody(
+                              databaseId: databaseId,
+                              collectionId: replacementsCollectionId,
+                              id: subject.replacement!.id));
+                } else {
+                  ReplacementDataRepository(Dependencies().getIt.get(),
+                          Dependencies().getIt.get())
+                      .addReplacement(
+                          body: AddReplacementBody(
+                              databaseId: databaseId,
+                              collectionId: replacementsCollectionId,
+                              replacement: Replacement(
+                                  id: ID.custom(Generator.generateId()),
+                                  teacherId: subject.teacher.id,
+                                  groupId: groupId,
+                                  timeId: subject.time.id,
+                                  date: DateFormat.yMd()
+                                      .format(subject.dateTime!),
+                                  mode: ReplacementMode.cancel,
+                                  undergroup: null,
+                                  createdBy: user.$id)));
+                }
+                ref.invalidate(replacementsProvider);
               } else {
-                ReplacementDataRepository(
-                        Dependencies().getIt.get(), Dependencies().getIt.get())
-                    .addReplacement(
-                        body: AddReplacementBody(
-                            databaseId: databaseId,
-                            collectionId: replacementsCollectionId,
-                            replacement: Replacement(
-                                id: ID.custom(Generator.generateId()),
-                                teacherId: subject.teacher.id,
-                                groupId: groupId,
-                                timeId: subject.time.id,
-                                date:
-                                    DateFormat.yMd().format(subject.dateTime!),
-                                mode: ReplacementMode.cancel,
-                                undergroup: null,
-                                createdBy: user.$id)));
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text(t.auth.errors.connection),
+                      backgroundColor: Colors.red));
+                }
               }
-              ref.invalidate(replacementsProvider);
             },
             splashRadius: 20,
             icon: const Icon(Icons.delete))

@@ -50,7 +50,7 @@ android {
 
     defaultConfig {
         applicationId "dev.studbin.daylist"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -78,4 +78,5 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.yandex.android:mobileads-mediation:5.10.0.0'
 }

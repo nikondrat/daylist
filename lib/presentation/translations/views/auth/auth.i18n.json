@@ -12,7 +12,8 @@
         "email": "Email is not correct",
         "used": "A user with such an email already exists",
         "wrong": "Password or email don't match",
-        "digits": "The field must not contain numbers"
+        "digits": "The field must not contain numbers",
+        "connection": "No internet connection"
     },
     "helpers": {
         "titles": {

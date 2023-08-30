@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:daylist/data/repository/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -15,11 +16,17 @@ final GoRouter router = GoRouter(navigatorKey: navigatorKey, routes: [
   GoRoute(
       path: '/',
       redirect: (context, state) async {
-        final bool isAuthorized =
-            await AuthDataRepository(Dependencies().getIt.get()).isAuthorized();
+        final ConnectivityResult connectivityResult =
+            await Connectivity().checkConnectivity();
+        if (connectivityResult == ConnectivityResult.mobile ||
+            connectivityResult == ConnectivityResult.wifi) {
+          final bool isAuthorized =
+              await AuthDataRepository(Dependencies().getIt.get())
+                  .isAuthorized();
 
-        if (!isAuthorized) {
-          await AuthDataRepository(Dependencies().getIt.get()).login();
+          if (!isAuthorized) {
+            await AuthDataRepository(Dependencies().getIt.get()).login();
+          }
         }
 
         if (await UserDataRepository(Dependencies().getIt.get())

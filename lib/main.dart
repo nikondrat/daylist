@@ -2,6 +2,7 @@ import 'package:daylist/domain/state/settings/settings_state.dart';
 import 'package:daylist/internal/dependencies/dependencies.dart';
 import 'package:daylist/presentation/res/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -11,6 +12,9 @@ import 'presentation/views/router.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   LocaleSettings.useDeviceLocale();
+  // await FlutterConfig.loadEnvVariables();
+  await SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
   // IsarService().clear();
 
