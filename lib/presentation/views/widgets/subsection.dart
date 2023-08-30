@@ -152,11 +152,10 @@ class _Leading extends HookConsumerWidget {
         text: TextSpan(children: [
       TextSpan(
           text: time.start,
-          style: context.text.mediumText.copyWith(
+          style: context.text.largeText.copyWith(
               color: context.color.primaryColor, fontWeight: FontWeight.bold)),
-      TextSpan(text: '\n${time.end}')
+      TextSpan(text: '\n${time.end}', style: context.text.mediumText)
     ]));
-    // return Text('${time.start}\n${time.end}');
   }
 }
 

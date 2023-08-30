@@ -202,7 +202,8 @@ class AppwriteService {
           'timeId': body.replacement.timeId,
           'date': body.replacement.date,
           'mode': body.replacement.mode.name,
-          'createdBy': body.replacement.createdBy
+          'createdBy': body.replacement.createdBy,
+          'undergroup': body.replacement.undergroup
         });
   }
 

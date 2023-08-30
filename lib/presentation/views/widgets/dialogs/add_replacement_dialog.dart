@@ -81,6 +81,7 @@ class _AddReplacementDialog extends ConsumerState<AddReplacementDialog> {
     List<ReplacementMode> mods = List.from(ReplacementMode.values);
     mods.removeLast();
     final ReplacementMode mode = ref.watch(selectedModeProvider);
+    final int? selectedUndergroup = ref.watch(selectedUndergroupProvider);
 
     return CustomDialog(
         title: t.selection.add,
@@ -107,21 +108,25 @@ class _AddReplacementDialog extends ConsumerState<AddReplacementDialog> {
                         .read(selectedModeProvider.notifier)
                         .update((state) => v!);
                   })),
-          Padding(
-              padding: const EdgeInsets.only(top: Insets.small),
-              child: DropdownButton(
-                  isExpanded: true,
-                  items: List.generate(2, (index) => index++, growable: false)
-                      .map((e) => DropdownMenuItem(
-                          value: e + 1, child: Text('${e + 1}')))
-                      .toList(),
-                  hint: Text(t.settings.undergroup,
-                      style: context.text.mediumText),
-                  onChanged: (v) {
-                    ref
-                        .read(selectedUndergroupProvider.notifier)
-                        .update((state) => v!);
-                  }))
+          mode == ReplacementMode.laboratory
+              ? Padding(
+                  padding: const EdgeInsets.only(top: Insets.small),
+                  child: DropdownButton(
+                      isExpanded: true,
+                      value: selectedUndergroup,
+                      items:
+                          List.generate(2, (index) => index++, growable: false)
+                              .map((e) => DropdownMenuItem(
+                                  value: e + 1, child: Text('${e + 1}')))
+                              .toList(),
+                      hint: Text(t.settings.undergroup,
+                          style: context.text.mediumText),
+                      onChanged: (v) {
+                        ref
+                            .read(selectedUndergroupProvider.notifier)
+                            .update((state) => v!);
+                      }))
+              : const SizedBox.shrink()
         ]);
   }
 }

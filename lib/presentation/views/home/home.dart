@@ -1,3 +1,4 @@
+import 'package:daylist/domain/state/settings/settings_state.dart';
 import 'package:daylist/presentation/extensions/theme/context.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -95,6 +96,8 @@ class _Body extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final DateTime now = DateTime.now();
 
+    final int undergroup = ref.watch(settingsProvider).undergroup;
+
     return Scaffold(
         appBar: AppBar(
             leading: IconButton(
@@ -127,6 +130,7 @@ class _Body extends HookConsumerWidget {
                       titles: titles,
                       subjects: subjects,
                       teachers: teachers,
+                      undergroup: undergroup,
                       replacements: replacements),
                   _SubjectsSection(
                       title: t.home.tomorrow,
@@ -135,6 +139,7 @@ class _Body extends HookConsumerWidget {
                       titles: titles,
                       subjects: subjects,
                       teachers: teachers,
+                      undergroup: undergroup,
                       replacements: replacements)
                 ])));
   }
@@ -147,6 +152,7 @@ class _SubjectsSection extends HookConsumerWidget {
   final List<SubjectTitle> titles;
   final List<Teacher> teachers;
   final List<Subject> subjects;
+  final int? undergroup;
   final List<Replacement> replacements;
 
   const _SubjectsSection({
@@ -158,6 +164,7 @@ class _SubjectsSection extends HookConsumerWidget {
     required this.teachers,
     required this.subjects,
     required this.replacements,
+    required this.undergroup,
   }) : super(key: key);
 
   @override
@@ -183,6 +190,7 @@ class _SubjectsSection extends HookConsumerWidget {
               titles: titles,
               teachers: teachers,
               subjects: subjects,
+              undergroup: undergroup,
               replacements: replacements),
           isChange
               ? Padding(
@@ -219,17 +227,19 @@ class _Items extends StatelessWidget {
   final List<Teacher> teachers;
   final List<Subject> subjects;
   final List<Replacement> replacements;
+  final int? undergroup;
 
-  const _Items({
-    Key? key,
-    required this.title,
-    required this.dateTime,
-    required this.times,
-    required this.titles,
-    required this.teachers,
-    required this.subjects,
-    required this.replacements,
-  }) : super(key: key);
+  const _Items(
+      {Key? key,
+      required this.title,
+      required this.dateTime,
+      required this.times,
+      required this.titles,
+      required this.teachers,
+      required this.subjects,
+      required this.replacements,
+      required this.undergroup})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -242,8 +252,11 @@ class _Items extends StatelessWidget {
       if (time != null) {
         final Replacement? replacement = replacements
                 .where((r) =>
-                    int.parse(r.date.split('/')[1]) == dateTime.day &&
-                    r.timeId == time.id)
+                    (int.parse(r.date.split('/')[1]) == dateTime.day &&
+                        r.timeId == time.id) &&
+                    (r.mode == ReplacementMode.laboratory
+                        ? r.undergroup == undergroup
+                        : true))
                 .isNotEmpty
             ? replacements.firstWhere((e) =>
                 int.parse(e.date.split('/')[1]) == dateTime.day &&
