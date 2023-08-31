@@ -41,8 +41,5 @@
                 <data android:scheme="appwrite-callback-$projectId" />
             </intent-filter>
         </activity>
-        <meta-data
-           android:name="com.google.android.gms.ads.APPLICATION_ID"
-           android:value="ca-app-pub-4449457472880521~8476795127"/>
     </application>
 </manifest>

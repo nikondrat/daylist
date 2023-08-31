@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 164 (82 per locale)
+/// Strings: 172 (86 per locale)
 ///
-/// Built on 2023-08-30 at 19:14 UTC
+/// Built on 2023-08-31 at 10:32 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -271,6 +271,7 @@ class _TranslationsSettingsEn {
 	String get radius => 'Block angle';
 	String get short_initials => 'Abbreviated name of the teacher';
 	String get show_time => 'Show time';
+	late final _TranslationsSettingsSupportEn support = _TranslationsSettingsSupportEn._(_root);
 }
 
 // Path: week
@@ -361,6 +362,18 @@ class _TranslationsSettingsThemeModeEn {
 	String get dark => 'Dark';
 }
 
+// Path: settings.support
+class _TranslationsSettingsSupportEn {
+	_TranslationsSettingsSupportEn._(this._root);
+
+	final _TranslationsEn _root; // ignore: unused_field
+
+	// Translations
+	String get questions => 'Write questions and suggestions in Telegram:';
+	String get tag => 'studbin';
+	late final _TranslationsSettingsSupportMoneyEn money = _TranslationsSettingsSupportMoneyEn._(_root);
+}
+
 // Path: week.days
 class _TranslationsWeekDaysEn {
 	_TranslationsWeekDaysEn._(this._root);
@@ -397,6 +410,17 @@ class _TranslationsAuthHelpersTitlesEn {
 	// Translations
 	String get signIn => 'Sign in to your account';
 	String get signUp => 'Create your account';
+}
+
+// Path: settings.support.money
+class _TranslationsSettingsSupportMoneyEn {
+	_TranslationsSettingsSupportMoneyEn._(this._root);
+
+	final _TranslationsEn _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Support the author for project development and server payment';
+	String get url => 'https://yoomoney.ru/to/4100117575409230';
 }
 
 // Path: <root>
@@ -537,6 +561,7 @@ class _TranslationsSettingsRu implements _TranslationsSettingsEn {
 	@override String get radius => 'Угол блоков';
 	@override String get short_initials => 'Сокращённое имя преподавателя';
 	@override String get show_time => 'Показывать время';
+	@override late final _TranslationsSettingsSupportRu support = _TranslationsSettingsSupportRu._(_root);
 }
 
 // Path: week
@@ -627,6 +652,18 @@ class _TranslationsSettingsThemeModeRu implements _TranslationsSettingsThemeMode
 	@override String get dark => 'Тёмная';
 }
 
+// Path: settings.support
+class _TranslationsSettingsSupportRu implements _TranslationsSettingsSupportEn {
+	_TranslationsSettingsSupportRu._(this._root);
+
+	@override final _TranslationsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get questions => 'Вопросы и предложения пишите в Telegram:';
+	@override String get tag => 'studbin';
+	@override late final _TranslationsSettingsSupportMoneyRu money = _TranslationsSettingsSupportMoneyRu._(_root);
+}
+
 // Path: week.days
 class _TranslationsWeekDaysRu implements _TranslationsWeekDaysEn {
 	_TranslationsWeekDaysRu._(this._root);
@@ -663,6 +700,17 @@ class _TranslationsAuthHelpersTitlesRu implements _TranslationsAuthHelpersTitles
 	// Translations
 	@override String get signIn => 'Вход в аккаунт';
 	@override String get signUp => 'Создай новый аккаунт';
+}
+
+// Path: settings.support.money
+class _TranslationsSettingsSupportMoneyRu implements _TranslationsSettingsSupportMoneyEn {
+	_TranslationsSettingsSupportMoneyRu._(this._root);
+
+	@override final _TranslationsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Поддержать автора на развитие проекта и оплату серверов';
+	@override String get url => 'https://yoomoney.ru/to/4100117575409230';
 }
 
 /// Flat map(s) containing all translations.
@@ -753,6 +801,10 @@ extension on _TranslationsEn {
 			case 'settings.radius': return 'Block angle';
 			case 'settings.short_initials': return 'Abbreviated name of the teacher';
 			case 'settings.show_time': return 'Show time';
+			case 'settings.support.questions': return 'Write questions and suggestions in Telegram:';
+			case 'settings.support.tag': return 'studbin';
+			case 'settings.support.money.title': return 'Support the author for project development and server payment';
+			case 'settings.support.money.url': return 'https://yoomoney.ru/to/4100117575409230';
 			case 'week.title': return 'week';
 			case 'week.isEven.0': return 'Even ${_root.week.title}';
 			case 'week.isEven.1': return 'Odd ${_root.week.title}';
@@ -862,6 +914,10 @@ extension on _TranslationsRu {
 			case 'settings.radius': return 'Угол блоков';
 			case 'settings.short_initials': return 'Сокращённое имя преподавателя';
 			case 'settings.show_time': return 'Показывать время';
+			case 'settings.support.questions': return 'Вопросы и предложения пишите в Telegram:';
+			case 'settings.support.tag': return 'studbin';
+			case 'settings.support.money.title': return 'Поддержать автора на развитие проекта и оплату серверов';
+			case 'settings.support.money.url': return 'https://yoomoney.ru/to/4100117575409230';
 			case 'week.title': return 'неделя';
 			case 'week.isEven.0': return 'Чётная ${_root.week.title}';
 			case 'week.isEven.1': return 'Нечётная ${_root.week.title}';

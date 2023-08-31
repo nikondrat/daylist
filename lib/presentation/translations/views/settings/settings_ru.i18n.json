@@ -19,5 +19,13 @@
     "background_color": "Цвет фона",
     "radius": "Угол блоков",
     "short_initials": "Сокращённое имя преподавателя",
-    "show_time": "Показывать время"
+    "show_time": "Показывать время",
+    "support": {
+        "questions": "Вопросы и предложения пишите в Telegram:",
+        "tag": "studbin",
+        "money": {
+            "title": "Поддержать автора на развитие проекта и оплату серверов",
+            "url": "https://yoomoney.ru/to/4100117575409230"
+        }
+    }
 }

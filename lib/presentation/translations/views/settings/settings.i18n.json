@@ -19,5 +19,13 @@
     "background_color": "Background color",
     "radius": "Block angle",
     "short_initials": "Abbreviated name of the teacher",
-    "show_time": "Show time"
+    "show_time": "Show time",
+    "support": {
+        "questions": "Write questions and suggestions in Telegram:",
+        "tag": "studbin",
+        "money": {
+            "title": "Support the author for project development and server payment",
+            "url": "https://yoomoney.ru/to/4100117575409230"
+        }
+    }
 }

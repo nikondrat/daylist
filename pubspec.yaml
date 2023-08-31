@@ -14,9 +14,6 @@ dependencies:
   # backend
   appwrite: ^9.0.1
 
-  # ads
-  flutter_yandex_ads: ^1.0.3+4
-
   # storage
   isar: ^3.0.5
   isar_flutter_libs: ^3.0.5
@@ -32,6 +29,7 @@ dependencies:
   # utils
   intl: ^0.18.0
   get_it: ^7.6.0
+  url_launcher: ^6.1.13
   flutter_config: ^2.0.2
   path_provider: ^2.0.15
   connectivity_plus: ^2.3.0

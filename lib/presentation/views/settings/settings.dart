@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:unicons/unicons.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsView extends HookConsumerWidget {
   const SettingsView({super.key});
@@ -32,7 +33,8 @@ class SettingsView extends HookConsumerWidget {
                         const EdgeInsets.symmetric(horizontal: Insets.small),
                     children: const [
                       _GeneralSectionWidget(),
-                      _ThemeSectionWidget()
+                      _ThemeSectionWidget(),
+                      _Info()
                     ]))));
     // const AdaptiveWidget(
     // mobile: _Mobile(), tablet: _Tablet(), desktop: _Desktop()));
@@ -221,6 +223,43 @@ class _ThemeSectionWidget extends HookConsumerWidget {
                   onTap: () => ref
                       .read(settingsProvider.notifier)
                       .isShortInitials = !isShortInitials)),
+        ]);
+  }
+}
+
+class _Info extends StatelessWidget {
+  const _Info();
+
+  @override
+  Widget build(BuildContext context) {
+    return SectionWidget(
+        margin: const EdgeInsets.only(top: Insets.small),
+        children: [
+          SubsectionWidget(
+              subsection: Subsection(
+                  onTap: () async {
+                    if (!await launchUrl(Uri.parse(
+                            'https://t.me/${t.settings.support.tag}')) &&
+                        context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text('ERROR!'),
+                          backgroundColor: Colors.red));
+                    }
+                  },
+                  title: t.settings.support.questions,
+                  trailing: [Text('@${t.settings.support.tag}')])),
+          SubsectionWidget(
+              subsection: Subsection(
+                  onTap: () async {
+                    if (!await launchUrl(
+                            Uri.parse(t.settings.support.money.url)) &&
+                        context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text('ERROR!'),
+                          backgroundColor: Colors.red));
+                    }
+                  },
+                  title: t.settings.support.money.title)),
         ]);
   }
 }
