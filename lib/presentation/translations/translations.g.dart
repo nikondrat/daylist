@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 172 (86 per locale)
+/// Strings: 174 (87 per locale)
 ///
-/// Built on 2023-08-31 at 10:32 UTC
+/// Built on 2023-08-31 at 19:24 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -297,6 +297,7 @@ class _TranslationsSubjectEn {
 	final _TranslationsEn _root; // ignore: unused_field
 
 	// Translations
+	String get title => 'Subject';
 	String get classroom => 'classroom';
 }
 
@@ -587,6 +588,7 @@ class _TranslationsSubjectRu implements _TranslationsSubjectEn {
 	@override final _TranslationsRu _root; // ignore: unused_field
 
 	// Translations
+	@override String get title => 'Предмет';
 	@override String get classroom => 'кабинет';
 }
 
@@ -823,6 +825,7 @@ extension on _TranslationsEn {
 			case 'week.days.full.4': return 'Friday';
 			case 'week.days.full.5': return 'Saturday';
 			case 'week.days.full.6': return 'Sunday';
+			case 'subject.title': return 'Subject';
 			case 'subject.classroom': return 'classroom';
 			default: return null;
 		}
@@ -936,6 +939,7 @@ extension on _TranslationsRu {
 			case 'week.days.full.4': return 'Пятница';
 			case 'week.days.full.5': return 'Суббота';
 			case 'week.days.full.6': return 'Воскресенье';
+			case 'subject.title': return 'Предмет';
 			case 'subject.classroom': return 'кабинет';
 			default: return null;
 		}

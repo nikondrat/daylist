@@ -137,7 +137,7 @@ class _AddTeacherDialogState extends ConsumerState<AddTeacherDialog> {
                                     const AddInstitutionDialog()),
                             child: Icon(Icons.add,
                                 color: context.color.primaryColor)),
-                        hint: Text(t.selection.title.capitalize(),
+                        hint: Text(t.selection.institution.capitalize(),
                             style: context.text.mediumText),
                         items: i
                             .map((e) => DropdownMenuItem(

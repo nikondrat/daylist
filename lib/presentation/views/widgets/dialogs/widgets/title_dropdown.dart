@@ -35,7 +35,7 @@ class TitleDropdownWidget extends HookConsumerWidget {
                           .update((state) => null);
                     }),
                 child: Icon(Icons.add, color: context.color.primaryColor)),
-            hint: Text(t.selection.title, style: context.text.mediumText),
+            hint: Text(t.subject.title, style: context.text.mediumText),
             value: titleId,
             items: v
                 .where((e) => teacher != null ? e.id == teacher.titleId : true)
