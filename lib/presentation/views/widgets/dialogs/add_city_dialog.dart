@@ -79,7 +79,7 @@ class _AddCityDialogState extends ConsumerState<AddCityDialog> {
               key: formKey,
               child: TextFormField(
                   controller: controller,
-                  validator: (v) => Validator().initials(v, checkLen: false),
+                  validator: (v) => Validator().text(v, checkLen: false),
                   onEditingComplete: () => formKey.currentState!.validate(),
                   onSaved: (newValue) => formKey.currentState!.validate(),
                   onFieldSubmitted: (value) => addCity(),

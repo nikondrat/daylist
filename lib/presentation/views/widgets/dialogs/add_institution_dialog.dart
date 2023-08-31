@@ -93,7 +93,7 @@ class __AddInstitutionState extends ConsumerState<AddInstitutionDialog> {
               child: TextFormField(
                   controller: title,
                   textInputAction: TextInputAction.next,
-                  validator: (v) => Validator().initials(v, checkLen: false),
+                  validator: (v) => Validator().text(v, checkLen: false),
                   onEditingComplete: () => titleState.currentState!.validate(),
                   onSaved: (newValue) => titleState.currentState!.validate(),
                   onFieldSubmitted: (value) =>
@@ -107,8 +107,7 @@ class __AddInstitutionState extends ConsumerState<AddInstitutionDialog> {
                   child: TextFormField(
                       controller: shortTitle,
                       onFieldSubmitted: (value) => addInstitution(),
-                      validator: (v) =>
-                          Validator().initials(v, checkLen: false),
+                      validator: (v) => Validator().text(v, checkLen: false),
                       onChanged: (value) =>
                           shortTitleState.currentState!.validate(),
                       onSaved: (newValue) =>

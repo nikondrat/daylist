@@ -10,6 +10,18 @@ class Validator {
     return null;
   }
 
+  String? text(String? v, {bool checkLen = true}) {
+    if (standart(v, checkLen: checkLen) == null) {
+      final RegExp digits = RegExp(r"\d");
+      if (digits.hasMatch(v!)) {
+        return t.auth.errors.digits;
+      }
+    } else {
+      return standart(v);
+    }
+    return null;
+  }
+
   String? initials(String? v, {bool checkLen = true}) {
     if (standart(v, checkLen: checkLen) == null) {
       final RegExp digits = RegExp(r"\d");
