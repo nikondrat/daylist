@@ -92,7 +92,7 @@ class _AddReplacementDialog extends ConsumerState<AddReplacementDialog> {
           const TimeDropdownWidget(),
           Padding(
               padding: const EdgeInsets.only(top: Insets.small),
-              child: DropdownButton(
+              child: DropdownButtonFormField(
                   isExpanded: true,
                   iconEnabledColor: context.color.primaryColor,
                   iconDisabledColor: context.color.primaryColor,
@@ -111,8 +111,10 @@ class _AddReplacementDialog extends ConsumerState<AddReplacementDialog> {
           mode == ReplacementMode.laboratory
               ? Padding(
                   padding: const EdgeInsets.only(top: Insets.small),
-                  child: DropdownButton(
+                  child: DropdownButtonFormField(
                       isExpanded: true,
+                      iconEnabledColor: context.color.primaryColor,
+                      iconDisabledColor: context.color.primaryColor,
                       value: selectedUndergroup,
                       items:
                           List.generate(2, (index) => index++, growable: false)

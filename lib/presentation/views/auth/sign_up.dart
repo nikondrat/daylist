@@ -61,9 +61,7 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
     } on AppwriteException catch (e) {
       switch (e.code) {
         case 409:
-          ref
-              .read(authErrorProvider.notifier)
-              .update((state) => t.auth.errors.used);
+          ref.read(authErrorProvider.notifier).update((state) => t.errors.used);
           break;
         default:
       }

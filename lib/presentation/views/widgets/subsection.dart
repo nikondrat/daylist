@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -117,7 +116,8 @@ class _Subject extends HookConsumerWidget {
             : _LeadingIndex(number: subject.time.number),
         title: Text(subject.title.title,
             style: context.text.largeText.copyWith(
-                color: isCanceled ? Colors.red : null,
+                color: isCanceled ? Colors.red : context.color.primaryColor,
+                fontWeight: FontWeight.bold,
                 decoration: isCanceled ? TextDecoration.lineThrough : null)),
         subtitle: _Subtitle(teacher: subject.teacher),
         trailing: _Delete(subject: subject));
@@ -136,9 +136,17 @@ class _Subtitle extends HookConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text('${teacher.classroom} ${t.subject.classroom}',
-              style: context.text.mediumText),
-          Text(isShortInitials ? teacher.shortInitials() : teacher.initials)
+          Padding(
+            padding: const EdgeInsets.only(top: 2),
+            child: Text('${teacher.classroom} ${t.subject.classroom}',
+                style: context.text.mediumText),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 2),
+            child: Text(
+                isShortInitials ? teacher.shortInitials() : teacher.initials,
+                style: context.text.mediumText),
+          )
         ]);
   }
 }
@@ -233,7 +241,7 @@ class _Delete extends HookConsumerWidget {
               } else {
                 if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text(t.auth.errors.connection),
+                      content: Text(t.errors.connection),
                       backgroundColor: Colors.red));
                 }
               }

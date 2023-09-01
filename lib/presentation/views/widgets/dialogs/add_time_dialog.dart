@@ -1,6 +1,7 @@
 import 'package:appwrite/models.dart';
 import 'package:daylist/.env';
 import 'package:daylist/data/api/request/add/add_time_body.dart';
+import 'package:daylist/data/api/request/get/get_times_body.dart';
 import 'package:daylist/data/repository/auth_repository.dart';
 import 'package:daylist/data/repository/time_repository.dart';
 import 'package:daylist/domain/model/time.dart';
@@ -30,29 +31,52 @@ class _AddTimeDialogState extends ConsumerState<AddTimeDialog> {
     final User user =
         await AuthDataRepository(Dependencies().getIt.get()).getUser();
 
-    if (start != null && end != null && context.mounted) {
-      try {
-        TimeDataRepository(
-                Dependencies().getIt.get(), Dependencies().getIt.get())
-            .addTime(
-                body: AddTimeBody(
-                    databaseId: databaseId,
-                    collectionId: timesCollectionId,
-                    time: Time(
-                        id: Generator.generateId(),
-                        start:
-                            '${'${start.hour}'.padLeft(2, '0')}:${'${start.minute}'.padLeft(2, '0')}',
-                        end:
-                            '${'${end.hour}'.padLeft(2, '0')}:${'${end.minute}'.padLeft(2, '0')}',
-                        number: number,
-                        createdBy: user.$id)))
-            .then((value) {
-          ref.invalidate(timesProvider);
-          context.pop();
-        });
-      } catch (e) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('$e')));
+    if (start != null && end != null) {
+      List<Time> times = await TimeDataRepository(
+              Dependencies().getIt.get(), Dependencies().getIt.get())
+          .getTimes(
+              body: GetTimesBody(
+                  databaseId: databaseId, collectionId: timesCollectionId));
+
+      final String startString =
+          '${'${start.hour}'.padLeft(2, '0')}:${'${start.minute}'.padLeft(2, '0')}';
+      final String endString =
+          '${'${end.hour}'.padLeft(2, '0')}:${'${end.minute}'.padLeft(2, '0')}';
+
+      if (times
+          .where((e) =>
+              e.start != startString &&
+              e.end != endString &&
+              e.number != number)
+          .isEmpty) {
+        try {
+          TimeDataRepository(
+                  Dependencies().getIt.get(), Dependencies().getIt.get())
+              .addTime(
+                  body: AddTimeBody(
+                      databaseId: databaseId,
+                      collectionId: timesCollectionId,
+                      time: Time(
+                          id: Generator.generateId(),
+                          start: startString,
+                          end: endString,
+                          number: number,
+                          createdBy: user.$id)))
+              .then((value) {
+            ref.invalidate(timesProvider);
+            context.pop();
+          });
+        } catch (e) {
+          if (context.mounted) {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text('$e')));
+          }
+        }
+      } else {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(t.errors.already)));
+        }
       }
     }
   }

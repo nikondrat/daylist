@@ -17,7 +17,7 @@ class Teacher {
   String shortInitials() {
     final List<String> i = initials.split(' ');
 
-    return '${i.first} ${i[1][0]}. ${i[1][0]}.';
+    return '${i.first} ${i[1][0]}. ${i[2][0]}.';
   }
 
   Map<String, dynamic> toMap() {

@@ -35,7 +35,7 @@ class CustomDialog extends StatelessWidget {
                 } else {
                   if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text(t.auth.errors.connection),
+                        content: Text(t.errors.connection),
                         backgroundColor: Colors.red));
                   }
                 }

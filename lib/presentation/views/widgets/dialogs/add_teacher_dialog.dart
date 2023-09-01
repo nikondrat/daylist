@@ -5,6 +5,7 @@ import 'package:daylist/data/api/request/add/add_teacher_body.dart';
 import 'package:daylist/data/repository/auth_repository.dart';
 import 'package:daylist/data/repository/teacher_repository.dart';
 import 'package:daylist/domain/model/teacher.dart';
+import 'package:daylist/domain/state/dialogs/subject_dialog_state.dart';
 import 'package:daylist/domain/state/settings/settings_state.dart';
 import 'package:daylist/domain/state/week/week_state.dart';
 import 'package:daylist/internal/dependencies/dependencies.dart';
@@ -14,7 +15,7 @@ import 'package:daylist/presentation/translations/translations.g.dart';
 import 'package:daylist/presentation/utils/generator.dart';
 import 'package:daylist/presentation/utils/validator.dart';
 import 'package:daylist/presentation/views/widgets/dialog.dart';
-import 'package:daylist/presentation/views/widgets/dialogs/add_institution_dialog.dart';
+import 'package:daylist/presentation/views/widgets/dialogs/add_subject_title_dialog.dart';
 import 'package:daylist/presentation/views/widgets/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -35,8 +36,6 @@ class _AddTeacherDialogState extends ConsumerState<AddTeacherDialog> {
 
   late GlobalKey<FormState> classroomKey;
   late TextEditingController classroom;
-
-  String? titleId;
 
   @override
   void initState() {
@@ -65,6 +64,7 @@ class _AddTeacherDialogState extends ConsumerState<AddTeacherDialog> {
         await AuthDataRepository(Dependencies().getIt.get()).getUser();
 
     final String institutionId = ref.watch(settingsProvider).institution!.id;
+    final String? titleId = ref.watch(selectedSubjectTitleProvider);
 
     try {
       await TeacherDataRepository(
@@ -94,6 +94,8 @@ class _AddTeacherDialogState extends ConsumerState<AddTeacherDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final String? titleId = ref.watch(selectedSubjectTitleProvider);
+
     return CustomDialog(
         title: t.selection.add,
         onSubmitted: addTeacher,
@@ -130,21 +132,26 @@ class _AddTeacherDialogState extends ConsumerState<AddTeacherDialog> {
                   config: ref.watch(titlesProvider),
                   builder: (i) {
                     return DropdownButtonFormField(
+                        isExpanded: true,
+                        isDense: false,
+                        value: titleId,
                         icon: GestureDetector(
                             onTap: () => showDialog(
                                 context: context,
                                 builder: (context) =>
-                                    const AddInstitutionDialog()),
+                                    const AddSubjectTitleDialog()),
                             child: Icon(Icons.add,
                                 color: context.color.primaryColor)),
-                        hint: Text(t.selection.institution.capitalize(),
+                        hint: Text(t.subject.title,
                             style: context.text.mediumText),
                         items: i
                             .map((e) => DropdownMenuItem(
                                 value: e.id, child: Text(e.title)))
                             .toList(),
                         onChanged: (v) {
-                          titleId = v;
+                          ref
+                              .read(selectedSubjectTitleProvider.notifier)
+                              .update((state) => v);
                         });
                   })),
         ]);

@@ -60,7 +60,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
         case 401:
           ref
               .read(authErrorProvider.notifier)
-              .update((state) => t.auth.errors.wrong);
+              .update((state) => t.errors.wrong);
           break;
         default:
       }

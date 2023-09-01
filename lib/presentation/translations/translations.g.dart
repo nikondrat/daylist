@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 174 (87 per locale)
+/// Strings: 176 (88 per locale)
 ///
-/// Built on 2023-08-31 at 19:24 UTC
+/// Built on 2023-09-01 at 10:31 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -159,6 +159,7 @@ class _TranslationsEn implements BaseTranslations<AppLocale, _TranslationsEn> {
 
 	// Translations
 	late final _TranslationsDialogEn dialog = _TranslationsDialogEn._(_root);
+	late final _TranslationsErrorsEn errors = _TranslationsErrorsEn._(_root);
 	late final _TranslationsAuthEn auth = _TranslationsAuthEn._(_root);
 	late final _TranslationsHomeEn home = _TranslationsHomeEn._(_root);
 	late final _TranslationsSelectionEn selection = _TranslationsSelectionEn._(_root);
@@ -188,6 +189,23 @@ class _TranslationsDialogEn {
 	];
 }
 
+// Path: errors
+class _TranslationsErrorsEn {
+	_TranslationsErrorsEn._(this._root);
+
+	final _TranslationsEn _root; // ignore: unused_field
+
+	// Translations
+	String get empty => 'The field should not be empty';
+	String get short => 'Too short';
+	String get email => 'Email is not correct';
+	String get used => 'A user with such an email already exists';
+	String get wrong => 'Password or email don\'t match';
+	String get digits => 'The field must not contain numbers';
+	String get connection => 'No internet connection';
+	String get already => 'There is such data in the database';
+}
+
 // Path: auth
 class _TranslationsAuthEn {
 	_TranslationsAuthEn._(this._root);
@@ -202,7 +220,6 @@ class _TranslationsAuthEn {
 	String get name => 'Name';
 	String get surname => 'Surname';
 	String get password => 'Password';
-	late final _TranslationsAuthErrorsEn errors = _TranslationsAuthErrorsEn._(_root);
 	late final _TranslationsAuthHelpersEn helpers = _TranslationsAuthHelpersEn._(_root);
 }
 
@@ -299,22 +316,6 @@ class _TranslationsSubjectEn {
 	// Translations
 	String get title => 'Subject';
 	String get classroom => 'classroom';
-}
-
-// Path: auth.errors
-class _TranslationsAuthErrorsEn {
-	_TranslationsAuthErrorsEn._(this._root);
-
-	final _TranslationsEn _root; // ignore: unused_field
-
-	// Translations
-	String get empty => 'The field should not be empty';
-	String get short => 'Too short';
-	String get email => 'Email is not correct';
-	String get used => 'A user with such an email already exists';
-	String get wrong => 'Password or email don\'t match';
-	String get digits => 'The field must not contain numbers';
-	String get connection => 'No internet connection';
 }
 
 // Path: auth.helpers
@@ -450,6 +451,7 @@ class _TranslationsRu implements _TranslationsEn {
 
 	// Translations
 	@override late final _TranslationsDialogRu dialog = _TranslationsDialogRu._(_root);
+	@override late final _TranslationsErrorsRu errors = _TranslationsErrorsRu._(_root);
 	@override late final _TranslationsAuthRu auth = _TranslationsAuthRu._(_root);
 	@override late final _TranslationsHomeRu home = _TranslationsHomeRu._(_root);
 	@override late final _TranslationsSelectionRu selection = _TranslationsSelectionRu._(_root);
@@ -479,6 +481,23 @@ class _TranslationsDialogRu implements _TranslationsDialogEn {
 	];
 }
 
+// Path: errors
+class _TranslationsErrorsRu implements _TranslationsErrorsEn {
+	_TranslationsErrorsRu._(this._root);
+
+	@override final _TranslationsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get empty => 'Поле не должно быть пустым';
+	@override String get short => 'Слишком короткий';
+	@override String get email => 'Почта введена не правильно';
+	@override String get used => 'Пользователь с такой почтой уже существует';
+	@override String get wrong => 'Пароль или почта введены не верно';
+	@override String get digits => 'Поле не должно содержать цифры';
+	@override String get connection => 'Нет интернет соединения.';
+	@override String get already => 'В базе есть такие данные';
+}
+
 // Path: auth
 class _TranslationsAuthRu implements _TranslationsAuthEn {
 	_TranslationsAuthRu._(this._root);
@@ -493,7 +512,6 @@ class _TranslationsAuthRu implements _TranslationsAuthEn {
 	@override String get name => 'Имя';
 	@override String get surname => 'Фамилия';
 	@override String get password => 'Пароль';
-	@override late final _TranslationsAuthErrorsRu errors = _TranslationsAuthErrorsRu._(_root);
 	@override late final _TranslationsAuthHelpersRu helpers = _TranslationsAuthHelpersRu._(_root);
 }
 
@@ -590,22 +608,6 @@ class _TranslationsSubjectRu implements _TranslationsSubjectEn {
 	// Translations
 	@override String get title => 'Предмет';
 	@override String get classroom => 'кабинет';
-}
-
-// Path: auth.errors
-class _TranslationsAuthErrorsRu implements _TranslationsAuthErrorsEn {
-	_TranslationsAuthErrorsRu._(this._root);
-
-	@override final _TranslationsRu _root; // ignore: unused_field
-
-	// Translations
-	@override String get empty => 'Поле не должно быть пустым';
-	@override String get short => 'Слишком короткий';
-	@override String get email => 'Почта введена не правильно';
-	@override String get used => 'Пользователь с такой почтой уже существует';
-	@override String get wrong => 'Пароль или почта введены не верно';
-	@override String get digits => 'Поле не должно содержать цифры';
-	@override String get connection => 'Нет интернет соединения.';
 }
 
 // Path: auth.helpers
@@ -731,6 +733,14 @@ extension on _TranslationsEn {
 			case 'dialog.subject_mode.2': return 'practice';
 			case 'dialog.subject_mode.3': return 'laboratory';
 			case 'dialog.subject_mode.4': return 'test';
+			case 'errors.empty': return 'The field should not be empty';
+			case 'errors.short': return 'Too short';
+			case 'errors.email': return 'Email is not correct';
+			case 'errors.used': return 'A user with such an email already exists';
+			case 'errors.wrong': return 'Password or email don\'t match';
+			case 'errors.digits': return 'The field must not contain numbers';
+			case 'errors.connection': return 'No internet connection';
+			case 'errors.already': return 'There is such data in the database';
 			case 'auth.signIn': return 'Sign in';
 			case 'auth.signUp': return 'Sign up';
 			case 'auth.account': return 'account';
@@ -738,13 +748,6 @@ extension on _TranslationsEn {
 			case 'auth.name': return 'Name';
 			case 'auth.surname': return 'Surname';
 			case 'auth.password': return 'Password';
-			case 'auth.errors.empty': return 'The field should not be empty';
-			case 'auth.errors.short': return 'Too short';
-			case 'auth.errors.email': return 'Email is not correct';
-			case 'auth.errors.used': return 'A user with such an email already exists';
-			case 'auth.errors.wrong': return 'Password or email don\'t match';
-			case 'auth.errors.digits': return 'The field must not contain numbers';
-			case 'auth.errors.connection': return 'No internet connection';
 			case 'auth.helpers.titles.signIn': return 'Sign in to your account';
 			case 'auth.helpers.titles.signUp': return 'Create your account';
 			case 'auth.helpers.signUp': return ({required InlineSpanBuilder tapHere}) => TextSpan(children: [
@@ -845,6 +848,14 @@ extension on _TranslationsRu {
 			case 'dialog.subject_mode.2': return 'Практика';
 			case 'dialog.subject_mode.3': return 'Лабораторная';
 			case 'dialog.subject_mode.4': return 'Тест';
+			case 'errors.empty': return 'Поле не должно быть пустым';
+			case 'errors.short': return 'Слишком короткий';
+			case 'errors.email': return 'Почта введена не правильно';
+			case 'errors.used': return 'Пользователь с такой почтой уже существует';
+			case 'errors.wrong': return 'Пароль или почта введены не верно';
+			case 'errors.digits': return 'Поле не должно содержать цифры';
+			case 'errors.connection': return 'Нет интернет соединения.';
+			case 'errors.already': return 'В базе есть такие данные';
 			case 'auth.signIn': return 'Вход';
 			case 'auth.signUp': return 'Зарегистрироваться';
 			case 'auth.account': return 'аккаунт';
@@ -852,13 +863,6 @@ extension on _TranslationsRu {
 			case 'auth.name': return 'Имя';
 			case 'auth.surname': return 'Фамилия';
 			case 'auth.password': return 'Пароль';
-			case 'auth.errors.empty': return 'Поле не должно быть пустым';
-			case 'auth.errors.short': return 'Слишком короткий';
-			case 'auth.errors.email': return 'Почта введена не правильно';
-			case 'auth.errors.used': return 'Пользователь с такой почтой уже существует';
-			case 'auth.errors.wrong': return 'Пароль или почта введены не верно';
-			case 'auth.errors.digits': return 'Поле не должно содержать цифры';
-			case 'auth.errors.connection': return 'Нет интернет соединения.';
 			case 'auth.helpers.titles.signIn': return 'Вход в аккаунт';
 			case 'auth.helpers.titles.signUp': return 'Создай новый аккаунт';
 			case 'auth.helpers.signUp': return ({required InlineSpanBuilder tapHere}) => TextSpan(children: [

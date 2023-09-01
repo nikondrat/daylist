@@ -7,6 +7,7 @@ import 'package:daylist/presentation/views/widgets/section.dart';
 import 'package:daylist/presentation/views/widgets/subsection.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:unicons/unicons.dart';
@@ -20,7 +21,12 @@ class SettingsView extends HookConsumerWidget {
     return Material(
         color: context.color.backgroundColor,
         child: Scaffold(
-            appBar: AppBar(title: Text(t.settings.title)),
+            appBar: AppBar(
+                leading: IconButton(
+                    onPressed: () => context.pop(),
+                    splashRadius: 20,
+                    icon: const Icon(Icons.arrow_back)),
+                title: Text(t.settings.title)),
             body: ScrollConfiguration(
                 behavior: ScrollConfiguration.of(context).copyWith(
                     dragDevices: {
@@ -238,8 +244,9 @@ class _Info extends StatelessWidget {
           SubsectionWidget(
               subsection: Subsection(
                   onTap: () async {
-                    if (!await launchUrl(Uri.parse(
-                            'https://t.me/${t.settings.support.tag}')) &&
+                    if (!await launchUrl(
+                            Uri.parse('https://t.me/${t.settings.support.tag}'),
+                            mode: LaunchMode.externalApplication) &&
                         context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                           content: Text('ERROR!'),

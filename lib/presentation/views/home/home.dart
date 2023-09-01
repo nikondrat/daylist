@@ -95,6 +95,7 @@ class _Body extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final DateTime now = DateTime.now();
+    final DateTime tomorrow = now.add(const Duration(days: 1));
 
     final int undergroup = ref.watch(settingsProvider).undergroup;
 
@@ -124,7 +125,8 @@ class _Body extends HookConsumerWidget {
                 padding: const EdgeInsets.symmetric(horizontal: Insets.small),
                 children: [
                   _SubjectsSection(
-                      title: t.home.today,
+                      title:
+                          '${t.home.today}, ${now.day} ${t.week.days.short[now.weekday - 1]}',
                       dateTime: now,
                       times: times,
                       titles: titles,
@@ -133,8 +135,9 @@ class _Body extends HookConsumerWidget {
                       undergroup: undergroup,
                       replacements: replacements),
                   _SubjectsSection(
-                      title: t.home.tomorrow,
-                      dateTime: now.add(const Duration(days: 1)),
+                      title:
+                          '${t.home.tomorrow}, ${tomorrow.day} ${t.week.days.short[tomorrow.weekday - 1]}',
+                      dateTime: tomorrow,
                       times: times,
                       titles: titles,
                       subjects: subjects,

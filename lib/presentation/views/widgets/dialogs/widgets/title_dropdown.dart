@@ -20,8 +20,9 @@ class TitleDropdownWidget extends HookConsumerWidget {
 
     return LoaderWidget(
         config: titles,
-        builder: (v) => DropdownButton(
+        builder: (v) => DropdownButtonFormField(
             isExpanded: true,
+            isDense: false,
             icon: GestureDetector(
                 onTap: () => showDialog(
                             context: context,

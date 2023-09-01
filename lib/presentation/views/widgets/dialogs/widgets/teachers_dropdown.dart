@@ -22,12 +22,17 @@ class TeachersDropdownWidget extends HookConsumerWidget {
         config: teachers,
         builder: (v) => Padding(
             padding: const EdgeInsets.only(top: Insets.small),
-            child: DropdownButton(
+            child: DropdownButtonFormField(
                 isExpanded: true,
                 icon: GestureDetector(
                     onTap: () => showDialog(
-                        context: context,
-                        builder: (context) => const AddTeacherDialog()),
+                                context: context,
+                                builder: (context) => const AddTeacherDialog())
+                            .then((value) {
+                          ref
+                              .read(selectedSubjectTitleProvider.notifier)
+                              .update((state) => null);
+                        }),
                     child: Icon(Icons.add, color: context.color.primaryColor)),
                 hint: Text(t.selection.teacher, style: context.text.mediumText),
                 value: teacher,
