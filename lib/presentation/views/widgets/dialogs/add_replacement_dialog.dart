@@ -1,6 +1,5 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
-import 'package:daylist/.env';
 import 'package:daylist/data/api/request/add/add_replacement_body.dart';
 import 'package:daylist/data/repository/auth_repository.dart';
 import 'package:daylist/data/repository/replacement_repository.dart';
@@ -19,6 +18,7 @@ import 'package:daylist/presentation/views/widgets/dialogs/widgets/teachers_drop
 import 'package:daylist/presentation/views/widgets/dialogs/widgets/time_dropdown.dart';
 import 'package:daylist/presentation/views/widgets/dialogs/widgets/title_dropdown.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -53,8 +53,8 @@ class _AddReplacementDialog extends ConsumerState<AddReplacementDialog> {
                 Dependencies().getIt.get(), Dependencies().getIt.get())
             .addReplacement(
                 body: AddReplacementBody(
-                    databaseId: databaseId,
-                    collectionId: replacementsCollectionId,
+                    databaseId: dotenv.env['const databaseId']!,
+                    collectionId: dotenv.env['const replacementsCollectionId']!,
                     replacement: Replacement(
                         id: ID.custom(Generator.generateId()),
                         teacherId: teacher.id,

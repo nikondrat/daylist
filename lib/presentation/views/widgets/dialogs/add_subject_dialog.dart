@@ -1,5 +1,4 @@
 import 'package:appwrite/models.dart';
-import 'package:daylist/.env';
 import 'package:daylist/data/api/request/add/add_subject_body.dart';
 import 'package:daylist/data/repository/auth_repository.dart';
 import 'package:daylist/data/repository/subject_repository.dart';
@@ -18,6 +17,7 @@ import 'package:daylist/presentation/views/widgets/dialogs/widgets/teachers_drop
 import 'package:daylist/presentation/views/widgets/dialogs/widgets/time_dropdown.dart';
 import 'package:daylist/presentation/views/widgets/dialogs/widgets/title_dropdown.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -48,8 +48,8 @@ class __AddSubjectDialogState extends ConsumerState<AddSubjectDialog> {
                 Dependencies().getIt.get(), Dependencies().getIt.get())
             .addSubject(
                 body: AddSubjectBody(
-                    databaseId: databaseId,
-                    collectionId: subjectsCollectionId,
+                    databaseId: dotenv.env['const databaseId']!,
+                    collectionId: dotenv.env['const subjectsCollectionId']!,
                     subject: Subject(
                         id: Generator.generateId(),
                         teacherId: teacher.id,

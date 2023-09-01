@@ -1,7 +1,6 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
 
-import 'package:daylist/.env';
 import 'package:daylist/data/api/model/api_city.dart';
 import 'package:daylist/data/api/model/api_group.dart';
 import 'package:daylist/data/api/model/api_institution.dart';
@@ -28,9 +27,12 @@ import 'package:daylist/data/api/request/get/get_subjects_body.dart';
 import 'package:daylist/data/api/request/get/get_teachers_body.dart';
 import 'package:daylist/data/api/request/get/get_times_body.dart';
 import 'package:daylist/data/api/request/get/get_titles_body.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class AppwriteService {
-  final Client client = Client().setEndpoint(endPoint).setProject(key);
+  final Client client = Client()
+      .setEndpoint(dotenv.env['const endPoint']!)
+      .setProject(dotenv.env['const key']!);
 
   late final Account _account = Account(client);
   late final Databases _databases = Databases(client);

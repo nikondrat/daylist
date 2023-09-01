@@ -1,6 +1,5 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
-import 'package:daylist/.env';
 import 'package:daylist/data/api/request/add/add_teacher_body.dart';
 import 'package:daylist/data/repository/auth_repository.dart';
 import 'package:daylist/data/repository/teacher_repository.dart';
@@ -18,6 +17,7 @@ import 'package:daylist/presentation/views/widgets/dialog.dart';
 import 'package:daylist/presentation/views/widgets/dialogs/add_subject_title_dialog.dart';
 import 'package:daylist/presentation/views/widgets/loader.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:slang/builder/utils/string_extensions.dart';
@@ -71,8 +71,8 @@ class _AddTeacherDialogState extends ConsumerState<AddTeacherDialog> {
               Dependencies().getIt.get(), Dependencies().getIt.get())
           .addTeacher(
               body: AddTecherBody(
-                  databaseId: databaseId,
-                  collectionId: teachersCollectionId,
+                  databaseId: dotenv.env['const databaseId']!,
+                  collectionId: dotenv.env['const teachersCollectionId']!,
                   teacher: Teacher(
                       id: ID.custom(Generator.generateId()),
                       initials: initials.text,

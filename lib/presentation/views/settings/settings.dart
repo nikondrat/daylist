@@ -239,7 +239,8 @@ class _Info extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SectionWidget(
-        margin: const EdgeInsets.only(top: Insets.small),
+        margin:
+            const EdgeInsets.only(top: Insets.small, bottom: Insets.standart),
         children: [
           SubsectionWidget(
               subsection: Subsection(

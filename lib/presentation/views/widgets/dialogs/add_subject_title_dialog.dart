@@ -1,6 +1,5 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
-import 'package:daylist/.env';
 import 'package:daylist/data/api/request/add/add_title_body.dart';
 import 'package:daylist/data/repository/auth_repository.dart';
 import 'package:daylist/data/repository/title_repository.dart';
@@ -12,6 +11,7 @@ import 'package:daylist/presentation/utils/generator.dart';
 import 'package:daylist/presentation/utils/validator.dart';
 import 'package:daylist/presentation/views/widgets/dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -52,8 +52,8 @@ class _AddSubjectTitleDialogState extends ConsumerState<AddSubjectTitleDialog> {
               Dependencies().getIt.get(), Dependencies().getIt.get())
           .addTitle(
               body: AddTitleBody(
-                  databaseId: databaseId,
-                  collectionId: titlesCollectionId,
+                  databaseId: dotenv.env['const databaseId']!,
+                  collectionId: dotenv.env['const titlesCollectionId']!,
                   title: SubjectTitle(
                       id: ID.custom(Generator.generateId()),
                       title: controller.text.trim(),

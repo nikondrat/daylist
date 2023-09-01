@@ -2,10 +2,9 @@ import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-
-import 'package:daylist/.env';
 import 'package:daylist/data/api/request/add/add_replacement_body.dart';
 import 'package:daylist/data/api/request/delete/delete_replacement_body.dart';
 import 'package:daylist/data/repository/auth_repository.dart';
@@ -216,16 +215,18 @@ class _Delete extends HookConsumerWidget {
                           Dependencies().getIt.get())
                       .deleteReplacement(
                           body: DeleteReplacementBody(
-                              databaseId: databaseId,
-                              collectionId: replacementsCollectionId,
+                              databaseId: dotenv.env['const databaseId']!,
+                              collectionId:
+                                  dotenv.env['const replacementsCollectionId']!,
                               id: subject.replacement!.id));
                 } else {
                   ReplacementDataRepository(Dependencies().getIt.get(),
                           Dependencies().getIt.get())
                       .addReplacement(
                           body: AddReplacementBody(
-                              databaseId: databaseId,
-                              collectionId: replacementsCollectionId,
+                              databaseId: dotenv.env['const databaseId']!,
+                              collectionId:
+                                  dotenv.env['const replacementsCollectionId']!,
                               replacement: Replacement(
                                   id: ID.custom(Generator.generateId()),
                                   teacherId: subject.teacher.id,

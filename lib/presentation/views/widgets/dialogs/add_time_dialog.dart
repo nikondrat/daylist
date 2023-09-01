@@ -1,5 +1,4 @@
 import 'package:appwrite/models.dart';
-import 'package:daylist/.env';
 import 'package:daylist/data/api/request/add/add_time_body.dart';
 import 'package:daylist/data/api/request/get/get_times_body.dart';
 import 'package:daylist/data/repository/auth_repository.dart';
@@ -14,6 +13,7 @@ import 'package:daylist/presentation/translations/translations.g.dart';
 import 'package:daylist/presentation/utils/generator.dart';
 import 'package:daylist/presentation/views/widgets/dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -36,7 +36,8 @@ class _AddTimeDialogState extends ConsumerState<AddTimeDialog> {
               Dependencies().getIt.get(), Dependencies().getIt.get())
           .getTimes(
               body: GetTimesBody(
-                  databaseId: databaseId, collectionId: timesCollectionId));
+                  databaseId: dotenv.env['const databaseId']!,
+                  collectionId: dotenv.env['const timesCollectionId']!));
 
       final String startString =
           '${'${start.hour}'.padLeft(2, '0')}:${'${start.minute}'.padLeft(2, '0')}';
@@ -54,8 +55,8 @@ class _AddTimeDialogState extends ConsumerState<AddTimeDialog> {
                   Dependencies().getIt.get(), Dependencies().getIt.get())
               .addTime(
                   body: AddTimeBody(
-                      databaseId: databaseId,
-                      collectionId: timesCollectionId,
+                      databaseId: dotenv.env['const databaseId']!,
+                      collectionId: dotenv.env['const timesCollectionId']!,
                       time: Time(
                           id: Generator.generateId(),
                           start: startString,

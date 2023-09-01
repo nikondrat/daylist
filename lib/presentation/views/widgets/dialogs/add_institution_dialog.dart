@@ -1,6 +1,5 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
-import 'package:daylist/.env';
 import 'package:daylist/data/api/request/add/add_institution_body.dart';
 import 'package:daylist/data/repository/auth_repository.dart';
 import 'package:daylist/data/repository/institution_repository.dart';
@@ -14,6 +13,7 @@ import 'package:daylist/presentation/utils/generator.dart';
 import 'package:daylist/presentation/utils/validator.dart';
 import 'package:daylist/presentation/views/widgets/dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -62,8 +62,8 @@ class __AddInstitutionState extends ConsumerState<AddInstitutionDialog> {
               Dependencies().getIt.get(), Dependencies().getIt.get())
           .addInstitution(
               body: AddInstitutionBody(
-                  databaseId: databaseId,
-                  collectionId: institutionsCollectionId,
+                  databaseId: dotenv.env['const databaseId']!,
+                  collectionId: dotenv.env['const institutionsCollectionId']!,
                   institution: Institution(
                       id: ID.custom(Generator.generateId()),
                       title: title.text.trim(),

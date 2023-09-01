@@ -1,6 +1,6 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'package:daylist/.env';
 import 'package:daylist/data/api/request/get/get_cities_body.dart';
 import 'package:daylist/data/api/request/get/get_groups_body.dart';
 import 'package:daylist/data/api/request/get/get_institutions_body.dart';
@@ -22,7 +22,8 @@ final citiesProvider = FutureProvider<List<City>>((ref) async {
           Dependencies().getIt.get(), Dependencies().getIt.get())
       .getCities(
           body: GetCitiesBody(
-              databaseId: databaseId, collectionId: citiesCollectionId));
+              databaseId: dotenv.env['const databaseId']!,
+              collectionId: dotenv.env['const citiesCollectionId']!));
 
   return cities;
 });
@@ -34,8 +35,8 @@ final institutionsProvider = FutureProvider<List<Institution>>((ref) async {
           Dependencies().getIt.get(), Dependencies().getIt.get())
       .getInstitutions(
           body: GetInstitutionsBody(
-              databaseId: databaseId,
-              collectionId: institutionsCollectionId,
+              databaseId: dotenv.env['const databaseId']!,
+              collectionId: dotenv.env['const institutionsCollectionId']!,
               cityId: city!.id));
 
   return institutions;
@@ -48,8 +49,8 @@ final groupsProvider = FutureProvider<List<Group>>((ref) async {
           Dependencies().getIt.get(), Dependencies().getIt.get())
       .getGroups(
           body: GetGroupsBody(
-              databaseId: databaseId,
-              collectionId: groupsCollectionId,
+              databaseId: dotenv.env['const databaseId']!,
+              collectionId: dotenv.env['const groupsCollectionId']!,
               institutionId: institution!.id));
 
   return groups;
@@ -65,8 +66,8 @@ final replacementsProvider = FutureProvider<List<Replacement>>((ref) async {
           Dependencies().getIt.get(), Dependencies().getIt.get())
       .getReplacements(
           body: GetReplacementsBody(
-              databaseId: databaseId,
-              collectionId: replacementsCollectionId,
+              databaseId: dotenv.env['const databaseId']!,
+              collectionId: dotenv.env['const replacementsCollectionId']!,
               groupId: groupId,
               today: DateFormat.yMd().format(today),
               tomorrow: DateFormat.yMd().format(tomorrow)));

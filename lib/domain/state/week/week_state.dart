@@ -1,4 +1,3 @@
-import 'package:daylist/.env';
 import 'package:daylist/data/api/request/get/get_subjects_body.dart';
 import 'package:daylist/data/api/request/get/get_teachers_body.dart';
 import 'package:daylist/data/api/request/get/get_times_body.dart';
@@ -13,6 +12,7 @@ import 'package:daylist/domain/model/time.dart';
 import 'package:daylist/domain/model/title.dart';
 import 'package:daylist/domain/state/settings/settings_state.dart';
 import 'package:daylist/internal/dependencies/dependencies.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final subjectsProvider = FutureProvider<List<Subject>>((ref) async {
@@ -22,8 +22,8 @@ final subjectsProvider = FutureProvider<List<Subject>>((ref) async {
           Dependencies().getIt.get(), Dependencies().getIt.get())
       .getSubjects(
           body: GetSubjectsBody(
-              databaseId: databaseId,
-              collectionId: subjectsCollectionId,
+              databaseId: dotenv.env['const databaseId']!,
+              collectionId: dotenv.env['const subjectsCollectionId']!,
               groupId: groupId));
 
   return subjects;
@@ -34,7 +34,8 @@ final timesProvider = FutureProvider<List<Time>>((ref) async {
           Dependencies().getIt.get(), Dependencies().getIt.get())
       .getTimes(
           body: GetTimesBody(
-              databaseId: databaseId, collectionId: timesCollectionId));
+              databaseId: dotenv.env['const databaseId']!,
+              collectionId: dotenv.env['const timesCollectionId']!));
 
   return times;
 });
@@ -44,7 +45,8 @@ final titlesProvider = FutureProvider<List<SubjectTitle>>((ref) async {
           Dependencies().getIt.get(), Dependencies().getIt.get())
       .getTitles(
           body: GetTitlesBody(
-              databaseId: databaseId, collectionId: titlesCollectionId));
+              databaseId: dotenv.env['const databaseId']!,
+              collectionId: dotenv.env['const titlesCollectionId']!));
 
   return titles;
 });
@@ -56,8 +58,8 @@ final teachersProvider = FutureProvider<List<Teacher>>((ref) async {
           Dependencies().getIt.get(), Dependencies().getIt.get())
       .getTeachers(
           body: GetTeachersBody(
-              databaseId: databaseId,
-              collectionId: teachersCollectionId,
+              databaseId: dotenv.env['const databaseId']!,
+              collectionId: dotenv.env['const teachersCollectionId']!,
               institutionId: institutionId));
 
   return teachers;
