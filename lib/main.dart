@@ -14,7 +14,7 @@ import 'presentation/views/router.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   LocaleSettings.useDeviceLocale();
-  await dotenv.load(fileName: ".env");
+  await dotenv.load();
   await SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
