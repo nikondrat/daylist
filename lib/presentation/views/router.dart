@@ -1,9 +1,10 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:daylist/data/repository/auth_repository.dart';
 import 'package:daylist/data/repository/user_repository.dart';
+import 'package:daylist/presentation/views/auth/sign_in.dart';
+import 'package:daylist/presentation/views/auth/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:daylist/data/repository/auth_repository.dart';
 import 'package:daylist/internal/dependencies/dependencies.dart';
 import 'package:daylist/presentation/views/home/home.dart';
 import 'package:daylist/presentation/views/selection/selection.dart';
@@ -16,25 +17,20 @@ final GoRouter router = GoRouter(navigatorKey: navigatorKey, routes: [
   GoRoute(
       path: '/',
       redirect: (context, state) async {
-        final ConnectivityResult connectivityResult =
-            await Connectivity().checkConnectivity();
-        if (connectivityResult == ConnectivityResult.mobile ||
-            connectivityResult == ConnectivityResult.wifi) {
-          final bool isAuthorized =
-              await AuthDataRepository(Dependencies().getIt.get())
-                  .isAuthorized();
+        final bool settingsIsNull =
+            await UserDataRepository(Dependencies().getIt.get())
+                    .getSettings() ==
+                null;
 
-          if (!isAuthorized) {
-            await AuthDataRepository(Dependencies().getIt.get()).login();
-          }
-        }
+        final bool isAuthorized =
+            await UserDataRepository(Dependencies().getIt.get()).isAuthorized();
 
-        if (await UserDataRepository(Dependencies().getIt.get())
-                .getSettings() !=
-            null) {
-          router.goNamed(ViewsNames.home);
-        } else {
+        if (!isAuthorized) {
+          router.goNamed(ViewsNames.signIn);
+        } else if (settingsIsNull) {
           router.goNamed(ViewsNames.selectionCity);
+        } else {
+          router.goNamed(ViewsNames.home);
         }
 
         return null;
@@ -43,6 +39,19 @@ final GoRouter router = GoRouter(navigatorKey: navigatorKey, routes: [
   GoRoute(
       name: ViewsNames.selectionCity,
       path: ViewsPaths.selectionCity,
+      redirect: (context, state) async {
+        final Map map =
+            await AuthDataRepository(Dependencies().getIt.get()).getPrefs();
+
+        if (map['city'] == null ||
+            map['institution'] == null ||
+            map['group'] == null) {
+          return null;
+        } else {
+          router.goNamed(ViewsNames.home);
+        }
+        return null;
+      },
       builder: (context, state) => const SelectionCityView(),
       routes: [
         GoRoute(
@@ -56,24 +65,16 @@ final GoRouter router = GoRouter(navigatorKey: navigatorKey, routes: [
                   builder: (context, state) => const SelectionGroupView())
             ])
       ]),
-  // GoRoute(
-  //     name: ViewsNames.signIn,
-  //     path: ViewsPaths.signIn,
-  //     builder: (context, state) => const LoginView(),
-  //     redirect: (context, state) async {
-  //       final bool isAuthorized =
-  //           await AuthDataRepository(Dependencies().getIt.get()).isAuthorized();
-
-  //       if (isAuthorized) router.goNamed(ViewsNames.home);
-
-  //       return null;
-  //     },
-  //     routes: [
-  //       GoRoute(
-  //           name: ViewsNames.signUp,
-  //           path: ViewsPaths.signUp,
-  //           builder: (context, state) => const SignUpView())
-  //     ]),
+  GoRoute(
+      name: ViewsNames.signIn,
+      path: ViewsPaths.signIn,
+      builder: (context, state) => const LoginView(),
+      routes: [
+        GoRoute(
+            name: ViewsNames.signUp,
+            path: ViewsPaths.signUp,
+            builder: (context, state) => const SignUpView())
+      ]),
   GoRoute(
       name: ViewsNames.home,
       path: ViewsPaths.home,
@@ -91,12 +92,12 @@ final GoRouter router = GoRouter(navigatorKey: navigatorKey, routes: [
 ]);
 
 abstract class ViewsNames {
+  static const String signIn = 'signIn';
+  static const String signUp = 'signUp';
+
   static const String selectionCity = 'selectionCity';
   static const String selectionInstitution = 'selectionInstitution';
   static const String selectionGroup = 'selectionGroup';
-
-  // static const String signIn = 'signIn';
-  // static const String signUp = 'signUp';
 
   static const String home = 'home';
   static const String week = 'week';
@@ -104,12 +105,12 @@ abstract class ViewsNames {
 }
 
 abstract class ViewsPaths {
+  static const String signUp = ViewsNames.signUp;
+  static const String signIn = '/${ViewsNames.signIn}';
+
   static const String selectionCity = '/${ViewsNames.selectionCity}';
   static const String selectionInstitution = ViewsNames.selectionInstitution;
   static const String selectionGroup = ViewsNames.selectionGroup;
-
-  // static const String signIn = '/${ViewsNames.signIn}';
-  // static const String signUp = ViewsNames.signUp;
 
   static const String home = '/${ViewsNames.home}';
   static const String week = ViewsNames.week;

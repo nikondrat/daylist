@@ -17,6 +17,7 @@ import 'package:daylist/data/api/request/add/add_subject_body.dart';
 import 'package:daylist/data/api/request/add/add_teacher_body.dart';
 import 'package:daylist/data/api/request/add/add_time_body.dart';
 import 'package:daylist/data/api/request/add/add_title_body.dart';
+import 'package:daylist/data/api/request/auth/sign_in_body.dart';
 import 'package:daylist/data/api/request/auth/sign_up_body.dart';
 import 'package:daylist/data/api/request/delete/delete_replacement_body.dart';
 import 'package:daylist/data/api/request/get/get_cities_body.dart';
@@ -221,10 +222,9 @@ class AppwriteService {
         userId: ID.unique(), email: body.email, password: body.password);
   }
 
-  Future signIn() async {
-    return _account.createAnonymousSession();
-    // return _account.createEmailSession(
-    //     email: body.email, password: body.password);
+  Future signIn({required SignInBody body}) async {
+    return _account.createEmailSession(
+        email: body.email, password: body.password);
   }
 
   Future getUser() async {

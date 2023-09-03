@@ -248,31 +248,32 @@ class _Items extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
         children: List.generate(6, (int i) => i++, growable: false).map((s) {
-      final Time? time = times.where((e) => e.number == s + 1).isNotEmpty
-          ? times.firstWhere((e) => e.number == s + 1)
-          : null;
+      final List<Time>? timesList =
+          times.where((e) => e.number == s + 1).isNotEmpty
+              ? times.where((e) => e.number == s + 1).toList()
+              : null;
 
-      if (time != null) {
-        final Replacement? replacement = replacements
-                .where((r) =>
-                    (int.parse(r.date.split('/')[1]) == dateTime.day &&
-                        r.timeId == time.id) &&
-                    (r.mode == ReplacementMode.laboratory
-                        ? r.undergroup == undergroup
-                        : true))
-                .isNotEmpty
-            ? replacements.firstWhere((e) =>
-                int.parse(e.date.split('/')[1]) == dateTime.day &&
-                e.timeId == time.id)
-            : null;
+      if (timesList != null) {
+        Time? time;
 
-        final Subject? subject = subjects
-                .where(
-                    (s) => s.weekday == dateTime.weekday && s.timeId == time.id)
-                .isNotEmpty
-            ? subjects.firstWhere(
-                (s) => s.weekday == dateTime.weekday && s.timeId == time.id)
-            : null;
+        final Replacement? replacement = replacements.where((r) {
+          time = timesList.where((t) => t.id == r.timeId).firstOrNull;
+
+          final bool isThisDay =
+              int.parse(r.date.split('/')[1]) == dateTime.day;
+          final bool myUndergroup = r.mode == ReplacementMode.laboratory
+              ? r.undergroup == undergroup
+              : true;
+
+          return isThisDay && myUndergroup && time != null;
+        }).firstOrNull;
+
+        final Subject? subject = subjects.where((s) {
+          time = timesList.where((t) => t.id == s.timeId).firstOrNull;
+          final bool isThisDay = s.weekday == dateTime.weekday;
+
+          return isThisDay && time != null;
+        }).firstOrNull;
 
         if (subject != null || replacement != null) {
           final Teacher teacher = teachers.firstWhere((e) => replacement != null
@@ -283,7 +284,9 @@ class _Items extends StatelessWidget {
 
           return SubsectionWidget(
               subsectionSubject: SubsectionSubject(
-                  time: time,
+                  time: time ??
+                      Time(
+                          id: '', start: '', end: '', number: 0, createdBy: ''),
                   teacher: teacher,
                   isHomeView: true,
                   title: title,

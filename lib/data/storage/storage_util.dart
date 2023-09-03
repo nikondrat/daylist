@@ -30,6 +30,14 @@ class StorageUtil {
   late final IsarService _db = IsarService();
   late final SharedPrefsService _prefs = SharedPrefsService();
 
+  Future<bool> isAuthorized() async {
+    return await _prefs.isAuthorized();
+  }
+
+  Future setIsAuthorized(bool value) async {
+    return await _prefs.setIsAuthorized(value);
+  }
+
   Future setSettings(Settings settings) async {
     return await _prefs.setSettings(settings);
   }

@@ -62,7 +62,9 @@ class _AddReplacementDialog extends ConsumerState<AddReplacementDialog> {
                         timeId: timeId,
                         date: DateFormat.yMd().format(widget.dateTime),
                         mode: mode,
-                        undergroup: selectedUndergroup,
+                        undergroup: mode == ReplacementMode.laboratory
+                            ? selectedUndergroup
+                            : null,
                         createdBy: user.$id)))
             .then((value) {
           ref.invalidate(replacementsProvider);

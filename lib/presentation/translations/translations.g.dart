@@ -6,7 +6,7 @@
 /// Locales: 2
 /// Strings: 176 (88 per locale)
 ///
-/// Built on 2023-09-01 at 10:31 UTC
+/// Built on 2023-09-03 at 17:57 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -270,7 +270,7 @@ class _TranslationsSettingsEn {
 	final _TranslationsEn _root; // ignore: unused_field
 
 	// Translations
-	String get app_name => 'daylist';
+	String get app_name => 'Daylist';
 	String get back => 'Back';
 	String get cancel => 'Cancel';
 	String get title => 'Settings';
@@ -562,7 +562,7 @@ class _TranslationsSettingsRu implements _TranslationsSettingsEn {
 	@override final _TranslationsRu _root; // ignore: unused_field
 
 	// Translations
-	@override String get app_name => 'daylist';
+	@override String get app_name => 'Daylist';
 	@override String get back => 'Назад';
 	@override String get cancel => 'Отмена';
 	@override String get title => 'Настройки';
@@ -787,7 +787,7 @@ extension on _TranslationsEn {
 						return 'Select ${_root.selection.group}';
 				}
 			};
-			case 'settings.app_name': return 'daylist';
+			case 'settings.app_name': return 'Daylist';
 			case 'settings.back': return 'Back';
 			case 'settings.cancel': return 'Cancel';
 			case 'settings.title': return 'Settings';
@@ -902,7 +902,7 @@ extension on _TranslationsRu {
 						return 'Выбери группу';
 				}
 			};
-			case 'settings.app_name': return 'daylist';
+			case 'settings.app_name': return 'Daylist';
 			case 'settings.back': return 'Назад';
 			case 'settings.cancel': return 'Отмена';
 			case 'settings.title': return 'Настройки';

@@ -1,4 +1,5 @@
 import 'package:appwrite/appwrite.dart';
+import 'package:daylist/data/repository/user_repository.dart';
 import 'package:daylist/domain/state/settings/settings_state.dart';
 import 'package:daylist/presentation/extensions/theme/context.dart';
 import 'package:flutter/gestures.dart';
@@ -57,7 +58,11 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
           .signUp(
               body: SignUpBody(
                   email: email.text.trim(), password: password.text.trim()))
-          .then((value) => context.goNamed(ViewsNames.home));
+          .then((value) {
+        UserDataRepository(Dependencies().getIt.get()).setIsAuthorized(true);
+
+        context.goNamed(ViewsNames.selectionCity);
+      });
     } on AppwriteException catch (e) {
       switch (e.code) {
         case 409:

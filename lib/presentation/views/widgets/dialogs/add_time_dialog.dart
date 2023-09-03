@@ -45,10 +45,7 @@ class _AddTimeDialogState extends ConsumerState<AddTimeDialog> {
           '${'${end.hour}'.padLeft(2, '0')}:${'${end.minute}'.padLeft(2, '0')}';
 
       if (times
-          .where((e) =>
-              e.start != startString &&
-              e.end != endString &&
-              e.number != number)
+          .where((e) => e.start != startString && e.end != endString)
           .isEmpty) {
         try {
           TimeDataRepository(

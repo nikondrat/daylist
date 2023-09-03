@@ -1,3 +1,4 @@
+import 'package:daylist/data/repository/auth_repository.dart';
 import 'package:daylist/data/repository/user_repository.dart';
 import 'package:daylist/data/storage/model/settings.dart';
 import 'package:daylist/domain/model/city.dart';
@@ -43,6 +44,11 @@ class SettingsNotifier extends ChangeNotifier {
   set group(Group? v) {
     _settings?.group = v;
     UserDataRepository(Dependencies().getIt.get()).setSettings(_settings!);
+    AuthDataRepository(Dependencies().getIt.get()).updatePrefs(data: {
+      'city': city!.id,
+      'institution': institution!.id,
+      'group': group!.id
+    });
     notifyListeners();
   }
 

@@ -1,10 +1,16 @@
 import 'package:appwrite/appwrite.dart';
+import 'package:daylist/data/api/request/auth/sign_in_body.dart';
+import 'package:daylist/data/repository/auth_repository.dart';
+import 'package:daylist/data/repository/user_repository.dart';
 import 'package:daylist/domain/state/auth/auth_state.dart';
 import 'package:daylist/domain/state/settings/settings_state.dart';
+import 'package:daylist/internal/dependencies/dependencies.dart';
 import 'package:daylist/presentation/extensions/theme/context.dart';
 import 'package:daylist/presentation/utils/validator.dart';
+import 'package:daylist/presentation/views/router.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:unicons/unicons.dart';
 
@@ -48,13 +54,16 @@ class _LoginViewState extends ConsumerState<LoginView> {
         !passwordState.currentState!.validate()) return;
 
     try {
-      throw Exception();
-      // await AuthDataRepository(Dependencies().getIt.get())
-      //     .login(
-      //         body: SignInBody(
-      //             email: emailController.text.trim(),
-      //             password: passwordController.text.trim()))
-      //     .then((value) => context.goNamed(ViewsNames.home));
+      await AuthDataRepository(Dependencies().getIt.get())
+          .login(
+              body: SignInBody(
+                  email: emailController.text.trim(),
+                  password: passwordController.text.trim()))
+          .then((value) {
+        UserDataRepository(Dependencies().getIt.get()).setIsAuthorized(true);
+
+        context.goNamed(ViewsNames.selectionCity);
+      });
     } on AppwriteException catch (e) {
       switch (e.code) {
         case 401:
@@ -222,7 +231,7 @@ class _Helper extends HookConsumerWidget {
                       ref
                           .read(isShowPasswordProvider.notifier)
                           .update((state) => false);
-                      // context.goNamed(ViewsNames.signUp);
+                      context.goNamed(ViewsNames.signUp);
                     })))
         ]));
   }
