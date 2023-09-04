@@ -14,18 +14,18 @@ class GroupDataRepository extends GroupRepository {
 
   @override
   Future<List<Group>> getGroups({required GetGroupsBody body}) async {
-    final List<Group> groups = await _storageUtil.getGroups();
+    // final List<Group> groups = await _storageUtil.getGroups();
 
-    if (groups.isEmpty) {
-      final List<Group> result = await _apiUtil.getGroups(body: body);
-      final List<StorageGroup> convertedList =
-          result.map((e) => StorageGroup.fromApi(e)).toList();
-      _storageUtil.putGroups(groups: convertedList);
+    // if (groups.isEmpty) {
+    final List<Group> result = await _apiUtil.getGroups(body: body);
+    final List<StorageGroup> convertedList =
+        result.map((e) => StorageGroup.fromApi(e)).toList();
+    _storageUtil.putGroups(groups: convertedList);
 
-      return result;
-    } else {
-      return groups;
-    }
+    return result;
+    // } else {
+    //   return groups;
+    // }
   }
 
   @override

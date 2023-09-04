@@ -21,3 +21,7 @@ final selectedUndergroupProvider = StateProvider<int>((ref) {
 final selectedModeProvider = StateProvider<ReplacementMode>((ref) {
   return ReplacementMode.usual;
 });
+
+final selectedWeekdayProvider = StateProvider<int>((ref) {
+  return 1;
+});

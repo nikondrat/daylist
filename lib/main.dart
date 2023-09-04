@@ -1,14 +1,14 @@
 import 'dart:io';
 
-import 'package:daylist/domain/state/settings/settings_state.dart';
-import 'package:daylist/internal/dependencies/dependencies.dart';
-import 'package:daylist/presentation/res/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:daylist/domain/state/settings/settings_state.dart';
+import 'package:daylist/internal/dependencies/dependencies.dart';
+import 'package:daylist/presentation/res/theme.dart';
 
 import 'presentation/translations/translations.g.dart';
 import 'presentation/views/router.dart';

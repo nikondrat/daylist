@@ -14,18 +14,18 @@ class CityDataRepository extends CityRepository {
 
   @override
   Future<List<City>> getCities({required GetCitiesBody body}) async {
-    final List<City> cities = await _storageUtil.getCities();
+    // final List<City> cities = await _storageUtil.getCities();
 
-    if (cities.isEmpty) {
-      final List<City> result = await _apiUtil.getCities(body: body);
-      final List<StorageCity> convertedList =
-          result.map((e) => StorageCity.fromApi(e)).toList();
-      _storageUtil.putCities(cities: convertedList);
+    // if (cities.isEmpty) {
+    final List<City> result = await _apiUtil.getCities(body: body);
+    final List<StorageCity> convertedList =
+        result.map((e) => StorageCity.fromApi(e)).toList();
+    _storageUtil.putCities(cities: convertedList);
 
-      return result;
-    } else {
-      return cities;
-    }
+    return result;
+    // } else {
+    //   return cities;
+    // }
   }
 
   @override

@@ -13,6 +13,7 @@ import 'package:daylist/presentation/res/values.dart';
 import 'package:daylist/presentation/translations/translations.g.dart';
 import 'package:daylist/presentation/utils/generator.dart';
 import 'package:daylist/presentation/views/widgets/dialog.dart';
+import 'package:daylist/presentation/views/widgets/dialogs/widgets/day_dropdown.dart';
 import 'package:daylist/presentation/views/widgets/dialogs/widgets/teachers_dropdown.dart';
 import 'package:daylist/presentation/views/widgets/dialogs/widgets/time_dropdown.dart';
 import 'package:daylist/presentation/views/widgets/dialogs/widgets/title_dropdown.dart';
@@ -31,7 +32,6 @@ class AddSubjectDialog extends StatefulHookConsumerWidget {
 
 class __AddSubjectDialogState extends ConsumerState<AddSubjectDialog> {
   bool? isEven;
-  int weekday = 1;
 
   Future addSubject() async {
     final User user =
@@ -41,6 +41,7 @@ class __AddSubjectDialogState extends ConsumerState<AddSubjectDialog> {
     final Teacher? teacher = ref.watch(selectedTeacherProvider);
     final String? titleId = ref.watch(selectedSubjectTitleProvider);
     final String? timeId = ref.watch(selectedTimeProvider);
+    final int weekday = ref.watch(selectedWeekdayProvider);
 
     if (titleId != null && teacher != null && context.mounted) {
       try {
@@ -98,21 +99,7 @@ class __AddSubjectDialogState extends ConsumerState<AddSubjectDialog> {
                   onChanged: (v) {
                     isEven = v;
                   })),
-          Padding(
-              padding: const EdgeInsets.only(top: Insets.small),
-              child: DropdownButtonFormField(
-                  iconEnabledColor: context.color.primaryColor,
-                  iconDisabledColor: context.color.primaryColor,
-                  value: weekday,
-                  hint: Text(t.selection.day, style: context.text.mediumText),
-                  items: t.week.days.full
-                      .map((e) => DropdownMenuItem(
-                          value: t.week.days.full.indexOf(e) + 1,
-                          child: Text(e)))
-                      .toList(),
-                  onChanged: (v) {
-                    weekday = v!;
-                  })),
+          const DayDropdownWidget()
         ]);
   }
 }

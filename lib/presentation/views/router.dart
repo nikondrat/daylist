@@ -1,4 +1,3 @@
-import 'package:daylist/data/repository/auth_repository.dart';
 import 'package:daylist/data/repository/user_repository.dart';
 import 'package:daylist/presentation/views/auth/sign_in.dart';
 import 'package:daylist/presentation/views/auth/sign_up.dart';
@@ -39,19 +38,6 @@ final GoRouter router = GoRouter(navigatorKey: navigatorKey, routes: [
   GoRoute(
       name: ViewsNames.selectionCity,
       path: ViewsPaths.selectionCity,
-      redirect: (context, state) async {
-        final Map map =
-            await AuthDataRepository(Dependencies().getIt.get()).getPrefs();
-
-        if (map['city'] == null ||
-            map['institution'] == null ||
-            map['group'] == null) {
-          return null;
-        } else {
-          router.goNamed(ViewsNames.home);
-        }
-        return null;
-      },
       builder: (context, state) => const SelectionCityView(),
       routes: [
         GoRoute(

@@ -18,19 +18,18 @@ class InstitutionDataRepository extends InstitutionRepository {
   @override
   Future<List<Institution>> getInstitutions(
       {required GetInstitutionsBody body}) async {
-    final List<Institution> institutions = await _storageUtil.getInstitutions();
+    // final List<Institution> institutions = await _storageUtil.getInstitutions();
 
-    if (institutions.isEmpty) {
-      final List<Institution> result =
-          await _apiUtil.getInstitutions(body: body);
-      final List<StorageInstitution> convertedList =
-          result.map((e) => StorageInstitution.fromApi(e)).toList();
-      _storageUtil.putInstitutions(institutions: convertedList);
+    // if (institutions.isEmpty) {
+    final List<Institution> result = await _apiUtil.getInstitutions(body: body);
+    final List<StorageInstitution> convertedList =
+        result.map((e) => StorageInstitution.fromApi(e)).toList();
+    _storageUtil.putInstitutions(institutions: convertedList);
 
-      return result;
-    } else {
-      return institutions;
-    }
+    return result;
+    // } else {
+    //   return institutions;
+    // }
   }
 
   @override

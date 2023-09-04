@@ -1,6 +1,5 @@
 import 'package:appwrite/models.dart';
 import 'package:daylist/data/api/request/add/add_time_body.dart';
-import 'package:daylist/data/api/request/get/get_times_body.dart';
 import 'package:daylist/data/repository/auth_repository.dart';
 import 'package:daylist/data/repository/time_repository.dart';
 import 'package:daylist/domain/model/time.dart';
@@ -32,48 +31,32 @@ class _AddTimeDialogState extends ConsumerState<AddTimeDialog> {
         await AuthDataRepository(Dependencies().getIt.get()).getUser();
 
     if (start != null && end != null) {
-      List<Time> times = await TimeDataRepository(
-              Dependencies().getIt.get(), Dependencies().getIt.get())
-          .getTimes(
-              body: GetTimesBody(
-                  databaseId: dotenv.env['const databaseId']!,
-                  collectionId: dotenv.env['const timesCollectionId']!));
-
       final String startString =
           '${'${start.hour}'.padLeft(2, '0')}:${'${start.minute}'.padLeft(2, '0')}';
       final String endString =
           '${'${end.hour}'.padLeft(2, '0')}:${'${end.minute}'.padLeft(2, '0')}';
 
-      if (times
-          .where((e) => e.start != startString && e.end != endString)
-          .isEmpty) {
-        try {
-          TimeDataRepository(
-                  Dependencies().getIt.get(), Dependencies().getIt.get())
-              .addTime(
-                  body: AddTimeBody(
-                      databaseId: dotenv.env['const databaseId']!,
-                      collectionId: dotenv.env['const timesCollectionId']!,
-                      time: Time(
-                          id: Generator.generateId(),
-                          start: startString,
-                          end: endString,
-                          number: number,
-                          createdBy: user.$id)))
-              .then((value) {
-            ref.invalidate(timesProvider);
-            context.pop();
-          });
-        } catch (e) {
-          if (context.mounted) {
-            ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text('$e')));
-          }
-        }
-      } else {
+      try {
+        TimeDataRepository(
+                Dependencies().getIt.get(), Dependencies().getIt.get())
+            .addTime(
+                body: AddTimeBody(
+                    databaseId: dotenv.env['const databaseId']!,
+                    collectionId: dotenv.env['const timesCollectionId']!,
+                    time: Time(
+                        id: Generator.generateId(),
+                        start: startString,
+                        end: endString,
+                        number: number,
+                        createdBy: user.$id)))
+            .then((value) {
+          ref.invalidate(timesProvider);
+          context.pop();
+        });
+      } catch (e) {
         if (context.mounted) {
           ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text(t.errors.already)));
+              .showSnackBar(SnackBar(content: Text('$e')));
         }
       }
     }
