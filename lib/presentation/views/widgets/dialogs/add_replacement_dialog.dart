@@ -5,6 +5,7 @@ import 'package:daylist/data/repository/auth_repository.dart';
 import 'package:daylist/data/repository/replacement_repository.dart';
 import 'package:daylist/domain/model/replacement.dart';
 import 'package:daylist/domain/model/teacher.dart';
+import 'package:daylist/domain/model/time.dart';
 import 'package:daylist/domain/state/dialogs/subject_dialog_state.dart';
 import 'package:daylist/domain/state/home/home_state.dart';
 import 'package:daylist/domain/state/settings/settings_state.dart';
@@ -38,28 +39,24 @@ class _AddReplacementDialog extends ConsumerState<AddReplacementDialog> {
         await AuthDataRepository(Dependencies().getIt.get()).getUser();
     final String? groupId = ref.watch(settingsProvider).group?.id;
 
+    final Time? time = ref.watch(selectedTimeProvider);
     final Teacher? teacher = ref.watch(selectedTeacherProvider);
     final String? titleId = ref.watch(selectedSubjectTitleProvider);
-    final String? timeId = ref.watch(selectedTimeProvider);
     final int? selectedUndergroup = ref.watch(selectedUndergroupProvider);
     final ReplacementMode mode = ref.watch(selectedModeProvider);
 
-    if (titleId != null &&
-        teacher != null &&
-        timeId != null &&
-        context.mounted) {
+    if (titleId != null && teacher != null && time != null && context.mounted) {
       try {
-        ReplacementDataRepository(
-                Dependencies().getIt.get(), Dependencies().getIt.get())
+        ReplacementDataRepository(Dependencies().getIt.get())
             .addReplacement(
                 body: AddReplacementBody(
                     databaseId: dotenv.env['const databaseId']!,
                     collectionId: dotenv.env['const replacementsCollectionId']!,
                     replacement: Replacement(
                         id: ID.custom(Generator.generateId()),
-                        teacherId: teacher.id,
+                        time: time,
+                        teacher: teacher,
                         groupId: groupId!,
-                        timeId: timeId,
                         date: DateFormat.yMd().format(widget.dateTime),
                         mode: mode,
                         undergroup: mode == ReplacementMode.laboratory

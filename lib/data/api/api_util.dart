@@ -62,6 +62,7 @@ class ApiUtil {
       {required GetInstitutionsBody body}) async {
     final List<ApiInstitution> result =
         await _appwriteService.getInstitutions(body: body);
+
     final List<Institution> convertedList =
         result.map((e) => InstitutionMapper.fromApi(e)).toList();
 
@@ -138,6 +139,7 @@ class ApiUtil {
       {required GetReplacementsBody body}) async {
     final List<ApiReplacement> result =
         await _appwriteService.getReplacements(body: body);
+
     final List<Replacement> convertedList =
         result.map((e) => ReplacementMapper.fromApi(e)).toList();
 

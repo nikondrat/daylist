@@ -4,6 +4,7 @@ import 'package:daylist/data/repository/auth_repository.dart';
 import 'package:daylist/data/repository/subject_repository.dart';
 import 'package:daylist/domain/model/subject.dart';
 import 'package:daylist/domain/model/teacher.dart';
+import 'package:daylist/domain/model/time.dart';
 import 'package:daylist/domain/state/dialogs/subject_dialog_state.dart';
 import 'package:daylist/domain/state/settings/settings_state.dart';
 import 'package:daylist/domain/state/week/week_state.dart';
@@ -40,29 +41,29 @@ class __AddSubjectDialogState extends ConsumerState<AddSubjectDialog> {
 
     final Teacher? teacher = ref.watch(selectedTeacherProvider);
     final String? titleId = ref.watch(selectedSubjectTitleProvider);
-    final String? timeId = ref.watch(selectedTimeProvider);
+    final Time? time = ref.watch(selectedTimeProvider);
     final int weekday = ref.watch(selectedWeekdayProvider);
 
     if (titleId != null && teacher != null && context.mounted) {
       try {
-        SubjectDataRepository(
-                Dependencies().getIt.get(), Dependencies().getIt.get())
-            .addSubject(
-                body: AddSubjectBody(
-                    databaseId: dotenv.env['const databaseId']!,
-                    collectionId: dotenv.env['const subjectsCollectionId']!,
-                    subject: Subject(
-                        id: Generator.generateId(),
-                        teacherId: teacher.id,
-                        timeId: timeId!,
-                        isEven: isEven,
-                        groupId: groupId!,
-                        weekday: weekday,
-                        createdBy: user.$id)))
-            .then((value) {
-          ref.invalidate(subjectsProvider);
-          context.pop();
-        });
+        // SubjectDataRepository(
+        //         Dependencies().getIt.get(), Dependencies().getIt.get())
+        //     .addSubject(
+        //         body: AddSubjectBody(
+        //             databaseId: dotenv.env['const databaseId']!,
+        //             collectionId: dotenv.env['const subjectsCollectionId']!,
+        //             subject: Subject(
+        //                 id: Generator.generateId(),
+        //                 teacherId: teacher.id,
+        //                 timeId: timeId!,
+        //                 isEven: isEven,
+        //                 groupId: groupId!,
+        //                 weekday: weekday,
+        //                 createdBy: user.$id)))
+        //     .then((value) {
+        //   ref.invalidate(subjectsProvider);
+        //   context.pop();
+        // });
       } catch (e) {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('$e')));

@@ -27,23 +27,18 @@ const StorageTeacherSchema = CollectionSchema(
       name: r'createdBy',
       type: IsarType.string,
     ),
-    r'id': PropertySchema(
-      id: 2,
-      name: r'id',
-      type: IsarType.string,
-    ),
     r'initials': PropertySchema(
-      id: 3,
+      id: 2,
       name: r'initials',
       type: IsarType.string,
     ),
     r'institutionId': PropertySchema(
-      id: 4,
+      id: 3,
       name: r'institutionId',
       type: IsarType.string,
     ),
     r'titleId': PropertySchema(
-      id: 5,
+      id: 4,
       name: r'titleId',
       type: IsarType.string,
     )
@@ -75,7 +70,6 @@ int _storageTeacherEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
-  bytesCount += 3 + object.id.length * 3;
   bytesCount += 3 + object.initials.length * 3;
   bytesCount += 3 + object.institutionId.length * 3;
   bytesCount += 3 + object.titleId.length * 3;
@@ -90,10 +84,9 @@ void _storageTeacherSerialize(
 ) {
   writer.writeString(offsets[0], object.classroom);
   writer.writeString(offsets[1], object.createdBy);
-  writer.writeString(offsets[2], object.id);
-  writer.writeString(offsets[3], object.initials);
-  writer.writeString(offsets[4], object.institutionId);
-  writer.writeString(offsets[5], object.titleId);
+  writer.writeString(offsets[2], object.initials);
+  writer.writeString(offsets[3], object.institutionId);
+  writer.writeString(offsets[4], object.titleId);
 }
 
 StorageTeacher _storageTeacherDeserialize(
@@ -105,10 +98,9 @@ StorageTeacher _storageTeacherDeserialize(
   final object = StorageTeacher(
     classroom: reader.readString(offsets[0]),
     createdBy: reader.readStringOrNull(offsets[1]),
-    id: reader.readString(offsets[2]),
-    initials: reader.readString(offsets[3]),
-    institutionId: reader.readString(offsets[4]),
-    titleId: reader.readString(offsets[5]),
+    initials: reader.readString(offsets[2]),
+    institutionId: reader.readString(offsets[3]),
+    titleId: reader.readString(offsets[4]),
   );
   return object;
 }
@@ -129,8 +121,6 @@ P _storageTeacherDeserializeProp<P>(
     case 3:
       return (reader.readString(offset)) as P;
     case 4:
-      return (reader.readString(offset)) as P;
-    case 5:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -515,141 +505,6 @@ extension StorageTeacherQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'createdBy',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<StorageTeacher, StorageTeacher, QAfterFilterCondition> idEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'id',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<StorageTeacher, StorageTeacher, QAfterFilterCondition>
-      idGreaterThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'id',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<StorageTeacher, StorageTeacher, QAfterFilterCondition>
-      idLessThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'id',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<StorageTeacher, StorageTeacher, QAfterFilterCondition> idBetween(
-    String lower,
-    String upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'id',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<StorageTeacher, StorageTeacher, QAfterFilterCondition>
-      idStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'id',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<StorageTeacher, StorageTeacher, QAfterFilterCondition>
-      idEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'id',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<StorageTeacher, StorageTeacher, QAfterFilterCondition>
-      idContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'id',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<StorageTeacher, StorageTeacher, QAfterFilterCondition> idMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'id',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<StorageTeacher, StorageTeacher, QAfterFilterCondition>
-      idIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'id',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<StorageTeacher, StorageTeacher, QAfterFilterCondition>
-      idIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'id',
         value: '',
       ));
     });
@@ -1154,18 +1009,6 @@ extension StorageTeacherQuerySortBy
     });
   }
 
-  QueryBuilder<StorageTeacher, StorageTeacher, QAfterSortBy> sortById() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'id', Sort.asc);
-    });
-  }
-
-  QueryBuilder<StorageTeacher, StorageTeacher, QAfterSortBy> sortByIdDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'id', Sort.desc);
-    });
-  }
-
   QueryBuilder<StorageTeacher, StorageTeacher, QAfterSortBy> sortByInitials() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'initials', Sort.asc);
@@ -1232,18 +1075,6 @@ extension StorageTeacherQuerySortThenBy
       thenByCreatedByDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdBy', Sort.desc);
-    });
-  }
-
-  QueryBuilder<StorageTeacher, StorageTeacher, QAfterSortBy> thenById() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'id', Sort.asc);
-    });
-  }
-
-  QueryBuilder<StorageTeacher, StorageTeacher, QAfterSortBy> thenByIdDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'id', Sort.desc);
     });
   }
 
@@ -1317,13 +1148,6 @@ extension StorageTeacherQueryWhereDistinct
     });
   }
 
-  QueryBuilder<StorageTeacher, StorageTeacher, QDistinct> distinctById(
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'id', caseSensitive: caseSensitive);
-    });
-  }
-
   QueryBuilder<StorageTeacher, StorageTeacher, QDistinct> distinctByInitials(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1364,12 +1188,6 @@ extension StorageTeacherQueryProperty
   QueryBuilder<StorageTeacher, String?, QQueryOperations> createdByProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'createdBy');
-    });
-  }
-
-  QueryBuilder<StorageTeacher, String, QQueryOperations> idProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'id');
     });
   }
 

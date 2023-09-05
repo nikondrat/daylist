@@ -1,4 +1,5 @@
 import 'package:daylist/domain/model/replacement.dart';
+import 'package:daylist/domain/model/teacher.dart';
 
 class AddReplacementBody {
   final String databaseId;

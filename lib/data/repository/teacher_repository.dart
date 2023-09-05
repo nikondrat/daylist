@@ -33,7 +33,6 @@ class TeacherDataRepository extends TeacherRepository {
     return await _apiUtil.addTeacher(body: body).then((value) async =>
         await _storageUtil.addTeacher(
             teacher: StorageTeacher(
-                id: body.teacher.id,
                 initials: body.teacher.initials,
                 institutionId: body.teacher.institutionId,
                 titleId: body.teacher.titleId,

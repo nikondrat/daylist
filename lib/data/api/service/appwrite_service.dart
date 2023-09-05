@@ -56,9 +56,7 @@ class AppwriteService {
   Future<List<ApiInstitution>> getInstitutions(
       {required GetInstitutionsBody body}) async {
     final DocumentList docs = await _databases.listDocuments(
-        databaseId: body.databaseId,
-        collectionId: body.collectionId,
-        queries: [Query.equal('cityId', body.cityId)]);
+        databaseId: body.databaseId, collectionId: body.collectionId);
 
     return docs.documents.map((e) => ApiInstitution.fromApi(e.data)).toList();
   }
@@ -71,7 +69,7 @@ class AppwriteService {
         data: {
           'title': body.institution.title,
           'shortTitle': body.institution.shortTitle,
-          'cityId': body.institution.cityId,
+          'city': body.institution.city,
           'createdBy': body.institution.createdBy
         });
   }
@@ -92,7 +90,7 @@ class AppwriteService {
         documentId: body.group.id,
         data: {
           'title': body.group.title,
-          'institutionId': body.group.institutionId,
+          'institution': body.group.institution.toMap(),
           'createdBy': body.group.createdBy,
         });
   }
@@ -125,7 +123,7 @@ class AppwriteService {
     return _databases.createDocument(
         databaseId: body.databaseId,
         collectionId: body.collectionId,
-        documentId: body.teacher.id,
+        documentId: body.documentId,
         data: {
           'titleId': body.teacher.titleId,
           'initials': body.teacher.initials,
@@ -146,7 +144,7 @@ class AppwriteService {
     return _databases.createDocument(
         databaseId: body.databaseId,
         collectionId: body.collectionId,
-        documentId: body.time.id,
+        documentId: body.documentId,
         data: {
           'start': body.time.start,
           'end': body.time.end,
@@ -188,6 +186,7 @@ class AppwriteService {
           Query.equal('groupId', body.groupId),
           // TODO
           // Query.equal('date', body.today),
+
           // Query.equal('tomorrow', body.tomorrow),
         ]);
 
@@ -200,13 +199,15 @@ class AppwriteService {
         collectionId: body.collectionId,
         documentId: body.replacement.id,
         data: {
-          'teacherId': body.replacement.teacherId,
+          // 'teacher': body.replacement.teacher,
+          // 'timeId': body.replacement.timeId,
           'groupId': body.replacement.groupId,
-          'timeId': body.replacement.timeId,
           'date': body.replacement.date,
           'mode': body.replacement.mode.name,
           'createdBy': body.replacement.createdBy,
-          'undergroup': body.replacement.undergroup
+          'undergroup': body.replacement.undergroup,
+          'teacher': body.replacement.teacher.toMap(),
+          'time': body.replacement.time.toMap()
         });
   }
 

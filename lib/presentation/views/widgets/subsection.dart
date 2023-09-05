@@ -211,8 +211,7 @@ class _Delete extends HookConsumerWidget {
                         .getUser();
 
                 if (subject.replacement != null) {
-                  ReplacementDataRepository(Dependencies().getIt.get(),
-                          Dependencies().getIt.get())
+                  ReplacementDataRepository(Dependencies().getIt.get())
                       .deleteReplacement(
                           body: DeleteReplacementBody(
                               databaseId: dotenv.env['const databaseId']!,
@@ -220,8 +219,7 @@ class _Delete extends HookConsumerWidget {
                                   dotenv.env['const replacementsCollectionId']!,
                               id: subject.replacement!.id));
                 } else {
-                  ReplacementDataRepository(Dependencies().getIt.get(),
-                          Dependencies().getIt.get())
+                  ReplacementDataRepository(Dependencies().getIt.get())
                       .addReplacement(
                           body: AddReplacementBody(
                               databaseId: dotenv.env['const databaseId']!,
@@ -229,9 +227,9 @@ class _Delete extends HookConsumerWidget {
                                   dotenv.env['const replacementsCollectionId']!,
                               replacement: Replacement(
                                   id: ID.custom(Generator.generateId()),
-                                  teacherId: subject.teacher.id,
+                                  time: subject.time,
+                                  teacher: subject.teacher,
                                   groupId: groupId,
-                                  timeId: subject.time.id,
                                   date: DateFormat.yMd()
                                       .format(subject.dateTime!),
                                   mode: ReplacementMode.cancel,

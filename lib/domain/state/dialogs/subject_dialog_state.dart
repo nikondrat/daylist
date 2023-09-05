@@ -1,5 +1,6 @@
 import 'package:daylist/domain/model/replacement.dart';
 import 'package:daylist/domain/model/teacher.dart';
+import 'package:daylist/domain/model/time.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final selectedTeacherProvider = StateProvider<Teacher?>((ref) {
@@ -10,7 +11,7 @@ final selectedSubjectTitleProvider = StateProvider<String?>((ref) {
   return null;
 });
 
-final selectedTimeProvider = StateProvider<String?>((ref) {
+final selectedTimeProvider = StateProvider<Time?>((ref) {
   return null;
 });
 

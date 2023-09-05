@@ -137,24 +137,26 @@ class _Item extends StatelessWidget {
     final DateTime now = DateTime.now();
     final int weekday = t.week.days.full.indexOf(title) + 1;
 
-    return SectionWidget(
-        title: title,
-        margin: const EdgeInsets.only(bottom: Insets.small),
-        children: subjects
-            .where((e) =>
-                e.weekday == weekday &&
-                (e.isEven == null ||
-                    e.isEven == WeekUtil.weekNumber(now).isEven))
-            .map((s) {
-          final Time time = times.firstWhere((e) => e.id == s.timeId);
-          final Teacher teacher =
-              teachers.firstWhere((e) => e.id == s.teacherId);
-          final SubjectTitle title =
-              titles.firstWhere((e) => e.id == teacher.titleId);
+    return SizedBox.shrink();
 
-          return SubsectionWidget(
-              subsectionSubject: SubsectionSubject(
-                  time: time, teacher: teacher, title: title));
-        }).toList());
+    // return SectionWidget(
+    //     title: title,
+    //     margin: const EdgeInsets.only(bottom: Insets.small),
+    //     children: subjects
+    //         .where((e) =>
+    //             e.weekday == weekday &&
+    //             (e.isEven == null ||
+    //                 e.isEven == WeekUtil.weekNumber(now).isEven))
+    //         .map((s) {
+    //       final Time time = times.firstWhere((e) => e.id == s.timeId);
+    //       final Teacher teacher =
+    //           teachers.firstWhere((e) => e.id == s.teacherId);
+    //       final SubjectTitle title =
+    //           titles.firstWhere((e) => e.id == teacher.titleId);
+
+    //       return SubsectionWidget(
+    //           subsectionSubject: SubsectionSubject(
+    //               time: time, teacher: teacher, title: title));
+    //     }).toList());
   }
 }

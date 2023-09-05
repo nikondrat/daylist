@@ -8,7 +8,6 @@ import 'package:unicons/unicons.dart';
 
 import 'package:daylist/domain/model/replacement.dart';
 import 'package:daylist/domain/model/subject.dart';
-import 'package:daylist/domain/model/teacher.dart';
 import 'package:daylist/domain/model/time.dart';
 import 'package:daylist/domain/model/title.dart';
 import 'package:daylist/domain/state/dialogs/subject_dialog_state.dart';
@@ -28,29 +27,19 @@ class HomeView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return _Loader(
-        builder: (times, titles, teachers, subjects, replacements) => _Body(
-            times: times,
-            titles: titles,
-            teachers: teachers,
-            subjects: subjects,
-            replacements: replacements));
+        builder: (titles, subjects, replacements) => _Body(
+            titles: titles, subjects: subjects, replacements: replacements));
   }
 }
 
 class _Loader extends HookConsumerWidget {
-  final Widget Function(
-      List<Time> times,
-      List<SubjectTitle> titles,
-      List<Teacher> teachers,
-      List<Subject> subjects,
+  final Widget Function(List<SubjectTitle> titles, List<Subject> subjects,
       List<Replacement> replacements) builder;
   const _Loader({required this.builder});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<List<Time>> times = ref.watch(timesProvider);
     final AsyncValue<List<SubjectTitle>> titles = ref.watch(titlesProvider);
-    final AsyncValue<List<Teacher>> teachers = ref.watch(teachersProvider);
     final AsyncValue<List<Subject>> subjects = ref.watch(subjectsProvider);
     final AsyncValue<List<Replacement>> replacements =
         ref.watch(replacementsProvider);
@@ -58,36 +47,24 @@ class _Loader extends HookConsumerWidget {
     return Material(
         color: context.color.backgroundColor,
         child: LoaderWidget(
-            config: times,
-            builder: (timesList) => LoaderWidget(
-                config: titles,
-                builder: (titlesList) => LoaderWidget(
-                    config: teachers,
-                    builder: (teachersList) => LoaderWidget(
-                        config: subjects,
-                        builder: (subjectsList) => LoaderWidget(
-                            config: replacements,
-                            builder: (replacementsList) => builder(
-                                timesList,
-                                titlesList,
-                                teachersList,
-                                subjectsList,
-                                replacementsList)))))));
+            config: titles,
+            builder: (titlesList) => LoaderWidget(
+                config: subjects,
+                builder: (subjectsList) => LoaderWidget(
+                    config: replacements,
+                    builder: (replacementsList) =>
+                        builder(titlesList, subjectsList, replacementsList)))));
   }
 }
 
 class _Body extends HookConsumerWidget {
-  final List<Time> times;
   final List<SubjectTitle> titles;
-  final List<Teacher> teachers;
   final List<Subject> subjects;
   final List<Replacement> replacements;
 
   const _Body({
     Key? key,
-    required this.times,
     required this.titles,
-    required this.teachers,
     required this.subjects,
     required this.replacements,
   }) : super(key: key);
@@ -128,20 +105,16 @@ class _Body extends HookConsumerWidget {
                       title:
                           '${t.home.today}, ${now.day} ${t.week.days.short[now.weekday - 1]}',
                       dateTime: now,
-                      times: times,
                       titles: titles,
                       subjects: subjects,
-                      teachers: teachers,
                       undergroup: undergroup,
                       replacements: replacements),
                   _SubjectsSection(
                       title:
                           '${t.home.tomorrow}, ${tomorrow.day} ${t.week.days.short[tomorrow.weekday - 1]}',
                       dateTime: tomorrow,
-                      times: times,
                       titles: titles,
                       subjects: subjects,
-                      teachers: teachers,
                       undergroup: undergroup,
                       replacements: replacements)
                 ])));
@@ -151,9 +124,7 @@ class _Body extends HookConsumerWidget {
 class _SubjectsSection extends HookConsumerWidget {
   final String title;
   final DateTime dateTime;
-  final List<Time> times;
   final List<SubjectTitle> titles;
-  final List<Teacher> teachers;
   final List<Subject> subjects;
   final int? undergroup;
   final List<Replacement> replacements;
@@ -162,9 +133,7 @@ class _SubjectsSection extends HookConsumerWidget {
     Key? key,
     required this.title,
     required this.dateTime,
-    required this.times,
     required this.titles,
-    required this.teachers,
     required this.subjects,
     required this.replacements,
     required this.undergroup,
@@ -189,9 +158,7 @@ class _SubjectsSection extends HookConsumerWidget {
           _Items(
               title: title,
               dateTime: dateTime,
-              times: times,
               titles: titles,
-              teachers: teachers,
               subjects: subjects,
               undergroup: undergroup,
               replacements: replacements),
@@ -225,9 +192,7 @@ class _SubjectsSection extends HookConsumerWidget {
 class _Items extends StatelessWidget {
   final String title;
   final DateTime dateTime;
-  final List<Time> times;
   final List<SubjectTitle> titles;
-  final List<Teacher> teachers;
   final List<Subject> subjects;
   final List<Replacement> replacements;
   final int? undergroup;
@@ -236,9 +201,7 @@ class _Items extends StatelessWidget {
       {Key? key,
       required this.title,
       required this.dateTime,
-      required this.times,
       required this.titles,
-      required this.teachers,
       required this.subjects,
       required this.replacements,
       required this.undergroup})
@@ -248,51 +211,49 @@ class _Items extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
         children: List.generate(6, (int i) => i++, growable: false).map((s) {
-      final List<Time>? timesList =
-          times.where((e) => e.number == s + 1).isNotEmpty
-              ? times.where((e) => e.number == s + 1).toList()
-              : null;
+      // final List<Time>? timesList =
+      //     times.where((e) => e.number == s + 1).isNotEmpty
+      //         ? times.where((e) => e.number == s + 1).toList()
+      //         : null;
 
-      if (timesList != null) {
-        Time? time;
+      // if (timesList != null) {
+      Time? time;
 
-        final Replacement? replacement = replacements.where((r) {
-          time = timesList.where((t) => t.id == r.timeId).firstOrNull;
+      final Replacement? replacement = replacements.where((r) {
+        time = r.time.number == s + 1 ? r.time : null;
 
-          final bool isThisDay =
-              int.parse(r.date.split('/')[1]) == dateTime.day;
-          final bool myUndergroup = r.mode == ReplacementMode.laboratory
-              ? r.undergroup == undergroup
-              : true;
+        final bool isThisDay = int.parse(r.date.split('/')[1]) == dateTime.day;
+        final bool myUndergroup = r.mode == ReplacementMode.laboratory
+            ? r.undergroup == undergroup
+            : true;
 
-          return isThisDay && myUndergroup && time != null;
-        }).firstOrNull;
+        return isThisDay && myUndergroup && time != null;
+      }).firstOrNull;
 
-        final Subject? subject = subjects.where((s) {
-          time = timesList.where((t) => t.id == s.timeId).firstOrNull;
-          final bool isThisDay = s.weekday == dateTime.weekday;
+      final Subject? subject = subjects.where((s) {
+        // time = timesList.where((t) => t.id == s.timeId).firstOrNull;
+        final bool isThisDay = s.weekday == dateTime.weekday;
 
-          return isThisDay && time != null;
-        }).firstOrNull;
+        return isThisDay && time != null;
+      }).firstOrNull;
 
-        if (subject != null || replacement != null) {
-          final Teacher teacher = teachers.firstWhere((e) => replacement != null
-              ? e.id == replacement.teacherId
-              : e.id == subject!.teacherId);
-          final SubjectTitle title =
-              titles.firstWhere((e) => e.id == teacher.titleId);
+      if (subject != null || replacement != null) {
+        // final Teacher teacher = teachers.firstWhere((e) => replacement != null
+        //     ? e.id == replacement.teacherId
+        //     : e.id == subject!.teacherId);
+        final SubjectTitle title =
+            titles.firstWhere((e) => e.id == replacement!.teacher.titleId);
 
-          return SubsectionWidget(
-              subsectionSubject: SubsectionSubject(
-                  time: time ??
-                      Time(
-                          id: '', start: '', end: '', number: 0, createdBy: ''),
-                  teacher: teacher,
-                  isHomeView: true,
-                  title: title,
-                  dateTime: dateTime,
-                  replacement: replacement));
-        }
+        return SubsectionWidget(
+            subsectionSubject: SubsectionSubject(
+                time:
+                    time ?? Time(start: '', end: '', number: 0, createdBy: ''),
+                teacher: replacement!.teacher,
+                isHomeView: true,
+                title: title,
+                dateTime: dateTime,
+                replacement: replacement));
+        // }
       }
 
       return const SizedBox.shrink();

@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:daylist/data/storage/service/isar_service.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -9,6 +11,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:daylist/domain/state/settings/settings_state.dart';
 import 'package:daylist/internal/dependencies/dependencies.dart';
 import 'package:daylist/presentation/res/theme.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 
 import 'presentation/translations/translations.g.dart';
 import 'presentation/views/router.dart';
@@ -16,7 +20,11 @@ import 'presentation/views/router.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   LocaleSettings.useDeviceLocale();
-  await dotenv.load(mergeWith: Platform.environment);
+  if (kDebugMode) {
+    dotenv.testLoad(fileInput: File('.env').readAsStringSync());
+  } else {
+    await dotenv.load(mergeWith: Platform.environment);
+  }
   await SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 

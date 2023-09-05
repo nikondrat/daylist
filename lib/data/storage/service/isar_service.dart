@@ -1,15 +1,9 @@
-import 'package:daylist/data/storage/model/storage_group.dart';
-import 'package:daylist/data/storage/model/storage_institution.dart';
-import 'package:daylist/data/storage/model/storage_replacement.dart';
 import 'package:daylist/data/storage/model/storage_subject.dart';
 import 'package:daylist/data/storage/model/storage_teacher.dart';
 import 'package:daylist/data/storage/model/storage_time.dart';
 import 'package:daylist/data/storage/model/storage_title.dart';
-import 'package:daylist/presentation/utils/generator.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
-
-import 'package:daylist/data/storage/model/storage_city.dart';
 
 class IsarService {
   late final Future<Isar> _db;
@@ -23,73 +17,73 @@ class IsarService {
     db.writeTxnSync(() => db.clearSync());
   }
 
-  Future<List<StorageCity>> getCities() async {
-    final Isar db = await _db;
-    return db.storageCities.where().findAllSync();
-  }
+  // Future<List<StorageCity>> getCities() async {
+  //   final Isar db = await _db;
+  //   return db.storageCities.where().findAllSync();
+  // }
 
-  Future addCity({required StorageCity city}) async {
-    final Isar db = await _db;
-    db.writeTxnSync(() => db.storageCities.putSync(city));
-  }
+  // Future addCity({required StorageCity city}) async {
+  //   final Isar db = await _db;
+  //   db.writeTxnSync(() => db.storageCities.putSync(city));
+  // }
 
-  Future putCities({required List<StorageCity> cities}) async {
-    final Isar db = await _db;
-    db.writeTxnSync(() => db.storageCities.putAllSync(cities));
-  }
+  // Future putCities({required List<StorageCity> cities}) async {
+  //   final Isar db = await _db;
+  //   db.writeTxnSync(() => db.storageCities.putAllSync(cities));
+  // }
 
-  Future<List<StorageInstitution>> getInstitutions() async {
-    final Isar db = await _db;
-    return db.storageInstitutions.where().findAllSync();
-  }
+  // Future<List<StorageInstitution>> getInstitutions() async {
+  //   final Isar db = await _db;
+  //   return db.storageInstitutions.where().findAllSync();
+  // }
 
-  Future addInstitution({required StorageInstitution institution}) async {
-    final Isar db = await _db;
-    db.writeTxnSync(() => db.storageInstitutions.putSync(institution));
-  }
+  // Future addInstitution({required StorageInstitution institution}) async {
+  //   final Isar db = await _db;
+  //   db.writeTxnSync(() => db.storageInstitutions.putSync(institution));
+  // }
 
-  Future putInstitutions(
-      {required List<StorageInstitution> institutions}) async {
-    final Isar db = await _db;
-    db.writeTxnSync(() => db.storageInstitutions.putAllSync(institutions));
-  }
+  // Future putInstitutions(
+  //     {required List<StorageInstitution> institutions}) async {
+  //   final Isar db = await _db;
+  //   db.writeTxnSync(() => db.storageInstitutions.putAllSync(institutions));
+  // }
 
-  Future<List<StorageGroup>> getGroups() async {
-    final Isar db = await _db;
-    return db.storageGroups.where().findAllSync();
-  }
+  // Future<List<StorageGroup>> getGroups() async {
+  //   final Isar db = await _db;
+  //   return db.storageGroups.where().findAllSync();
+  // }
 
-  Future addGroup({required StorageGroup group}) async {
-    final Isar db = await _db;
-    db.writeTxnSync(() => db.storageGroups.putSync(group));
-  }
+  // Future addGroup({required StorageGroup group}) async {
+  //   final Isar db = await _db;
+  //   db.writeTxnSync(() => db.storageGroups.putSync(group));
+  // }
 
-  Future putGroups({required List<StorageGroup> groups}) async {
-    final Isar db = await _db;
-    db.writeTxnSync(() => db.storageGroups.putAllSync(groups));
-  }
+  // Future putGroups({required List<StorageGroup> groups}) async {
+  //   final Isar db = await _db;
+  //   db.writeTxnSync(() => db.storageGroups.putAllSync(groups));
+  // }
 
-  Future<List<StorageReplacement>> getReplacements() async {
-    final Isar db = await _db;
-    return db.storageReplacements.where().findAllSync();
-  }
+  // Future<List<StorageReplacement>> getReplacements() async {
+  //   final Isar db = await _db;
+  //   return db.storageReplacements.where().findAllSync();
+  // }
 
-  Future putReplacements(
-      {required List<StorageReplacement> replacements}) async {
-    final Isar db = await _db;
-    db.writeTxnSync(() => db.storageReplacements.putAllSync(replacements));
-  }
+  // Future putReplacements(
+  //     {required List<StorageReplacement> replacements}) async {
+  //   final Isar db = await _db;
+  //   db.writeTxnSync(() => db.storageReplacements.putAllSync(replacements));
+  // }
 
-  Future addReplacement({required StorageReplacement replacement}) async {
-    final Isar db = await _db;
-    db.writeTxnSync(() => db.storageReplacements.putSync(replacement));
-  }
+  // Future addReplacement({required StorageReplacement replacement}) async {
+  //   final Isar db = await _db;
+  //   db.writeTxnSync(() => db.storageReplacements.putSync(replacement));
+  // }
 
-  Future deleteReplacement({required String id}) async {
-    final Isar db = await _db;
-    db.writeTxnSync(
-        () => db.storageReplacements.deleteSync(Generator.fastHash(id)));
-  }
+  // Future deleteReplacement({required String id}) async {
+  //   final Isar db = await _db;
+  //   db.writeTxnSync(
+  //       () => db.storageReplacements.deleteSync(Generator.fastHash(id)));
+  // }
 
   Future<List<StorageSubject>> getSubjects() async {
     final Isar db = await _db;
@@ -155,11 +149,11 @@ class IsarService {
     final dir = await getTemporaryDirectory();
     if (Isar.instanceNames.isEmpty) {
       return await Isar.open([
-        StorageCitySchema,
-        StorageInstitutionSchema,
-        StorageGroupSchema,
+        // StorageCitySchema,
+        // StorageInstitutionSchema,
+        // StorageGroupSchema,
         StorageTitleSchema,
-        StorageReplacementSchema,
+        // StorageReplacementSchema,
         StorageSubjectSchema,
         StorageTeacherSchema,
         StorageTimeSchema

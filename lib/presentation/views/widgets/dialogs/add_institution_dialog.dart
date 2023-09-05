@@ -58,8 +58,7 @@ class __AddInstitutionState extends ConsumerState<AddInstitutionDialog> {
         await AuthDataRepository(Dependencies().getIt.get()).getUser();
 
     try {
-      await InstitutionDataRepository(
-              Dependencies().getIt.get(), Dependencies().getIt.get())
+      await InstitutionDataRepository(Dependencies().getIt.get())
           .addInstitution(
               body: AddInstitutionBody(
                   databaseId: dotenv.env['const databaseId']!,
@@ -69,7 +68,7 @@ class __AddInstitutionState extends ConsumerState<AddInstitutionDialog> {
                       title: title.text.trim(),
                       shortTitle: shortTitle.text.trim(),
                       createdBy: user.$id,
-                      cityId: ref.watch(settingsProvider).city!.id)))
+                      city: ref.watch(settingsProvider).city!)))
           .then((value) {
         ref.invalidate(institutionsProvider);
         context.pop();

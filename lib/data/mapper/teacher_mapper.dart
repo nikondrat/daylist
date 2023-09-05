@@ -5,7 +5,7 @@ import 'package:daylist/domain/model/teacher.dart';
 class TeacherMapper {
   static Teacher fromApi(ApiTeacher teacher) {
     return Teacher(
-        id: teacher.id,
+        // id: teacher.id,
         initials: teacher.initials,
         institutionId: teacher.institutionId,
         titleId: teacher.titleId,
@@ -15,7 +15,7 @@ class TeacherMapper {
 
   static Teacher fromStorage(StorageTeacher teacher) {
     return Teacher(
-        id: teacher.id,
+        // id: teacher.id,
         initials: teacher.initials,
         institutionId: teacher.institutionId,
         titleId: teacher.titleId,

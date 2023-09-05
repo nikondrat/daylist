@@ -48,8 +48,7 @@ class __AddGroupDialogState extends ConsumerState<AddGroupDialog> {
         await AuthDataRepository(Dependencies().getIt.get()).getUser();
 
     try {
-      await GroupDataRepository(
-              Dependencies().getIt.get(), Dependencies().getIt.get())
+      await GroupDataRepository(Dependencies().getIt.get())
           .addGroup(
               body: AddGroupBody(
                   databaseId: dotenv.env['const databaseId']!,
@@ -58,8 +57,7 @@ class __AddGroupDialogState extends ConsumerState<AddGroupDialog> {
                       id: ID.custom(Generator.generateId()),
                       title: controller.text.trim(),
                       createdBy: user.$id,
-                      institutionId:
-                          ref.watch(settingsProvider).institution!.id)))
+                      institution: ref.watch(settingsProvider).institution!)))
           .then((value) {
         ref.invalidate(groupsProvider);
         context.pop();
