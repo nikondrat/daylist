@@ -1,13 +1,14 @@
 import 'package:daylist/domain/model/replacement.dart';
 import 'package:daylist/domain/model/teacher.dart';
 import 'package:daylist/domain/model/time.dart';
+import 'package:daylist/domain/model/title.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final selectedTeacherProvider = StateProvider<Teacher?>((ref) {
   return null;
 });
 
-final selectedSubjectTitleProvider = StateProvider<String?>((ref) {
+final selectedSubjectTitleProvider = StateProvider<SubjectTitle?>((ref) {
   return null;
 });
 

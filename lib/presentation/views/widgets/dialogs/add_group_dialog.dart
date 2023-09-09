@@ -57,7 +57,8 @@ class __AddGroupDialogState extends ConsumerState<AddGroupDialog> {
                       id: ID.custom(Generator.generateId()),
                       title: controller.text.trim(),
                       createdBy: user.$id,
-                      institution: ref.watch(settingsProvider).institution!)))
+                      institutionId:
+                          ref.watch(settingsProvider).institution!.id)))
           .then((value) {
         ref.invalidate(groupsProvider);
         context.pop();

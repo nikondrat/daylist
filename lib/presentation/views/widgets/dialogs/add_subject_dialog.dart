@@ -5,6 +5,7 @@ import 'package:daylist/data/repository/subject_repository.dart';
 import 'package:daylist/domain/model/subject.dart';
 import 'package:daylist/domain/model/teacher.dart';
 import 'package:daylist/domain/model/time.dart';
+import 'package:daylist/domain/model/title.dart';
 import 'package:daylist/domain/state/dialogs/subject_dialog_state.dart';
 import 'package:daylist/domain/state/settings/settings_state.dart';
 import 'package:daylist/domain/state/week/week_state.dart';
@@ -40,7 +41,7 @@ class __AddSubjectDialogState extends ConsumerState<AddSubjectDialog> {
     final String? groupId = ref.watch(settingsProvider).group?.id;
 
     final Teacher? teacher = ref.watch(selectedTeacherProvider);
-    final String? titleId = ref.watch(selectedSubjectTitleProvider);
+    final SubjectTitle? titleId = ref.watch(selectedSubjectTitleProvider);
     final Time? time = ref.watch(selectedTimeProvider);
     final int weekday = ref.watch(selectedWeekdayProvider);
 

@@ -16,7 +16,7 @@ class TitleDropdownWidget extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final AsyncValue<List<SubjectTitle>> titles = ref.watch(titlesProvider);
     final Teacher? teacher = ref.watch(selectedTeacherProvider);
-    final String? titleId = ref.watch(selectedSubjectTitleProvider);
+    final SubjectTitle? title = ref.watch(selectedSubjectTitleProvider);
 
     return LoaderWidget(
         config: titles,
@@ -37,10 +37,10 @@ class TitleDropdownWidget extends HookConsumerWidget {
                     }),
                 child: Icon(Icons.add, color: context.color.primaryColor)),
             hint: Text(t.subject.title, style: context.text.mediumText),
-            value: titleId,
+            value: title,
             items: v
-                .where((e) => teacher != null ? e.id == teacher.titleId : true)
-                .map((e) => DropdownMenuItem(value: e.id, child: Text(e.title)))
+                .where((e) => teacher != null ? e.id == teacher.title.id : true)
+                .map((e) => DropdownMenuItem(value: e, child: Text(e.title)))
                 .toList(),
             onChanged: (v) {
               ref

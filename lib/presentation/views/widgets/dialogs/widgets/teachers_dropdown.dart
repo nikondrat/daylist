@@ -1,4 +1,5 @@
 import 'package:daylist/domain/model/teacher.dart';
+import 'package:daylist/domain/model/title.dart';
 import 'package:daylist/domain/state/dialogs/subject_dialog_state.dart';
 import 'package:daylist/domain/state/week/week_state.dart';
 import 'package:daylist/presentation/extensions/theme/context.dart';
@@ -16,7 +17,7 @@ class TeachersDropdownWidget extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final AsyncValue<List<Teacher>> teachers = ref.watch(teachersProvider);
     final Teacher? teacher = ref.watch(selectedTeacherProvider);
-    final String? titleId = ref.watch(selectedSubjectTitleProvider);
+    final SubjectTitle? title = ref.watch(selectedSubjectTitleProvider);
 
     return LoaderWidget(
         config: teachers,
@@ -37,7 +38,7 @@ class TeachersDropdownWidget extends HookConsumerWidget {
                 hint: Text(t.selection.teacher, style: context.text.mediumText),
                 value: teacher,
                 items: v
-                    .where((e) => titleId != null ? e.titleId == titleId : true)
+                    .where((e) => title != null ? e.title.id == title.id : true)
                     .map((e) => DropdownMenuItem(
                         value: e, child: Text(e.shortInitials())))
                     .toList(),
@@ -45,10 +46,10 @@ class TeachersDropdownWidget extends HookConsumerWidget {
                   ref
                       .read(selectedTeacherProvider.notifier)
                       .update((state) => v);
-                  if (titleId == null) {
+                  if (title == null) {
                     ref
                         .read(selectedSubjectTitleProvider.notifier)
-                        .update((state) => v!.titleId);
+                        .update((state) => v!.title);
                   }
                 })));
   }

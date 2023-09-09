@@ -27,13 +27,18 @@ const StorageTimeSchema = CollectionSchema(
       name: r'end',
       type: IsarType.string,
     ),
-    r'number': PropertySchema(
+    r'id': PropertySchema(
       id: 2,
+      name: r'id',
+      type: IsarType.string,
+    ),
+    r'number': PropertySchema(
+      id: 3,
       name: r'number',
       type: IsarType.long,
     ),
     r'start': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'start',
       type: IsarType.string,
     )
@@ -65,6 +70,7 @@ int _storageTimeEstimateSize(
     }
   }
   bytesCount += 3 + object.end.length * 3;
+  bytesCount += 3 + object.id.length * 3;
   bytesCount += 3 + object.start.length * 3;
   return bytesCount;
 }
@@ -77,8 +83,9 @@ void _storageTimeSerialize(
 ) {
   writer.writeString(offsets[0], object.createdBy);
   writer.writeString(offsets[1], object.end);
-  writer.writeLong(offsets[2], object.number);
-  writer.writeString(offsets[3], object.start);
+  writer.writeString(offsets[2], object.id);
+  writer.writeLong(offsets[3], object.number);
+  writer.writeString(offsets[4], object.start);
 }
 
 StorageTime _storageTimeDeserialize(
@@ -90,8 +97,9 @@ StorageTime _storageTimeDeserialize(
   final object = StorageTime(
     createdBy: reader.readStringOrNull(offsets[0]),
     end: reader.readString(offsets[1]),
-    number: reader.readLong(offsets[2]),
-    start: reader.readString(offsets[3]),
+    id: reader.readString(offsets[2]),
+    number: reader.readLong(offsets[3]),
+    start: reader.readString(offsets[4]),
   );
   return object;
 }
@@ -108,8 +116,10 @@ P _storageTimeDeserializeProp<P>(
     case 1:
       return (reader.readString(offset)) as P;
     case 2:
-      return (reader.readLong(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 3:
+      return (reader.readLong(offset)) as P;
+    case 4:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -495,6 +505,136 @@ extension StorageTimeQueryFilter
     });
   }
 
+  QueryBuilder<StorageTime, StorageTime, QAfterFilterCondition> idEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageTime, StorageTime, QAfterFilterCondition> idGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageTime, StorageTime, QAfterFilterCondition> idLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageTime, StorageTime, QAfterFilterCondition> idBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'id',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageTime, StorageTime, QAfterFilterCondition> idStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageTime, StorageTime, QAfterFilterCondition> idEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageTime, StorageTime, QAfterFilterCondition> idContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageTime, StorageTime, QAfterFilterCondition> idMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'id',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StorageTime, StorageTime, QAfterFilterCondition> idIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'id',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<StorageTime, StorageTime, QAfterFilterCondition> idIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'id',
+        value: '',
+      ));
+    });
+  }
+
   QueryBuilder<StorageTime, StorageTime, QAfterFilterCondition> localIdEqualTo(
       Id value) {
     return QueryBuilder.apply(this, (query) {
@@ -768,6 +908,18 @@ extension StorageTimeQuerySortBy
     });
   }
 
+  QueryBuilder<StorageTime, StorageTime, QAfterSortBy> sortById() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'id', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StorageTime, StorageTime, QAfterSortBy> sortByIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'id', Sort.desc);
+    });
+  }
+
   QueryBuilder<StorageTime, StorageTime, QAfterSortBy> sortByNumber() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'number', Sort.asc);
@@ -816,6 +968,18 @@ extension StorageTimeQuerySortThenBy
   QueryBuilder<StorageTime, StorageTime, QAfterSortBy> thenByEndDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'end', Sort.desc);
+    });
+  }
+
+  QueryBuilder<StorageTime, StorageTime, QAfterSortBy> thenById() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'id', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StorageTime, StorageTime, QAfterSortBy> thenByIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'id', Sort.desc);
     });
   }
 
@@ -872,6 +1036,13 @@ extension StorageTimeQueryWhereDistinct
     });
   }
 
+  QueryBuilder<StorageTime, StorageTime, QDistinct> distinctById(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'id', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<StorageTime, StorageTime, QDistinct> distinctByNumber() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'number');
@@ -903,6 +1074,12 @@ extension StorageTimeQueryProperty
   QueryBuilder<StorageTime, String, QQueryOperations> endProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'end');
+    });
+  }
+
+  QueryBuilder<StorageTime, String, QQueryOperations> idProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'id');
     });
   }
 

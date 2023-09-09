@@ -15,7 +15,6 @@ import 'package:daylist/domain/model/institution.dart';
 import 'package:daylist/domain/model/replacement.dart';
 import 'package:daylist/domain/state/settings/settings_state.dart';
 import 'package:daylist/internal/dependencies/dependencies.dart';
-import 'package:intl/intl.dart';
 
 final citiesProvider = FutureProvider<List<City>>((ref) async {
   final List<City> cities = await CityDataRepository(Dependencies().getIt.get())
@@ -34,13 +33,11 @@ final institutionsProvider = FutureProvider<List<Institution>>((ref) async {
       await InstitutionDataRepository(Dependencies().getIt.get())
           .getInstitutions(
               body: GetInstitutionsBody(
+                  cityId: city!.id,
                   databaseId: dotenv.env['const databaseId']!,
                   collectionId: dotenv.env['const institutionsCollectionId']!));
 
-  final List<Institution> list =
-      institutions.where((e) => e.city.id == city!.id).toList();
-
-  return list;
+  return institutions;
 });
 
 final groupsProvider = FutureProvider<List<Group>>((ref) async {
@@ -59,9 +56,6 @@ final groupsProvider = FutureProvider<List<Group>>((ref) async {
 final replacementsProvider = FutureProvider<List<Replacement>>((ref) async {
   final String groupId = ref.watch(settingsProvider).group!.id;
 
-  final DateTime today = DateTime.now();
-  final DateTime tomorrow = today.add(const Duration(days: 1));
-
   final List<Replacement> replacements =
       await ReplacementDataRepository(Dependencies().getIt.get())
           .getReplacements(
@@ -69,8 +63,7 @@ final replacementsProvider = FutureProvider<List<Replacement>>((ref) async {
                   databaseId: dotenv.env['const databaseId']!,
                   collectionId: dotenv.env['const replacementsCollectionId']!,
                   groupId: groupId,
-                  today: DateFormat.yMd().format(today),
-                  tomorrow: DateFormat.yMd().format(tomorrow)));
+                  day: DateTime.now()));
 
   return replacements;
 });

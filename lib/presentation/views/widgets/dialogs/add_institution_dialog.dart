@@ -68,7 +68,7 @@ class __AddInstitutionState extends ConsumerState<AddInstitutionDialog> {
                       title: title.text.trim(),
                       shortTitle: shortTitle.text.trim(),
                       createdBy: user.$id,
-                      city: ref.watch(settingsProvider).city!)))
+                      cityId: ref.watch(settingsProvider).city!.id)))
           .then((value) {
         ref.invalidate(institutionsProvider);
         context.pop();

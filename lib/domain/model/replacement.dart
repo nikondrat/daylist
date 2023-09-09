@@ -7,10 +7,8 @@ class Replacement {
   final String id;
   final Teacher teacher;
   final Time time;
-  // final String timeId;
-  // final String teacherId;
   final String groupId;
-  final String date;
+  final DateTime date;
   final int? undergroup;
   final String? createdBy;
   final ReplacementMode mode;
@@ -19,8 +17,6 @@ class Replacement {
       {required this.id,
       required this.teacher,
       required this.time,
-      // required this.timeId,
-      // required this.teacherId,
       required this.groupId,
       required this.date,
       required this.mode,
@@ -32,10 +28,8 @@ class Replacement {
       'id': id,
       'teacher': teacher.toMap(),
       'time': time.toMap(),
-      // 'timeId': timeId,
-      // 'teacherId': teacherId,
       'groupId': groupId,
-      'date': date,
+      'date': date.toIso8601String(),
       'mode': mode,
       'undergroup': undergroup,
       'createdBy': createdBy
@@ -47,10 +41,8 @@ class Replacement {
       id: map['id'] as String,
       teacher: Teacher.fromMap(map['teacher']),
       time: Time.fromMap(map['time']),
-      // teacherId: map['teacherId'] as String,
-      // timeId: map['timeId'] as String,
-      groupId: map['groupId'] as String,
-      date: map['date'],
+      groupId: map['groupId'],
+      date: DateTime.parse(map['date']),
       mode: map['mode'] as ReplacementMode,
       undergroup: map['undergroup'] as int?,
       createdBy: map['createdBy'],

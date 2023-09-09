@@ -1,7 +1,9 @@
 import 'package:daylist/data/api/api_util.dart';
 import 'package:daylist/data/api/request/add/add_teacher_body.dart';
 import 'package:daylist/data/api/request/get/get_teachers_body.dart';
+import 'package:daylist/data/mapper/title_mapper.dart';
 import 'package:daylist/data/storage/model/storage_teacher.dart';
+import 'package:daylist/data/storage/model/storage_title.dart';
 import 'package:daylist/data/storage/storage_util.dart';
 import 'package:daylist/domain/model/teacher.dart';
 import 'package:daylist/domain/repository/teacher_repository.dart';
@@ -33,10 +35,17 @@ class TeacherDataRepository extends TeacherRepository {
     return await _apiUtil.addTeacher(body: body).then((value) async =>
         await _storageUtil.addTeacher(
             teacher: StorageTeacher(
+                id: body.teacher.id,
                 initials: body.teacher.initials,
                 institutionId: body.teacher.institutionId,
-                titleId: body.teacher.titleId,
                 classroom: body.teacher.classroom,
-                createdBy: body.teacher.createdBy)));
+                createdBy: body.teacher.createdBy)
+              ..title.value = StorageTitle.fromApi(body.teacher.title)));
+    //  StorageTeacher(
+    //     initials: body.teacher.initials,
+    //     institutionId: body.teacher.institutionId,
+    //     titleId: body.teacher.titleId,
+    //     classroom: body.teacher.classroom,
+    //     createdBy: body.teacher.createdBy)));
   }
 }

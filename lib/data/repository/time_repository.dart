@@ -33,6 +33,7 @@ class TimeDataRepository extends TimeRepository {
     return await _apiUtil.addTime(body: body).then((value) async =>
         await _storageUtil.addTime(
             time: StorageTime(
+                id: body.time.id,
                 start: body.time.start,
                 end: body.time.end,
                 number: body.time.number,

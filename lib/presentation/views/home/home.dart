@@ -222,7 +222,8 @@ class _Items extends StatelessWidget {
       final Replacement? replacement = replacements.where((r) {
         time = r.time.number == s + 1 ? r.time : null;
 
-        final bool isThisDay = int.parse(r.date.split('/')[1]) == dateTime.day;
+        // final bool isThisDay = int.parse(r.date.split('/')[1]) == dateTime.day;
+        final bool isThisDay = r.date.day == dateTime.day;
         final bool myUndergroup = r.mode == ReplacementMode.laboratory
             ? r.undergroup == undergroup
             : true;
@@ -241,16 +242,16 @@ class _Items extends StatelessWidget {
         // final Teacher teacher = teachers.firstWhere((e) => replacement != null
         //     ? e.id == replacement.teacherId
         //     : e.id == subject!.teacherId);
-        final SubjectTitle title =
-            titles.firstWhere((e) => e.id == replacement!.teacher.titleId);
+        // final SubjectTitle title =
+        //     titles.firstWhere((e) => e.id == replacement!.teacher.titleId);
 
         return SubsectionWidget(
             subsectionSubject: SubsectionSubject(
-                time:
-                    time ?? Time(start: '', end: '', number: 0, createdBy: ''),
+                time: time ??
+                    Time(id: '', start: '', end: '', number: 0, createdBy: ''),
                 teacher: replacement!.teacher,
                 isHomeView: true,
-                title: title,
+                title: replacement.teacher.title,
                 dateTime: dateTime,
                 replacement: replacement));
         // }

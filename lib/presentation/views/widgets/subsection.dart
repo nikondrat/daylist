@@ -1,10 +1,10 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:daylist/domain/model/group.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:daylist/data/api/request/add/add_replacement_body.dart';
 import 'package:daylist/data/api/request/delete/delete_replacement_body.dart';
 import 'package:daylist/data/repository/auth_repository.dart';
@@ -196,7 +196,7 @@ class _Delete extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bool isChangeSchedule = ref.watch(isChangeScheduleProvider);
-    final String groupId = ref.watch(settingsProvider).group!.id;
+    final Group group = ref.watch(settingsProvider).group!;
 
     return isChangeSchedule && subject.isHomeView
         ? IconButton(
@@ -229,9 +229,8 @@ class _Delete extends HookConsumerWidget {
                                   id: ID.custom(Generator.generateId()),
                                   time: subject.time,
                                   teacher: subject.teacher,
-                                  groupId: groupId,
-                                  date: DateFormat.yMd()
-                                      .format(subject.dateTime!),
+                                  groupId: group.id,
+                                  date: subject.dateTime!,
                                   mode: ReplacementMode.cancel,
                                   undergroup: null,
                                   createdBy: user.$id)));

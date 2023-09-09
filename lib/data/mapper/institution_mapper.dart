@@ -9,7 +9,7 @@ class InstitutionMapper {
         title: institution.title,
         shortTitle: institution.shortTitle,
         createdBy: institution.createdBy,
-        city: CityMapper.fromApi(institution.city));
+        cityId: institution.cityId);
   }
 
   // static Institution fromStorage(StorageInstitution institution) {

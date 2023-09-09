@@ -56,7 +56,9 @@ class AppwriteService {
   Future<List<ApiInstitution>> getInstitutions(
       {required GetInstitutionsBody body}) async {
     final DocumentList docs = await _databases.listDocuments(
-        databaseId: body.databaseId, collectionId: body.collectionId);
+        databaseId: body.databaseId,
+        collectionId: body.collectionId,
+        queries: [Query.equal('cityId', body.cityId)]);
 
     return docs.documents.map((e) => ApiInstitution.fromApi(e.data)).toList();
   }
@@ -69,7 +71,7 @@ class AppwriteService {
         data: {
           'title': body.institution.title,
           'shortTitle': body.institution.shortTitle,
-          'city': body.institution.city,
+          'cityId': body.institution.cityId,
           'createdBy': body.institution.createdBy
         });
   }
@@ -90,7 +92,7 @@ class AppwriteService {
         documentId: body.group.id,
         data: {
           'title': body.group.title,
-          'institution': body.group.institution.toMap(),
+          'institutionId': body.group.institutionId,
           'createdBy': body.group.createdBy,
         });
   }
@@ -123,9 +125,9 @@ class AppwriteService {
     return _databases.createDocument(
         databaseId: body.databaseId,
         collectionId: body.collectionId,
-        documentId: body.documentId,
+        documentId: body.teacher.id,
         data: {
-          'titleId': body.teacher.titleId,
+          'title': body.teacher.title.id,
           'initials': body.teacher.initials,
           'classroom': body.teacher.classroom,
           'institutionId': body.teacher.institutionId,
@@ -144,7 +146,7 @@ class AppwriteService {
     return _databases.createDocument(
         databaseId: body.databaseId,
         collectionId: body.collectionId,
-        documentId: body.documentId,
+        documentId: body.time.id,
         data: {
           'start': body.time.start,
           'end': body.time.end,
@@ -184,10 +186,6 @@ class AppwriteService {
         collectionId: body.collectionId,
         queries: [
           Query.equal('groupId', body.groupId),
-          // TODO
-          // Query.equal('date', body.today),
-
-          // Query.equal('tomorrow', body.tomorrow),
         ]);
 
     return docs.documents.map((e) => ApiReplacement.fromApi(e.data)).toList();
@@ -199,15 +197,13 @@ class AppwriteService {
         collectionId: body.collectionId,
         documentId: body.replacement.id,
         data: {
-          // 'teacher': body.replacement.teacher,
-          // 'timeId': body.replacement.timeId,
-          'groupId': body.replacement.groupId,
-          'date': body.replacement.date,
+          'date': body.replacement.date.toIso8601String(),
           'mode': body.replacement.mode.name,
           'createdBy': body.replacement.createdBy,
           'undergroup': body.replacement.undergroup,
-          'teacher': body.replacement.teacher.toMap(),
-          'time': body.replacement.time.toMap()
+          'groupId': body.replacement.groupId,
+          'teacher': body.replacement.teacher.id,
+          'time': body.replacement.time.id
         });
   }
 

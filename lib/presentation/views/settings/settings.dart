@@ -267,7 +267,8 @@ class _Info extends StatelessWidget {
                           backgroundColor: Colors.red));
                     }
                   },
-                  title: t.settings.support.money.title)),
+                  trailing: [const Icon(UniconsLine.external_link_alt)],
+                  title: t.settings.support.money.title))
         ]);
   }
 }
