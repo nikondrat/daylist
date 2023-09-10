@@ -40,18 +40,28 @@ class _SubjectWidget extends HookConsumerWidget {
         leading: isShowTime
             ? _Leading(time: time)
             : _LeadingIndex(number: time.number),
-        title: Text(title.title,
-            style: context.text.largeText.copyWith(
-                color: isCanceled ? Colors.red : context.color.primaryColor,
-                fontWeight: FontWeight.bold,
-                decoration: isCanceled ? TextDecoration.lineThrough : null)),
-        subtitle: _Subtitle(teacher: teacher));
+        title: Row(
+          children: [
+            Expanded(
+                child: Text(title.title,
+                    style: context.text.largeText.copyWith(
+                        color: isCanceled
+                            ? Colors.red
+                            : context.color.primaryColor,
+                        fontWeight: FontWeight.bold,
+                        decoration:
+                            isCanceled ? TextDecoration.lineThrough : null))),
+            _Mode(mode: replacement!.mode)
+          ],
+        ),
+        subtitle: _Subtitle(teacher: teacher, mode: replacement!.mode));
   }
 }
 
 class _Subtitle extends HookConsumerWidget {
   final Teacher teacher;
-  const _Subtitle({required this.teacher});
+  final ReplacementMode mode;
+  const _Subtitle({required this.teacher, required this.mode});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -62,17 +72,39 @@ class _Subtitle extends HookConsumerWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 2),
-            child: Text('${teacher.classroom} ${t.subject.classroom}',
-                style: context.text.mediumText),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 2),
-            child: Text(
-                isShortInitials ? teacher.shortInitials() : teacher.initials,
-                style: context.text.mediumText),
-          )
+              padding: const EdgeInsets.only(top: 2, bottom: 2),
+              child: Text('${teacher.classroom} ${t.subject.classroom}',
+                  style: context.text.mediumText)),
+          Text(isShortInitials ? teacher.shortInitials() : teacher.initials,
+              style: context.text.mediumText)
         ]);
+  }
+}
+
+class _Mode extends HookConsumerWidget {
+  final ReplacementMode mode;
+  const _Mode({required this.mode});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final bool isDark = ref.watch(settingsProvider).isDark;
+    final double radius = ref.watch(settingsProvider).radius;
+    final int i = mode.index;
+    const double size = 26;
+
+    return mode != ReplacementMode.usual
+        ? Container(
+            height: size,
+            width: size,
+            decoration: BoxDecoration(
+                border: Border.all(color: isDark ? Colors.white : Colors.black),
+                borderRadius: BorderRadius.circular(radius / 2)),
+            child: Center(
+              child: Text(t.dialog.subject_mode[i][0],
+                  style: context.text.smallText
+                      .copyWith(color: context.color.primaryColor)),
+            ))
+        : const SizedBox.shrink();
   }
 }
 

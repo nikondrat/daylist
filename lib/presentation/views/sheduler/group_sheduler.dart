@@ -2,6 +2,7 @@ import 'package:daylist/domain/model/group.dart';
 import 'package:daylist/domain/state/settings/settings_state.dart';
 import 'package:daylist/domain/state/sheduler/sheduler_state.dart';
 import 'package:daylist/presentation/translations/translations.g.dart';
+import 'package:daylist/presentation/views/router.dart';
 import 'package:daylist/presentation/views/widgets/list.dart';
 import 'package:daylist/presentation/views/widgets/loader.dart';
 import 'package:daylist/presentation/views/widgets/subject.dart';
@@ -30,7 +31,8 @@ class GroupShedulerView extends HookConsumerWidget {
                   Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: IconButton(
-                          onPressed: () {},
+                          onPressed: () =>
+                              context.goNamed(ViewsNames.addReplacement),
                           splashRadius: 20,
                           icon: const Icon(Icons.add)))
                 ]),

@@ -42,8 +42,8 @@ class _AddTimeDialogState extends ConsumerState<AddTimeDialog> {
                 Dependencies().getIt.get(), Dependencies().getIt.get())
             .addTime(
                 body: AddTimeBody(
-                    databaseId: dotenv.env['const databaseId']!,
-                    collectionId: dotenv.env['const timesCollectionId']!,
+                    databaseId: dotenv.env['databaseId']!,
+                    collectionId: dotenv.env['timesCollectionId']!,
                     time: Time(
                         id: ID.custom(Generator.generateId()),
                         start: startString,

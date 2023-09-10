@@ -39,8 +39,8 @@ class __AddSubjectDialogState extends ConsumerState<AddSubjectDialog> {
         //         Dependencies().getIt.get(), Dependencies().getIt.get())
         //     .addSubject(
         //         body: AddSubjectBody(
-        //             databaseId: dotenv.env['const databaseId']!,
-        //             collectionId: dotenv.env['const subjectsCollectionId']!,
+        //             databaseId: dotenv.env['databaseId']!,
+        //             collectionId: dotenv.env['subjectsCollectionId']!,
         //             subject: Subject(
         //                 id: Generator.generateId(),
         //                 teacherId: teacher.id,

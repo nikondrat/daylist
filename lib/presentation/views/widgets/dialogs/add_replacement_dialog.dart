@@ -50,8 +50,8 @@ class _AddReplacementDialog extends ConsumerState<AddReplacementDialog> {
         ReplacementDataRepository(Dependencies().getIt.get())
             .addReplacement(
                 body: AddReplacementBody(
-                    databaseId: dotenv.env['const databaseId']!,
-                    collectionId: dotenv.env['const replacementsCollectionId']!,
+                    databaseId: dotenv.env['databaseId']!,
+                    collectionId: dotenv.env['replacementsCollectionId']!,
                     replacement: Replacement(
                         id: ID.custom(Generator.generateId()),
                         time: time,

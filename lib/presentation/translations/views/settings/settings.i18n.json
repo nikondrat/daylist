@@ -1,5 +1,6 @@
 {
     "app_name": "Daylist",
+    "scheduler": "Change schedule",
     "back": "Back",
     "cancel": "Cancel",
     "title": "Settings",

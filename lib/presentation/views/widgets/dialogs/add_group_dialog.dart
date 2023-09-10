@@ -51,8 +51,8 @@ class __AddGroupDialogState extends ConsumerState<AddGroupDialog> {
       await GroupDataRepository(Dependencies().getIt.get())
           .addGroup(
               body: AddGroupBody(
-                  databaseId: dotenv.env['const databaseId']!,
-                  collectionId: dotenv.env['const groupsCollectionId']!,
+                  databaseId: dotenv.env['databaseId']!,
+                  collectionId: dotenv.env['groupsCollectionId']!,
                   group: Group(
                       id: ID.custom(Generator.generateId()),
                       title: controller.text.trim(),

@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 176 (88 per locale)
+/// Strings: 178 (89 per locale)
 ///
-/// Built on 2023-09-03 at 17:57 UTC
+/// Built on 2023-09-10 at 19:50 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -271,6 +271,7 @@ class _TranslationsSettingsEn {
 
 	// Translations
 	String get app_name => 'Daylist';
+	String get scheduler => 'Change schedule';
 	String get back => 'Back';
 	String get cancel => 'Cancel';
 	String get title => 'Settings';
@@ -563,6 +564,7 @@ class _TranslationsSettingsRu implements _TranslationsSettingsEn {
 
 	// Translations
 	@override String get app_name => 'Daylist';
+	@override String get scheduler => 'Изменить расписание';
 	@override String get back => 'Назад';
 	@override String get cancel => 'Отмена';
 	@override String get title => 'Настройки';
@@ -788,6 +790,7 @@ extension on _TranslationsEn {
 				}
 			};
 			case 'settings.app_name': return 'Daylist';
+			case 'settings.scheduler': return 'Change schedule';
 			case 'settings.back': return 'Back';
 			case 'settings.cancel': return 'Cancel';
 			case 'settings.title': return 'Settings';
@@ -903,6 +906,7 @@ extension on _TranslationsRu {
 				}
 			};
 			case 'settings.app_name': return 'Daylist';
+			case 'settings.scheduler': return 'Изменить расписание';
 			case 'settings.back': return 'Назад';
 			case 'settings.cancel': return 'Отмена';
 			case 'settings.title': return 'Настройки';

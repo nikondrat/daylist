@@ -32,11 +32,13 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class AppwriteService {
   final Client client = Client()
-      .setEndpoint(dotenv.env['const endPoint']!)
-      .setProject(dotenv.env['const key']!);
+      .setEndpoint(dotenv.env['endPoint']!)
+      .setProject(dotenv.env['key']!);
 
   late final Account _account = Account(client);
   late final Databases _databases = Databases(client);
+
+  late final Teams _teams = Teams(client);
 
   Future<List<ApiCity>> getCities({required GetCitiesBody body}) async {
     final DocumentList docs = await _databases.listDocuments(
@@ -238,11 +240,19 @@ class AppwriteService {
     return _account.updatePrefs(prefs: prefs);
   }
 
+  Future<bool> isScheduler() async {
+    final String email = (await _account.get()).email;
+
+    return await _teams
+        .listMemberships(teamId: dotenv.env['shedulersTeamId']!)
+        .then((value) =>
+            value.memberships.where((e) => e.userEmail == email).isNotEmpty)
+        .onError((error, stackTrace) => false);
+  }
+
   Future<bool> isAuthorized() async {
-    try {
-      return await getUser().then((value) => true);
-    } catch (e) {
-      return false;
-    }
+    return await getUser()
+        .then((value) => true)
+        .onError((error, stackTrace) => false);
   }
 }

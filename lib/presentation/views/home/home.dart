@@ -1,5 +1,4 @@
 import 'package:daylist/domain/state/settings/settings_state.dart';
-import 'package:daylist/presentation/extensions/theme/context.dart';
 import 'package:daylist/presentation/views/widgets/list.dart';
 import 'package:daylist/presentation/views/widgets/subject.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +8,6 @@ import 'package:unicons/unicons.dart';
 
 import 'package:daylist/domain/model/replacement.dart';
 import 'package:daylist/domain/model/subject.dart';
-import 'package:daylist/presentation/res/values.dart';
 import 'package:daylist/presentation/translations/translations.g.dart';
 import 'package:daylist/presentation/views/router.dart';
 import 'package:daylist/presentation/views/widgets/loader.dart';
@@ -50,13 +48,14 @@ class _Body extends HookConsumerWidget {
                 icon: const Icon(UniconsLine.setting)),
             title: Text(t.settings.app_name),
             actions: [
-              Padding(
-                  padding: const EdgeInsets.all(Insets.small / 2),
-                  child: IconButton(
-                      onPressed: () => context.goNamed(ViewsNames.week),
-                      color: context.color.primaryColor,
-                      splashRadius: 20,
-                      icon: const Icon(UniconsLine.schedule))),
+              // TODO
+              // Padding(
+              //     padding: const EdgeInsets.all(Insets.small / 2),
+              //     child: IconButton(
+              //         onPressed: () => context.goNamed(ViewsNames.week),
+              //         color: context.color.primaryColor,
+              //         splashRadius: 20,
+              //         icon: const Icon(UniconsLine.schedule))),
             ]),
         body: CustomListWidget(children: [
           SectionSubjectsWidget(

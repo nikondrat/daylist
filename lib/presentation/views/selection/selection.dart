@@ -76,7 +76,7 @@ class _Selection<T> extends HookConsumerWidget {
   final String title;
   final bool isCanBack;
   final Widget Function(T) itemBuilder;
-  final FutureProvider<List<T>> provider;
+  final AutoDisposeFutureProvider<List<T>> provider;
 
   const _Selection(
       {this.isCanBack = true,

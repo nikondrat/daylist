@@ -1,4 +1,5 @@
 import 'package:daylist/domain/model/group.dart';
+import 'package:daylist/domain/state/settings/settings_state.dart';
 import 'package:daylist/domain/state/sheduler/sheduler_state.dart';
 import 'package:daylist/domain/state/home/home_state.dart';
 import 'package:daylist/presentation/res/values.dart';
@@ -7,17 +8,26 @@ import 'package:daylist/presentation/views/router.dart';
 import 'package:daylist/presentation/views/widgets/loader.dart';
 import 'package:daylist/presentation/views/widgets/section.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class ShedulerView extends StatelessWidget {
+class ShedulerView extends HookConsumerWidget {
   const ShedulerView({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isOnlyScheduler = ref.watch(settingsProvider).city == null;
+
     return Scaffold(
         appBar: AppBar(
-          title: const Text('gg'),
+          title: Text(t.settings.scheduler),
+          leading: isOnlyScheduler
+              ? null
+              : IconButton(
+                  onPressed: () => context.goNamed(ViewsNames.home),
+                  splashRadius: 20,
+                  icon: const FaIcon(FontAwesomeIcons.house, size: 14)),
         ),
         body: ListView(
             physics: const BouncingScrollPhysics(),

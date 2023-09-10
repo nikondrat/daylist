@@ -1,6 +1,9 @@
+import 'package:daylist/data/repository/auth_repository.dart';
 import 'package:daylist/data/repository/user_repository.dart';
+import 'package:daylist/data/storage/model/settings.dart';
 import 'package:daylist/presentation/views/auth/sign_in.dart';
 import 'package:daylist/presentation/views/auth/sign_up.dart';
+import 'package:daylist/presentation/views/sheduler/add_replacement.dart';
 import 'package:daylist/presentation/views/sheduler/group_sheduler.dart';
 import 'package:daylist/presentation/views/sheduler/sheduler.dart';
 import 'package:flutter/material.dart';
@@ -18,22 +21,25 @@ final GoRouter router = GoRouter(navigatorKey: navigatorKey, routes: [
   GoRoute(
       path: '/',
       redirect: (context, state) async {
-        final bool settingsIsNull =
-            await UserDataRepository(Dependencies().getIt.get())
-                    .getSettings() ==
-                null;
+        final Settings? settings =
+            await UserDataRepository(Dependencies().getIt.get()).getSettings();
 
         final bool isAuthorized =
             await UserDataRepository(Dependencies().getIt.get()).isAuthorized();
 
         if (!isAuthorized) {
           router.goNamed(ViewsNames.signIn);
-        } else if (settingsIsNull) {
+        } else if (settings == null) {
           router.goNamed(ViewsNames.selectionCity);
         } else {
-          // TODO
-          router.goNamed(ViewsNames.sheduler);
-          // router.goNamed(ViewsNames.home);
+          final bool isScheduler =
+              await AuthDataRepository(Dependencies().getIt.get())
+                  .isScheduler();
+          if (isScheduler && settings.city == null) {
+            router.goNamed(ViewsNames.sheduler);
+          } else {
+            router.goNamed(ViewsNames.home);
+          }
         }
 
         return null;
@@ -87,7 +93,13 @@ final GoRouter router = GoRouter(navigatorKey: navigatorKey, routes: [
         GoRoute(
             name: ViewsNames.groupSheduler,
             path: ViewsPaths.groupSheduler,
-            builder: (context, state) => const GroupShedulerView())
+            builder: (context, state) => const GroupShedulerView(),
+            routes: [
+              GoRoute(
+                  name: ViewsNames.addReplacement,
+                  path: ViewsPaths.addReplacement,
+                  builder: (context, state) => const AddReplacementView())
+            ])
       ])
 ]);
 
@@ -105,6 +117,7 @@ abstract class ViewsNames {
 
   static const String sheduler = 'sheduler';
   static const String groupSheduler = 'groupSheduler';
+  static const String addReplacement = 'addReplacement';
 }
 
 abstract class ViewsPaths {
@@ -121,4 +134,5 @@ abstract class ViewsPaths {
 
   static const String sheduler = '/${ViewsNames.sheduler}';
   static const String groupSheduler = ViewsNames.groupSheduler;
+  static const String addReplacement = ViewsNames.addReplacement;
 }

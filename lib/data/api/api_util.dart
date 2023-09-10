@@ -178,4 +178,8 @@ class ApiUtil {
   Future updatePrefs(Map prefs) async {
     return _appwriteService.updatePrefs(prefs);
   }
+
+  Future<bool> isScheduler() async {
+    return _appwriteService.isScheduler();
+  }
 }

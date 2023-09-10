@@ -1,3 +1,4 @@
+import 'package:daylist/data/repository/auth_repository.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -16,17 +17,18 @@ import 'package:daylist/domain/model/replacement.dart';
 import 'package:daylist/domain/state/settings/settings_state.dart';
 import 'package:daylist/internal/dependencies/dependencies.dart';
 
-final citiesProvider = FutureProvider<List<City>>((ref) async {
+final citiesProvider = FutureProvider.autoDispose<List<City>>((ref) async {
   final List<City> cities = await CityDataRepository(Dependencies().getIt.get())
       .getCities(
           body: GetCitiesBody(
-              databaseId: dotenv.env['const databaseId']!,
-              collectionId: dotenv.env['const citiesCollectionId']!));
+              databaseId: dotenv.env['databaseId']!,
+              collectionId: dotenv.env['citiesCollectionId']!));
 
   return cities;
 });
 
-final institutionsProvider = FutureProvider<List<Institution>>((ref) async {
+final institutionsProvider =
+    FutureProvider.autoDispose<List<Institution>>((ref) async {
   final City? city = ref.watch(settingsProvider).city;
 
   final List<Institution> institutions =
@@ -34,40 +36,45 @@ final institutionsProvider = FutureProvider<List<Institution>>((ref) async {
           .getInstitutions(
               body: GetInstitutionsBody(
                   cityId: city!.id,
-                  databaseId: dotenv.env['const databaseId']!,
-                  collectionId: dotenv.env['const institutionsCollectionId']!));
+                  databaseId: dotenv.env['databaseId']!,
+                  collectionId: dotenv.env['institutionsCollectionId']!));
 
   return institutions;
 });
 
-final groupsProvider = FutureProvider<List<Group>>((ref) async {
+final groupsProvider = FutureProvider.autoDispose<List<Group>>((ref) async {
   final Institution? institution = ref.watch(settingsProvider).institution;
 
   final List<Group> groups =
       await GroupDataRepository(Dependencies().getIt.get()).getGroups(
           body: GetGroupsBody(
-              databaseId: dotenv.env['const databaseId']!,
-              collectionId: dotenv.env['const groupsCollectionId']!,
+              databaseId: dotenv.env['databaseId']!,
+              collectionId: dotenv.env['groupsCollectionId']!,
               institutionId: institution!.id));
 
   return groups;
 });
 
-final replacementsProvider = FutureProvider<List<Replacement>>((ref) async {
+final replacementsProvider =
+    FutureProvider.autoDispose<List<Replacement>>((ref) async {
   final String groupId = ref.watch(settingsProvider).group!.id;
 
   final List<Replacement> replacements =
       await ReplacementDataRepository(Dependencies().getIt.get())
           .getReplacements(
               body: GetReplacementsBody(
-                  databaseId: dotenv.env['const databaseId']!,
-                  collectionId: dotenv.env['const replacementsCollectionId']!,
+                  databaseId: dotenv.env['databaseId']!,
+                  collectionId: dotenv.env['replacementsCollectionId']!,
                   groupId: groupId,
                   day: DateTime.now()));
 
   return replacements;
 });
 
-final isChangeScheduleProvider = StateProvider<bool>((ref) {
+final isChangeScheduleProvider = StateProvider.autoDispose<bool>((ref) {
   return false;
+});
+
+final isScheduler = FutureProvider.autoDispose<bool>((ref) async {
+  return AuthDataRepository(Dependencies().getIt.get()).isScheduler();
 });

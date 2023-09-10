@@ -72,8 +72,8 @@ class _AddTeacherDialogState extends ConsumerState<AddTeacherDialog> {
               Dependencies().getIt.get(), Dependencies().getIt.get())
           .addTeacher(
               body: AddTecherBody(
-                  databaseId: dotenv.env['const databaseId']!,
-                  collectionId: dotenv.env['const teachersCollectionId']!,
+                  databaseId: dotenv.env['databaseId']!,
+                  collectionId: dotenv.env['teachersCollectionId']!,
                   teacher: Teacher(
                       id: ID.custom(Generator.generateId()),
                       initials: initials.text,
