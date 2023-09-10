@@ -1,5 +1,4 @@
 import 'package:daylist/data/api/model/api_replacement.dart';
-import 'package:daylist/data/mapper/group_mapper.dart';
 import 'package:daylist/data/mapper/teacher_mapper.dart';
 import 'package:daylist/data/mapper/time_mapper.dart';
 import 'package:daylist/domain/model/replacement.dart';

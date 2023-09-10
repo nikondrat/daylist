@@ -1,4 +1,3 @@
-import 'package:daylist/domain/state/dialogs/subject_dialog_state.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -12,10 +11,7 @@ import 'package:daylist/domain/state/week/week_state.dart';
 import 'package:daylist/presentation/res/values.dart';
 import 'package:daylist/presentation/translations/translations.g.dart';
 import 'package:daylist/presentation/utils/week_util.dart';
-import 'package:daylist/presentation/views/widgets/dialogs/add_subject_dialog.dart';
 import 'package:daylist/presentation/views/widgets/loader.dart';
-import 'package:daylist/presentation/views/widgets/section.dart';
-import 'package:daylist/presentation/views/widgets/subsection.dart';
 
 class WeekView extends HookConsumerWidget {
   const WeekView({super.key});
@@ -31,25 +27,7 @@ class WeekView extends HookConsumerWidget {
                 onPressed: () => context.pop(),
                 splashRadius: 20,
                 icon: const Icon(Icons.arrow_back)),
-            title: Text(isEven ? t.week.isEven[0] : t.week.isEven[1]),
-            actions: [
-              Padding(
-                  padding: const EdgeInsets.only(right: Insets.small),
-                  child: IconButton(
-                      onPressed: () => showDialog(
-                              context: context,
-                              builder: (context) =>
-                                  const AddSubjectDialog()).then((value) {
-                            ref
-                                .read(selectedTeacherProvider.notifier)
-                                .update((state) => null);
-                            ref
-                                .read(selectedSubjectTitleProvider.notifier)
-                                .update((state) => null);
-                          }),
-                      splashRadius: 20,
-                      icon: const Icon(Icons.add)))
-            ]),
+            title: Text(isEven ? t.week.isEven[0] : t.week.isEven[1])),
         body: _Loader(
             builder: (times, titles, teachers, subjects) => _Body(
                 times: times,
@@ -134,8 +112,8 @@ class _Item extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final DateTime now = DateTime.now();
-    final int weekday = t.week.days.full.indexOf(title) + 1;
+    // final DateTime now = DateTime.now();
+    // final int weekday = t.week.days.full.indexOf(title) + 1;
 
     return SizedBox.shrink();
 

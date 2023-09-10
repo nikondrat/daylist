@@ -1,6 +1,8 @@
 import 'package:daylist/data/repository/user_repository.dart';
 import 'package:daylist/presentation/views/auth/sign_in.dart';
 import 'package:daylist/presentation/views/auth/sign_up.dart';
+import 'package:daylist/presentation/views/sheduler/group_sheduler.dart';
+import 'package:daylist/presentation/views/sheduler/sheduler.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -29,7 +31,9 @@ final GoRouter router = GoRouter(navigatorKey: navigatorKey, routes: [
         } else if (settingsIsNull) {
           router.goNamed(ViewsNames.selectionCity);
         } else {
-          router.goNamed(ViewsNames.home);
+          // TODO
+          router.goNamed(ViewsNames.sheduler);
+          // router.goNamed(ViewsNames.home);
         }
 
         return null;
@@ -74,6 +78,16 @@ final GoRouter router = GoRouter(navigatorKey: navigatorKey, routes: [
             name: ViewsNames.settings,
             path: ViewsPaths.settings,
             builder: (context, state) => const SettingsView()),
+      ]),
+  GoRoute(
+      name: ViewsNames.sheduler,
+      path: ViewsPaths.sheduler,
+      builder: (context, state) => const ShedulerView(),
+      routes: [
+        GoRoute(
+            name: ViewsNames.groupSheduler,
+            path: ViewsPaths.groupSheduler,
+            builder: (context, state) => const GroupShedulerView())
       ])
 ]);
 
@@ -88,6 +102,9 @@ abstract class ViewsNames {
   static const String home = 'home';
   static const String week = 'week';
   static const String settings = 'settings';
+
+  static const String sheduler = 'sheduler';
+  static const String groupSheduler = 'groupSheduler';
 }
 
 abstract class ViewsPaths {
@@ -101,4 +118,7 @@ abstract class ViewsPaths {
   static const String home = '/${ViewsNames.home}';
   static const String week = ViewsNames.week;
   static const String settings = ViewsNames.settings;
+
+  static const String sheduler = '/${ViewsNames.sheduler}';
+  static const String groupSheduler = ViewsNames.groupSheduler;
 }
