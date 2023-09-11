@@ -172,9 +172,9 @@ class AppwriteService {
         collectionId: body.collectionId,
         documentId: body.subject.id,
         data: {
-          'teacherId': body.subject.teacherId,
+          'teacher': body.subject.teacher.id,
+          'time': body.subject.time.id,
           'groupId': body.subject.groupId,
-          'timeId': body.subject.timeId,
           'isEven': body.subject.isEven,
           'weekday': body.subject.weekday,
           'createdBy': body.subject.createdBy

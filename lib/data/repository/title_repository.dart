@@ -31,10 +31,6 @@ class TitleDataRepository extends TitleRepository {
   @override
   Future addTitle({required AddTitleBody body}) async {
     return await _apiUtil.addTitle(body: body).then((value) async =>
-        await _storageUtil.addTitle(
-            title: StorageTitle(
-                id: body.title.id,
-                title: body.title.title,
-                createdBy: body.title.createdBy)));
+        await _storageUtil.addTitle(title: StorageTitle.fromApi(body.title)));
   }
 }

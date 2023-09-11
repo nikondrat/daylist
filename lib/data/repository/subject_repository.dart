@@ -1,7 +1,11 @@
 import 'package:daylist/data/api/api_util.dart';
 import 'package:daylist/data/api/request/add/add_subject_body.dart';
 import 'package:daylist/data/api/request/get/get_subjects_body.dart';
+import 'package:daylist/data/api/request/put/put_subject_body.dart';
 import 'package:daylist/data/storage/model/storage_subject.dart';
+import 'package:daylist/data/storage/model/storage_teacher.dart';
+import 'package:daylist/data/storage/model/storage_time.dart';
+import 'package:daylist/data/storage/model/storage_title.dart';
 import 'package:daylist/data/storage/storage_util.dart';
 import 'package:daylist/domain/model/subject.dart';
 import 'package:daylist/domain/repository/subject_repository.dart';
@@ -32,13 +36,17 @@ class SubjectDataRepository extends SubjectRepository {
   Future addSubject({required AddSubjectBody body}) async {
     return await _apiUtil.addSubject(body: body).then((value) async =>
         await _storageUtil.addSubject(
-            subject: StorageSubject(
-                id: body.subject.id,
-                teacherId: body.subject.teacherId,
-                timeId: body.subject.timeId,
-                isEven: body.subject.isEven,
-                groupId: body.subject.groupId,
-                weekday: body.subject.weekday,
-                createdBy: body.subject.createdBy)));
+            subject: StorageSubject.fromApi(body.subject)));
+  }
+
+  @override
+  Future putSubject({required PutSubjectBody body}) async {
+    return await _storageUtil.putSubject(
+        teacher: StorageTeacher.fromApi(body.teacher),
+        time: StorageTime.fromApi(body.time),
+        title: StorageTitle.fromApi(body.title),
+        subject: body.subject != null
+            ? StorageSubject.fromApi(body.subject!)
+            : null);
   }
 }

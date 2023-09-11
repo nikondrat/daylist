@@ -1,11 +1,12 @@
 import 'package:daylist/domain/model/time.dart';
+import 'package:daylist/presentation/utils/generator.dart';
 import 'package:isar/isar.dart';
 
 part 'storage_time.g.dart';
 
 @collection
 class StorageTime {
-  final Id localId = Isar.autoIncrement;
+  Id get isarId => Generator.fastHash(id);
   final String id;
   final String start;
   final String end;

@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:daylist/presentation/utils/generator.dart';
 import 'package:isar/isar.dart';
 
 import 'package:daylist/data/storage/model/storage_title.dart';
@@ -8,7 +9,7 @@ part 'storage_teacher.g.dart';
 
 @collection
 class StorageTeacher {
-  final Id localId = Isar.autoIncrement;
+  Id get isarId => Generator.fastHash(id);
   String id = '';
   String initials = '';
   String institutionId = '';
@@ -21,17 +22,15 @@ class StorageTeacher {
     required this.initials,
     required this.institutionId,
     required this.classroom,
-    this.createdBy,
+    required this.createdBy,
   });
 
   StorageTeacher.fromApi(Teacher teacher) {
-    final IsarLink<StorageTitle> link = IsarLink<StorageTitle>();
-    link.value = StorageTitle.fromApi(teacher.title);
+    title.value = StorageTitle.fromApi(teacher.title);
 
     id = teacher.id;
     initials = teacher.initials;
     institutionId = teacher.institutionId;
-    title = link;
     classroom = teacher.classroom;
     createdBy = teacher.createdBy;
   }

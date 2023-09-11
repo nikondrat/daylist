@@ -37,18 +37,8 @@ const StorageSubjectSchema = CollectionSchema(
       name: r'isEven',
       type: IsarType.bool,
     ),
-    r'teacherId': PropertySchema(
-      id: 4,
-      name: r'teacherId',
-      type: IsarType.string,
-    ),
-    r'timeId': PropertySchema(
-      id: 5,
-      name: r'timeId',
-      type: IsarType.string,
-    ),
     r'weekday': PropertySchema(
-      id: 6,
+      id: 4,
       name: r'weekday',
       type: IsarType.long,
     )
@@ -57,9 +47,22 @@ const StorageSubjectSchema = CollectionSchema(
   serialize: _storageSubjectSerialize,
   deserialize: _storageSubjectDeserialize,
   deserializeProp: _storageSubjectDeserializeProp,
-  idName: r'localId',
+  idName: r'isarId',
   indexes: {},
-  links: {},
+  links: {
+    r'teacher': LinkSchema(
+      id: -7792998063618046110,
+      name: r'teacher',
+      target: r'StorageTeacher',
+      single: true,
+    ),
+    r'time': LinkSchema(
+      id: 2956412363496374230,
+      name: r'time',
+      target: r'StorageTime',
+      single: true,
+    )
+  },
   embeddedSchemas: {},
   getId: _storageSubjectGetId,
   getLinks: _storageSubjectGetLinks,
@@ -81,8 +84,6 @@ int _storageSubjectEstimateSize(
   }
   bytesCount += 3 + object.groupId.length * 3;
   bytesCount += 3 + object.id.length * 3;
-  bytesCount += 3 + object.teacherId.length * 3;
-  bytesCount += 3 + object.timeId.length * 3;
   return bytesCount;
 }
 
@@ -96,9 +97,7 @@ void _storageSubjectSerialize(
   writer.writeString(offsets[1], object.groupId);
   writer.writeString(offsets[2], object.id);
   writer.writeBool(offsets[3], object.isEven);
-  writer.writeString(offsets[4], object.teacherId);
-  writer.writeString(offsets[5], object.timeId);
-  writer.writeLong(offsets[6], object.weekday);
+  writer.writeLong(offsets[4], object.weekday);
 }
 
 StorageSubject _storageSubjectDeserialize(
@@ -112,9 +111,7 @@ StorageSubject _storageSubjectDeserialize(
     groupId: reader.readString(offsets[1]),
     id: reader.readString(offsets[2]),
     isEven: reader.readBoolOrNull(offsets[3]),
-    teacherId: reader.readString(offsets[4]),
-    timeId: reader.readString(offsets[5]),
-    weekday: reader.readLong(offsets[6]),
+    weekday: reader.readLong(offsets[4]),
   );
   return object;
 }
@@ -135,10 +132,6 @@ P _storageSubjectDeserializeProp<P>(
     case 3:
       return (reader.readBoolOrNull(offset)) as P;
     case 4:
-      return (reader.readString(offset)) as P;
-    case 5:
-      return (reader.readString(offset)) as P;
-    case 6:
       return (reader.readLong(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -146,19 +139,23 @@ P _storageSubjectDeserializeProp<P>(
 }
 
 Id _storageSubjectGetId(StorageSubject object) {
-  return object.localId;
+  return object.isarId;
 }
 
 List<IsarLinkBase<dynamic>> _storageSubjectGetLinks(StorageSubject object) {
-  return [];
+  return [object.teacher, object.time];
 }
 
 void _storageSubjectAttach(
-    IsarCollection<dynamic> col, Id id, StorageSubject object) {}
+    IsarCollection<dynamic> col, Id id, StorageSubject object) {
+  object.teacher
+      .attach(col, col.isar.collection<StorageTeacher>(), r'teacher', id);
+  object.time.attach(col, col.isar.collection<StorageTime>(), r'time', id);
+}
 
 extension StorageSubjectQueryWhereSort
     on QueryBuilder<StorageSubject, StorageSubject, QWhere> {
-  QueryBuilder<StorageSubject, StorageSubject, QAfterWhere> anyLocalId() {
+  QueryBuilder<StorageSubject, StorageSubject, QAfterWhere> anyIsarId() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(const IdWhereClause.any());
     });
@@ -167,69 +164,68 @@ extension StorageSubjectQueryWhereSort
 
 extension StorageSubjectQueryWhere
     on QueryBuilder<StorageSubject, StorageSubject, QWhereClause> {
-  QueryBuilder<StorageSubject, StorageSubject, QAfterWhereClause>
-      localIdEqualTo(Id localId) {
+  QueryBuilder<StorageSubject, StorageSubject, QAfterWhereClause> isarIdEqualTo(
+      Id isarId) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(
-        lower: localId,
-        upper: localId,
+        lower: isarId,
+        upper: isarId,
       ));
     });
   }
 
   QueryBuilder<StorageSubject, StorageSubject, QAfterWhereClause>
-      localIdNotEqualTo(Id localId) {
+      isarIdNotEqualTo(Id isarId) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
             .addWhereClause(
-              IdWhereClause.lessThan(upper: localId, includeUpper: false),
+              IdWhereClause.lessThan(upper: isarId, includeUpper: false),
             )
             .addWhereClause(
-              IdWhereClause.greaterThan(lower: localId, includeLower: false),
+              IdWhereClause.greaterThan(lower: isarId, includeLower: false),
             );
       } else {
         return query
             .addWhereClause(
-              IdWhereClause.greaterThan(lower: localId, includeLower: false),
+              IdWhereClause.greaterThan(lower: isarId, includeLower: false),
             )
             .addWhereClause(
-              IdWhereClause.lessThan(upper: localId, includeUpper: false),
+              IdWhereClause.lessThan(upper: isarId, includeUpper: false),
             );
       }
     });
   }
 
   QueryBuilder<StorageSubject, StorageSubject, QAfterWhereClause>
-      localIdGreaterThan(Id localId, {bool include = false}) {
+      isarIdGreaterThan(Id isarId, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
-        IdWhereClause.greaterThan(lower: localId, includeLower: include),
+        IdWhereClause.greaterThan(lower: isarId, includeLower: include),
       );
     });
   }
 
   QueryBuilder<StorageSubject, StorageSubject, QAfterWhereClause>
-      localIdLessThan(Id localId, {bool include = false}) {
+      isarIdLessThan(Id isarId, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
-        IdWhereClause.lessThan(upper: localId, includeUpper: include),
+        IdWhereClause.lessThan(upper: isarId, includeUpper: include),
       );
     });
   }
 
-  QueryBuilder<StorageSubject, StorageSubject, QAfterWhereClause>
-      localIdBetween(
-    Id lowerLocalId,
-    Id upperLocalId, {
+  QueryBuilder<StorageSubject, StorageSubject, QAfterWhereClause> isarIdBetween(
+    Id lowerIsarId,
+    Id upperIsarId, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(
-        lower: lowerLocalId,
+        lower: lowerIsarId,
         includeLower: includeLower,
-        upper: upperLocalId,
+        upper: upperIsarId,
         includeUpper: includeUpper,
       ));
     });
@@ -692,45 +688,45 @@ extension StorageSubjectQueryFilter
   }
 
   QueryBuilder<StorageSubject, StorageSubject, QAfterFilterCondition>
-      localIdEqualTo(Id value) {
+      isarIdEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'localId',
+        property: r'isarId',
         value: value,
       ));
     });
   }
 
   QueryBuilder<StorageSubject, StorageSubject, QAfterFilterCondition>
-      localIdGreaterThan(
+      isarIdGreaterThan(
     Id value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'localId',
+        property: r'isarId',
         value: value,
       ));
     });
   }
 
   QueryBuilder<StorageSubject, StorageSubject, QAfterFilterCondition>
-      localIdLessThan(
+      isarIdLessThan(
     Id value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'localId',
+        property: r'isarId',
         value: value,
       ));
     });
   }
 
   QueryBuilder<StorageSubject, StorageSubject, QAfterFilterCondition>
-      localIdBetween(
+      isarIdBetween(
     Id lower,
     Id upper, {
     bool includeLower = true,
@@ -738,283 +734,11 @@ extension StorageSubjectQueryFilter
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'localId',
+        property: r'isarId',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<StorageSubject, StorageSubject, QAfterFilterCondition>
-      teacherIdEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'teacherId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<StorageSubject, StorageSubject, QAfterFilterCondition>
-      teacherIdGreaterThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'teacherId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<StorageSubject, StorageSubject, QAfterFilterCondition>
-      teacherIdLessThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'teacherId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<StorageSubject, StorageSubject, QAfterFilterCondition>
-      teacherIdBetween(
-    String lower,
-    String upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'teacherId',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<StorageSubject, StorageSubject, QAfterFilterCondition>
-      teacherIdStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'teacherId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<StorageSubject, StorageSubject, QAfterFilterCondition>
-      teacherIdEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'teacherId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<StorageSubject, StorageSubject, QAfterFilterCondition>
-      teacherIdContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'teacherId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<StorageSubject, StorageSubject, QAfterFilterCondition>
-      teacherIdMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'teacherId',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<StorageSubject, StorageSubject, QAfterFilterCondition>
-      teacherIdIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'teacherId',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<StorageSubject, StorageSubject, QAfterFilterCondition>
-      teacherIdIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'teacherId',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<StorageSubject, StorageSubject, QAfterFilterCondition>
-      timeIdEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'timeId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<StorageSubject, StorageSubject, QAfterFilterCondition>
-      timeIdGreaterThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'timeId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<StorageSubject, StorageSubject, QAfterFilterCondition>
-      timeIdLessThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'timeId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<StorageSubject, StorageSubject, QAfterFilterCondition>
-      timeIdBetween(
-    String lower,
-    String upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'timeId',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<StorageSubject, StorageSubject, QAfterFilterCondition>
-      timeIdStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'timeId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<StorageSubject, StorageSubject, QAfterFilterCondition>
-      timeIdEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'timeId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<StorageSubject, StorageSubject, QAfterFilterCondition>
-      timeIdContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'timeId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<StorageSubject, StorageSubject, QAfterFilterCondition>
-      timeIdMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'timeId',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<StorageSubject, StorageSubject, QAfterFilterCondition>
-      timeIdIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'timeId',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<StorageSubject, StorageSubject, QAfterFilterCondition>
-      timeIdIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'timeId',
-        value: '',
       ));
     });
   }
@@ -1080,7 +804,35 @@ extension StorageSubjectQueryObject
     on QueryBuilder<StorageSubject, StorageSubject, QFilterCondition> {}
 
 extension StorageSubjectQueryLinks
-    on QueryBuilder<StorageSubject, StorageSubject, QFilterCondition> {}
+    on QueryBuilder<StorageSubject, StorageSubject, QFilterCondition> {
+  QueryBuilder<StorageSubject, StorageSubject, QAfterFilterCondition> teacher(
+      FilterQuery<StorageTeacher> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'teacher');
+    });
+  }
+
+  QueryBuilder<StorageSubject, StorageSubject, QAfterFilterCondition>
+      teacherIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'teacher', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<StorageSubject, StorageSubject, QAfterFilterCondition> time(
+      FilterQuery<StorageTime> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'time');
+    });
+  }
+
+  QueryBuilder<StorageSubject, StorageSubject, QAfterFilterCondition>
+      timeIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'time', 0, true, 0, true);
+    });
+  }
+}
 
 extension StorageSubjectQuerySortBy
     on QueryBuilder<StorageSubject, StorageSubject, QSortBy> {
@@ -1132,32 +884,6 @@ extension StorageSubjectQuerySortBy
       sortByIsEvenDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isEven', Sort.desc);
-    });
-  }
-
-  QueryBuilder<StorageSubject, StorageSubject, QAfterSortBy> sortByTeacherId() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'teacherId', Sort.asc);
-    });
-  }
-
-  QueryBuilder<StorageSubject, StorageSubject, QAfterSortBy>
-      sortByTeacherIdDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'teacherId', Sort.desc);
-    });
-  }
-
-  QueryBuilder<StorageSubject, StorageSubject, QAfterSortBy> sortByTimeId() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'timeId', Sort.asc);
-    });
-  }
-
-  QueryBuilder<StorageSubject, StorageSubject, QAfterSortBy>
-      sortByTimeIdDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'timeId', Sort.desc);
     });
   }
 
@@ -1228,42 +954,16 @@ extension StorageSubjectQuerySortThenBy
     });
   }
 
-  QueryBuilder<StorageSubject, StorageSubject, QAfterSortBy> thenByLocalId() {
+  QueryBuilder<StorageSubject, StorageSubject, QAfterSortBy> thenByIsarId() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'localId', Sort.asc);
+      return query.addSortBy(r'isarId', Sort.asc);
     });
   }
 
   QueryBuilder<StorageSubject, StorageSubject, QAfterSortBy>
-      thenByLocalIdDesc() {
+      thenByIsarIdDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'localId', Sort.desc);
-    });
-  }
-
-  QueryBuilder<StorageSubject, StorageSubject, QAfterSortBy> thenByTeacherId() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'teacherId', Sort.asc);
-    });
-  }
-
-  QueryBuilder<StorageSubject, StorageSubject, QAfterSortBy>
-      thenByTeacherIdDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'teacherId', Sort.desc);
-    });
-  }
-
-  QueryBuilder<StorageSubject, StorageSubject, QAfterSortBy> thenByTimeId() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'timeId', Sort.asc);
-    });
-  }
-
-  QueryBuilder<StorageSubject, StorageSubject, QAfterSortBy>
-      thenByTimeIdDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'timeId', Sort.desc);
+      return query.addSortBy(r'isarId', Sort.desc);
     });
   }
 
@@ -1310,20 +1010,6 @@ extension StorageSubjectQueryWhereDistinct
     });
   }
 
-  QueryBuilder<StorageSubject, StorageSubject, QDistinct> distinctByTeacherId(
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'teacherId', caseSensitive: caseSensitive);
-    });
-  }
-
-  QueryBuilder<StorageSubject, StorageSubject, QDistinct> distinctByTimeId(
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'timeId', caseSensitive: caseSensitive);
-    });
-  }
-
   QueryBuilder<StorageSubject, StorageSubject, QDistinct> distinctByWeekday() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'weekday');
@@ -1333,9 +1019,9 @@ extension StorageSubjectQueryWhereDistinct
 
 extension StorageSubjectQueryProperty
     on QueryBuilder<StorageSubject, StorageSubject, QQueryProperty> {
-  QueryBuilder<StorageSubject, int, QQueryOperations> localIdProperty() {
+  QueryBuilder<StorageSubject, int, QQueryOperations> isarIdProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'localId');
+      return query.addPropertyName(r'isarId');
     });
   }
 
@@ -1360,18 +1046,6 @@ extension StorageSubjectQueryProperty
   QueryBuilder<StorageSubject, bool?, QQueryOperations> isEvenProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'isEven');
-    });
-  }
-
-  QueryBuilder<StorageSubject, String, QQueryOperations> teacherIdProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'teacherId');
-    });
-  }
-
-  QueryBuilder<StorageSubject, String, QQueryOperations> timeIdProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'timeId');
     });
   }
 

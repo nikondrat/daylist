@@ -1,35 +1,41 @@
-import 'package:daylist/domain/model/subject.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:isar/isar.dart';
+
+import 'package:daylist/data/storage/model/storage_teacher.dart';
+import 'package:daylist/data/storage/model/storage_time.dart';
+import 'package:daylist/domain/model/subject.dart';
+import 'package:daylist/presentation/utils/generator.dart';
 
 part 'storage_subject.g.dart';
 
 @collection
 class StorageSubject {
-  final Id localId = Isar.autoIncrement;
+  Id get isarId => Generator.fastHash(id);
 
-  final String id;
-  final String teacherId;
-  final String timeId;
-  final String groupId;
-  final bool? isEven;
-  final int weekday;
-  final String? createdBy;
+  String id = '';
+  IsarLink<StorageTeacher> teacher = IsarLink<StorageTeacher>();
+  IsarLink<StorageTime> time = IsarLink<StorageTime>();
+  String groupId = '';
+  bool? isEven;
+  int weekday = 1;
+  String? createdBy;
 
-  StorageSubject(
-      {required this.id,
-      required this.teacherId,
-      required this.timeId,
-      required this.groupId,
-      this.isEven,
-      required this.weekday,
-      required this.createdBy});
+  StorageSubject({
+    required this.id,
+    required this.groupId,
+    required this.isEven,
+    required this.weekday,
+    required this.createdBy,
+  });
 
-  StorageSubject.fromApi(Subject subject)
-      : id = subject.id,
-        teacherId = subject.teacherId,
-        timeId = subject.timeId,
-        groupId = subject.groupId,
-        isEven = subject.isEven,
-        weekday = subject.weekday,
-        createdBy = subject.createdBy;
+  StorageSubject.fromApi(Subject subject) {
+    teacher.value = StorageTeacher.fromApi(subject.teacher);
+    time.value = StorageTime.fromApi(subject.time);
+
+    id = subject.id;
+    groupId = subject.groupId;
+    isEven = subject.isEven;
+    weekday = subject.weekday;
+    createdBy = subject.createdBy;
+  }
 }

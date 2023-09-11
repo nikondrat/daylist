@@ -31,12 +31,6 @@ class TimeDataRepository extends TimeRepository {
   @override
   Future addTime({required AddTimeBody body}) async {
     return await _apiUtil.addTime(body: body).then((value) async =>
-        await _storageUtil.addTime(
-            time: StorageTime(
-                id: body.time.id,
-                start: body.time.start,
-                end: body.time.end,
-                number: body.time.number,
-                createdBy: body.time.createdBy)));
+        await _storageUtil.addTime(time: StorageTime.fromApi(body.time)));
   }
 }

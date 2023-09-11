@@ -1,11 +1,12 @@
 import 'package:daylist/domain/model/title.dart';
+import 'package:daylist/presentation/utils/generator.dart';
 import 'package:isar/isar.dart';
 
 part 'storage_title.g.dart';
 
 @collection
 class StorageTitle {
-  final Id localId = Isar.autoIncrement;
+  Id get isarId => Generator.fastHash(id);
   final String id;
   final String title;
   final String? createdBy;

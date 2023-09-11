@@ -1,15 +1,27 @@
+import 'package:appwrite/models.dart';
+import 'package:daylist/data/api/request/add/add_subject_body.dart';
+import 'package:daylist/data/repository/auth_repository.dart';
+import 'package:daylist/data/repository/subject_repository.dart';
+import 'package:daylist/domain/model/subject.dart';
 import 'package:daylist/domain/model/teacher.dart';
+import 'package:daylist/domain/model/time.dart';
 import 'package:daylist/domain/model/title.dart';
 import 'package:daylist/domain/state/dialogs/subject_dialog_state.dart';
+import 'package:daylist/domain/state/settings/settings_state.dart';
+import 'package:daylist/domain/state/week/week_state.dart';
+import 'package:daylist/internal/dependencies/dependencies.dart';
 import 'package:daylist/presentation/extensions/theme/context.dart';
 import 'package:daylist/presentation/res/values.dart';
 import 'package:daylist/presentation/translations/translations.g.dart';
+import 'package:daylist/presentation/utils/generator.dart';
 import 'package:daylist/presentation/views/widgets/dialog.dart';
 import 'package:daylist/presentation/views/widgets/dialogs/widgets/day_dropdown.dart';
 import 'package:daylist/presentation/views/widgets/dialogs/widgets/teachers_dropdown.dart';
 import 'package:daylist/presentation/views/widgets/dialogs/widgets/time_dropdown.dart';
 import 'package:daylist/presentation/views/widgets/dialogs/widgets/title_dropdown.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class AddSubjectDialog extends StatefulHookConsumerWidget {
@@ -24,35 +36,35 @@ class __AddSubjectDialogState extends ConsumerState<AddSubjectDialog> {
   bool? isEven;
 
   Future addSubject() async {
-    // final User user =
-    //     await AuthDataRepository(Dependencies().getIt.get()).getUser();
-    // final String? groupId = ref.watch(settingsProvider).group?.id;
+    final User user =
+        await AuthDataRepository(Dependencies().getIt.get()).getUser();
+    final String? groupId = ref.watch(settingsProvider).group?.id;
 
     final Teacher? teacher = ref.watch(selectedTeacherProvider);
     final SubjectTitle? titleId = ref.watch(selectedSubjectTitleProvider);
-    // final Time? time = ref.watch(selectedTimeProvider);
-    // final int weekday = ref.watch(selectedWeekdayProvider);
+    final Time? time = ref.watch(selectedTimeProvider);
+    final int weekday = ref.watch(selectedWeekdayProvider);
 
     if (titleId != null && teacher != null && context.mounted) {
       try {
-        // SubjectDataRepository(
-        //         Dependencies().getIt.get(), Dependencies().getIt.get())
-        //     .addSubject(
-        //         body: AddSubjectBody(
-        //             databaseId: dotenv.env['databaseId']!,
-        //             collectionId: dotenv.env['subjectsCollectionId']!,
-        //             subject: Subject(
-        //                 id: Generator.generateId(),
-        //                 teacherId: teacher.id,
-        //                 timeId: timeId!,
-        //                 isEven: isEven,
-        //                 groupId: groupId!,
-        //                 weekday: weekday,
-        //                 createdBy: user.$id)))
-        //     .then((value) {
-        //   ref.invalidate(subjectsProvider);
-        //   context.pop();
-        // });
+        SubjectDataRepository(
+                Dependencies().getIt.get(), Dependencies().getIt.get())
+            .addSubject(
+                body: AddSubjectBody(
+                    databaseId: dotenv.env['databaseId']!,
+                    collectionId: dotenv.env['subjectsCollectionId']!,
+                    subject: Subject(
+                        id: Generator.generateId(),
+                        teacher: teacher,
+                        time: time!,
+                        groupId: groupId!,
+                        isEven: isEven,
+                        weekday: weekday,
+                        createdBy: user.$id)))
+            .then((value) {
+          ref.invalidate(subjectsProvider);
+          context.pop();
+        });
       } catch (e) {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('$e')));
