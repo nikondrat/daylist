@@ -1,4 +1,3 @@
-import 'package:daylist/presentation/views/widgets/dialogs/add_subject_dialog.dart';
 import 'package:daylist/presentation/views/widgets/list.dart';
 import 'package:daylist/presentation/views/widgets/subject.dart';
 import 'package:flutter/material.dart';
@@ -26,22 +25,15 @@ class WeekView extends HookConsumerWidget {
                 onPressed: () => context.pop(),
                 splashRadius: 20,
                 icon: const Icon(Icons.arrow_back)),
-            actions: [
-              IconButton(
-                  onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: (context) => AddSubjectDialog());
-                  },
-                  icon: Icon(Icons.add))
-            ],
             title: Text(isEven ? t.week.isEven[0] : t.week.isEven[1])),
         body: LoaderWidget(
             config: subjects,
             builder: (subjectsList) => CustomListWidget(
-                children: t.week.days.full
-                    .map((e) => SectionSubjectsWidget(
-                        title: e, subjects: subjectsList, dateTime: now))
-                    .toList())));
+                    children: t.week.days.full.map((e) {
+                  return SectionSubjectsWidget(
+                      weekday: t.week.days.full.indexOf(e) + 1,
+                      title: e,
+                      subjects: subjectsList);
+                }).toList())));
   }
 }

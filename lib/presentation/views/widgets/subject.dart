@@ -49,7 +49,10 @@ class __SubjectWidgetState extends State<_SubjectWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return _Body(widget.time, widget.teacher, widget.replacement);
+    return _Body(
+        time: widget.time,
+        teacher: widget.teacher,
+        replacement: widget.replacement);
   }
 }
 
@@ -58,7 +61,8 @@ class _Body extends HookConsumerWidget {
   final Teacher teacher;
   final Replacement? replacement;
 
-  const _Body(this.time, this.teacher, this.replacement);
+  const _Body(
+      {required this.time, required this.teacher, required this.replacement});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -82,16 +86,17 @@ class _Body extends HookConsumerWidget {
                       fontWeight: FontWeight.bold,
                       decoration:
                           isCanceled ? TextDecoration.lineThrough : null))),
-          _Mode(mode: replacement!.mode)
+          isReplacement
+              ? _Mode(mode: replacement!.mode)
+              : const SizedBox.shrink()
         ]),
-        subtitle: _Subtitle(teacher: teacher, mode: replacement!.mode));
+        subtitle: _Subtitle(teacher: teacher));
   }
 }
 
 class _Subtitle extends HookConsumerWidget {
   final Teacher teacher;
-  final ReplacementMode mode;
-  const _Subtitle({required this.teacher, required this.mode});
+  const _Subtitle({required this.teacher});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -177,32 +182,35 @@ class _LeadingIndex extends HookConsumerWidget {
 
 class SectionSubjectsWidget extends StatelessWidget {
   final String title;
-  final DateTime dateTime;
   final List<Subject>? subjects;
   final List<Replacement>? replacements;
   final int? undergroup;
+  final int? weekday;
+  final DateTime? dateTime;
 
-  const SectionSubjectsWidget({
-    super.key,
-    required this.title,
-    required this.dateTime,
-    this.subjects,
-    this.replacements,
-    this.undergroup,
-  }) : assert(subjects != null || (replacements != null && undergroup != null));
+  const SectionSubjectsWidget(
+      {super.key,
+      required this.title,
+      this.dateTime,
+      this.subjects,
+      this.replacements,
+      this.undergroup,
+      this.weekday})
+      : assert(
+            subjects != null || (replacements != null && undergroup != null));
 
   @override
   Widget build(BuildContext context) {
     return SectionWidget(
         title: title,
         margin: const EdgeInsets.only(bottom: Insets.small),
-        children: List.generate(6, (int i) => i++, growable: false).map((s) {
+        children: List.generate(6, (int i) => i++, growable: false).map((i) {
           Time? time;
 
           final Replacement? replacement = replacements?.where((r) {
-            time = r.time.number == s + 1 ? r.time : null;
+            time = r.time.number == i + 1 ? r.time : null;
 
-            final bool isThisDay = r.date.day == dateTime.day;
+            final bool isThisDay = r.date.day == dateTime!.day;
             final bool myUndergroup = r.mode == ReplacementMode.laboratory
                 ? r.undergroup == undergroup
                 : true;
@@ -210,18 +218,25 @@ class SectionSubjectsWidget extends StatelessWidget {
             return isThisDay && myUndergroup && time != null;
           }).firstOrNull;
 
-          final Subject? subject = subjects?.where((s) {
-            final bool isThisDay = s.weekday == dateTime.weekday;
-
-            return isThisDay && time != null;
-          }).firstOrNull;
-
-          if (subject != null || replacement != null) {
+          if (replacement != null) {
             return _SubjectWidget(
                 time: time!,
-                subject: subject,
-                teacher: replacement?.teacher ?? subject!.teacher,
+                teacher: replacement.teacher,
                 replacement: replacement);
+          } else {
+            final Subject? subject = subjects?.where((s) {
+              time = s.time.number == i + 1 ? s.time : null;
+              final bool isThisDay = dateTime != null
+                  ? s.weekday == dateTime!.weekday
+                  : s.weekday == weekday;
+
+              return isThisDay && time != null;
+            }).firstOrNull;
+
+            if (subject != null) {
+              return _SubjectWidget(
+                  time: time!, teacher: subject.teacher, subject: subject);
+            }
           }
 
           return const SizedBox.shrink();
