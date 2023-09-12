@@ -1,4 +1,5 @@
 import 'package:daylist/data/repository/auth_repository.dart';
+import 'package:daylist/domain/state/sheduler/sheduler_state.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -57,7 +58,8 @@ final groupsProvider = FutureProvider.autoDispose<List<Group>>((ref) async {
 
 final replacementsProvider =
     FutureProvider.autoDispose<List<Replacement>>((ref) async {
-  final String groupId = ref.watch(settingsProvider).group!.id;
+  final String groupId =
+      ref.watch(selectedGroup)?.id ?? ref.watch(settingsProvider).group!.id;
 
   final List<Replacement> replacements =
       await ReplacementDataRepository(Dependencies().getIt.get())

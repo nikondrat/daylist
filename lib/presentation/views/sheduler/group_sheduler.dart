@@ -1,6 +1,7 @@
 import 'package:daylist/domain/model/group.dart';
 import 'package:daylist/domain/state/settings/settings_state.dart';
 import 'package:daylist/domain/state/sheduler/sheduler_state.dart';
+import 'package:daylist/presentation/extensions/theme/context.dart';
 import 'package:daylist/presentation/translations/translations.g.dart';
 import 'package:daylist/presentation/views/router.dart';
 import 'package:daylist/presentation/views/widgets/list.dart';
@@ -9,6 +10,7 @@ import 'package:daylist/presentation/views/widgets/subject.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:unicons/unicons.dart';
 
 class GroupShedulerView extends HookConsumerWidget {
   const GroupShedulerView({super.key});
@@ -20,6 +22,7 @@ class GroupShedulerView extends HookConsumerWidget {
     final DateTime today = DateTime.now();
 
     return SubjectsLoaderWidget(
+        isDataFromStorage: false,
         builder: (subjects, replacements) => Scaffold(
             appBar: AppBar(
                 leading: IconButton(
@@ -34,7 +37,15 @@ class GroupShedulerView extends HookConsumerWidget {
                           onPressed: () =>
                               context.goNamed(ViewsNames.addReplacement),
                           splashRadius: 20,
-                          icon: const Icon(Icons.add)))
+                          icon: const Icon(Icons.add))),
+                  Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: IconButton(
+                          onPressed: () =>
+                              context.goNamed(ViewsNames.shedulerWeek),
+                          color: context.color.primaryColor,
+                          splashRadius: 20,
+                          icon: const Icon(UniconsLine.schedule))),
                 ]),
             body: CustomListWidget(children: [
               SectionSubjectsWidget(

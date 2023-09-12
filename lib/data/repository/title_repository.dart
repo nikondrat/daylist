@@ -14,18 +14,18 @@ class TitleDataRepository extends TitleRepository {
 
   @override
   Future<List<SubjectTitle>> getTitles({required GetTitlesBody body}) async {
-    final List<SubjectTitle> titles = await _storageUtil.getTitles();
+    // final List<SubjectTitle> titles = await _storageUtil.getTitles();
 
-    if (titles.isEmpty) {
-      final List<SubjectTitle> result = await _apiUtil.getTitles(body: body);
-      final List<StorageTitle> convertedList =
-          result.map((e) => StorageTitle.fromApi(e)).toList();
-      _storageUtil.putTitles(titles: convertedList);
+    // if (titles.isEmpty) {
+    final List<SubjectTitle> result = await _apiUtil.getTitles(body: body);
+    final List<StorageTitle> convertedList =
+        result.map((e) => StorageTitle.fromApi(e)).toList();
+    _storageUtil.putTitles(titles: convertedList);
 
-      return result;
-    } else {
-      return titles;
-    }
+    return result;
+    // } else {
+    //   return titles;
+    // }
   }
 
   @override

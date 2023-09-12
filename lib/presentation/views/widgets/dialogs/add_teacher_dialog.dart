@@ -145,10 +145,12 @@ class _AddTeacherDialogState extends ConsumerState<AddTeacherDialog> {
                                 color: context.color.primaryColor)),
                         hint: Text(t.subject.title,
                             style: context.text.mediumText),
-                        items: i
-                            .map((e) => DropdownMenuItem(
-                                value: e, child: Text(e.title)))
-                            .toList(),
+                        items: i.isNotEmpty
+                            ? i
+                                .map((e) => DropdownMenuItem(
+                                    value: e, child: Text(e.title)))
+                                .toList()
+                            : <DropdownMenuItem>[],
                         onChanged: (v) {
                           ref
                               .read(selectedSubjectTitleProvider.notifier)

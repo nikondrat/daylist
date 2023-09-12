@@ -115,10 +115,8 @@ class StorageUtil {
   Future putSubject(
       {required StorageTeacher teacher,
       required StorageTime time,
-      required StorageTitle title,
-      required StorageSubject? subject}) async {
-    return await _db.putSubject(
-        teacher: teacher, time: time, title: title, subject: subject);
+      required StorageTitle title}) async {
+    return await _db.putSubject(teacher: teacher, time: time, title: title);
   }
 
   Future putSubjects({required List<StorageSubject> subjects}) async {

@@ -27,3 +27,7 @@ final selectedModeProvider = StateProvider<ReplacementMode>((ref) {
 final selectedWeekdayProvider = StateProvider<int>((ref) {
   return 1;
 });
+
+final selectedDateProvider = StateProvider<DateTime?>((ref) {
+  return null;
+});

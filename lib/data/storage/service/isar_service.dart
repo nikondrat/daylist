@@ -93,15 +93,13 @@ class IsarService {
   Future putSubject(
       {required StorageTeacher teacher,
       required StorageTime time,
-      required StorageTitle title,
-      required StorageSubject? subject}) async {
+      required StorageTitle title}) async {
     final Isar db = await _db;
 
     db.writeTxnSync(() {
       db.storageTitles.putSync(title);
       db.storageTeachers.putSync(teacher);
       db.storageTimes.putSync(time);
-      subject != null ? db.storageSubjects.putSync(subject) : null;
     });
   }
 

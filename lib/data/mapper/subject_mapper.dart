@@ -3,6 +3,9 @@ import 'package:daylist/data/mapper/teacher_mapper.dart';
 import 'package:daylist/data/mapper/time_mapper.dart';
 import 'package:daylist/data/storage/model/storage_subject.dart';
 import 'package:daylist/domain/model/subject.dart';
+import 'package:daylist/domain/model/teacher.dart';
+import 'package:daylist/domain/model/time.dart';
+import 'package:daylist/domain/model/title.dart';
 
 class SubjectMapper {
   static Subject fromApi(ApiSubject subject) {
@@ -19,8 +22,18 @@ class SubjectMapper {
   static Subject fromStorage(StorageSubject subject) {
     return Subject(
         id: subject.id,
-        teacher: TeacherMapper.fromStorage(subject.teacher.value!),
-        time: TimeMapper.fromStorage(subject.time.value!),
+        teacher: subject.teacher.value != null
+            ? TeacherMapper.fromStorage(subject.teacher.value!)
+            : Teacher(
+                id: '',
+                initials: '',
+                institutionId: '',
+                title: SubjectTitle(id: '', title: '', createdBy: ''),
+                classroom: '',
+                createdBy: ''),
+        time: subject.time.value != null
+            ? TimeMapper.fromStorage(subject.time.value!)
+            : Time(id: '', start: '', end: '', number: 1, createdBy: ''),
         isEven: subject.isEven,
         groupId: subject.groupId,
         weekday: subject.weekday,

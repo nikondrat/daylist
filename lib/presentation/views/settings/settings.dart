@@ -6,6 +6,7 @@ import 'package:daylist/presentation/views/router.dart';
 import 'package:daylist/presentation/views/widgets/list.dart';
 import 'package:daylist/presentation/views/widgets/section.dart';
 import 'package:daylist/presentation/views/widgets/subsection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -45,7 +46,7 @@ class _GeneralSectionWidget extends HookConsumerWidget {
     final settings = ref.watch(settingsProvider);
 
     return SectionWidget(title: t.settings.general, children: [
-      settings.isScheduler
+      settings.isScheduler || kDebugMode
           ? SubsectionWidget(
               subsection: Subsection(
                   icon: const Icon(UniconsLine.constructor),

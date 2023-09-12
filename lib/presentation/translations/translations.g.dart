@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 178 (89 per locale)
+/// Strings: 180 (90 per locale)
 ///
-/// Built on 2023-09-10 at 19:50 UTC
+/// Built on 2023-09-12 at 17:29 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -246,6 +246,7 @@ class _TranslationsSelectionEn {
 	String get group => 'group';
 	String get teacher => 'Teacher';
 	String get day => 'Day';
+	String get date => 'Date';
 	String get time => 'Time';
 	String get add => 'Add';
 	String get title => 'Title';
@@ -539,6 +540,7 @@ class _TranslationsSelectionRu implements _TranslationsSelectionEn {
 	@override String get group => 'группа';
 	@override String get teacher => 'Преподаватель';
 	@override String get day => 'День';
+	@override String get date => 'Дата';
 	@override String get time => 'Время';
 	@override String get add => 'Добавить';
 	@override String get title => 'Название';
@@ -763,6 +765,7 @@ extension on _TranslationsEn {
 			case 'selection.group': return 'group';
 			case 'selection.teacher': return 'Teacher';
 			case 'selection.day': return 'Day';
+			case 'selection.date': return 'Date';
 			case 'selection.time': return 'Time';
 			case 'selection.add': return 'Add';
 			case 'selection.title': return 'Title';
@@ -879,6 +882,7 @@ extension on _TranslationsRu {
 			case 'selection.group': return 'группа';
 			case 'selection.teacher': return 'Преподаватель';
 			case 'selection.day': return 'День';
+			case 'selection.date': return 'Дата';
 			case 'selection.time': return 'Время';
 			case 'selection.add': return 'Добавить';
 			case 'selection.title': return 'Название';

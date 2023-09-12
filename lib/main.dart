@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -14,11 +13,11 @@ import 'presentation/views/router.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   LocaleSettings.useDeviceLocale();
-  if (kDebugMode) {
-    dotenv.testLoad(fileInput: File('.env').readAsStringSync());
-  } else {
-    await dotenv.load(mergeWith: Platform.environment);
-  }
+  // if (kDebugMode) {
+  //   dotenv.testLoad(fileInput: File('.env').readAsStringSync());
+  // } else {
+  await dotenv.load(mergeWith: Platform.environment);
+  // }
   await SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 

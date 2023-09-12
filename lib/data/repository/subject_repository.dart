@@ -18,17 +18,17 @@ class SubjectDataRepository extends SubjectRepository {
 
   @override
   Future<List<Subject>> getSubjects({required GetSubjectsBody body}) async {
-    final List<Subject> subjects = await _storageUtil.getSubjects();
+    if (body.isDataFromStorage) {
+      final List<Subject> subjects = await _storageUtil.getSubjects();
 
-    if (subjects.isEmpty) {
+      return subjects;
+    } else {
       final List<Subject> result = await _apiUtil.getSubjects(body: body);
       final List<StorageSubject> convertedList =
           result.map((e) => StorageSubject.fromApi(e)).toList();
       _storageUtil.putSubjects(subjects: convertedList);
 
       return result;
-    } else {
-      return subjects;
     }
   }
 
@@ -44,9 +44,6 @@ class SubjectDataRepository extends SubjectRepository {
     return await _storageUtil.putSubject(
         teacher: StorageTeacher.fromApi(body.teacher),
         time: StorageTime.fromApi(body.time),
-        title: StorageTitle.fromApi(body.title),
-        subject: body.subject != null
-            ? StorageSubject.fromApi(body.subject!)
-            : null);
+        title: StorageTitle.fromApi(body.title));
   }
 }

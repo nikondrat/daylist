@@ -14,18 +14,18 @@ class TeacherDataRepository extends TeacherRepository {
 
   @override
   Future<List<Teacher>> getTeachers({required GetTeachersBody body}) async {
-    final List<Teacher> teachers = await _storageUtil.getTeachers();
+    // final List<Teacher> teachers = await _storageUtil.getTeachers();
 
-    if (teachers.isEmpty) {
-      final List<Teacher> result = await _apiUtil.getTeachers(body: body);
-      final List<StorageTeacher> convertedList =
-          result.map((e) => StorageTeacher.fromApi(e)).toList();
-      _storageUtil.putTeachers(teachers: convertedList);
+    // if (teachers.isEmpty) {
+    final List<Teacher> result = await _apiUtil.getTeachers(body: body);
+    final List<StorageTeacher> convertedList =
+        result.map((e) => StorageTeacher.fromApi(e)).toList();
+    _storageUtil.putTeachers(teachers: convertedList);
 
-      return result;
-    } else {
-      return teachers;
-    }
+    return result;
+    // } else {
+    //   return teachers;
+    // }
   }
 
   @override

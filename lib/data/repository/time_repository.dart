@@ -14,18 +14,18 @@ class TimeDataRepository extends TimeRepository {
 
   @override
   Future<List<Time>> getTimes({required GetTimesBody body}) async {
-    final List<Time> times = await _storageUtil.getTimes();
+    // final List<Time> times = await _storageUtil.getTimes();
 
-    if (times.isEmpty) {
-      final List<Time> result = await _apiUtil.getTimes(body: body);
-      final List<StorageTime> convertedList =
-          result.map((e) => StorageTime.fromApi(e)).toList();
-      _storageUtil.putTimes(times: convertedList);
+    // if (times.isEmpty) {
+    final List<Time> result = await _apiUtil.getTimes(body: body);
+    final List<StorageTime> convertedList =
+        result.map((e) => StorageTime.fromApi(e)).toList();
+    _storageUtil.putTimes(times: convertedList);
 
-      return result;
-    } else {
-      return times;
-    }
+    return result;
+    // } else {
+    //   return times;
+    // }
   }
 
   @override

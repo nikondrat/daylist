@@ -1,6 +1,7 @@
 import 'package:daylist/data/api/request/put/put_subject_body.dart';
 import 'package:daylist/data/repository/subject_repository.dart';
 import 'package:daylist/internal/dependencies/dependencies.dart';
+import 'package:daylist/presentation/utils/week_util.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -18,14 +19,9 @@ class _SubjectWidget extends StatefulWidget {
   final Time time;
   final Teacher teacher;
   final Replacement? replacement;
-  final Subject? subject;
 
   const _SubjectWidget(
-      {Key? key,
-      required this.time,
-      required this.teacher,
-      this.replacement,
-      this.subject})
+      {Key? key, required this.time, required this.teacher, this.replacement})
       : super(key: key);
 
   @override
@@ -41,7 +37,6 @@ class __SubjectWidgetState extends State<_SubjectWidget> {
             body: PutSubjectBody(
                 teacher: widget.teacher,
                 time: widget.time,
-                subject: widget.subject,
                 title: widget.teacher.title));
 
     super.initState();
@@ -230,12 +225,14 @@ class SectionSubjectsWidget extends StatelessWidget {
                   ? s.weekday == dateTime!.weekday
                   : s.weekday == weekday;
 
-              return isThisDay && time != null;
+              final bool isEven = s.isEven == null ||
+                  s.isEven == WeekUtil.weekNumber(DateTime.now()).isEven;
+
+              return isThisDay && time != null && isEven;
             }).firstOrNull;
 
             if (subject != null) {
-              return _SubjectWidget(
-                  time: time!, teacher: subject.teacher, subject: subject);
+              return _SubjectWidget(time: time!, teacher: subject.teacher);
             }
           }
 

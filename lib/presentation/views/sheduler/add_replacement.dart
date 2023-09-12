@@ -11,14 +11,13 @@ import 'package:daylist/domain/model/title.dart';
 import 'package:daylist/domain/state/dialogs/subject_dialog_state.dart';
 import 'package:daylist/domain/state/home/home_state.dart';
 import 'package:daylist/domain/state/settings/settings_state.dart';
+import 'package:daylist/domain/state/sheduler/sheduler_state.dart';
 import 'package:daylist/internal/dependencies/dependencies.dart';
 import 'package:daylist/presentation/extensions/theme/context.dart';
 import 'package:daylist/presentation/res/values.dart';
 import 'package:daylist/presentation/translations/translations.g.dart';
 import 'package:daylist/presentation/utils/generator.dart';
-import 'package:daylist/presentation/views/widgets/dialogs/widgets/teachers_dropdown.dart';
-import 'package:daylist/presentation/views/widgets/dialogs/widgets/time_dropdown.dart';
-import 'package:daylist/presentation/views/widgets/dialogs/widgets/title_dropdown.dart';
+import 'package:daylist/presentation/views/router.dart';
 import 'package:daylist/presentation/views/widgets/list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -34,17 +33,17 @@ class AddReplacementView extends StatefulHookConsumerWidget {
 }
 
 class _AddReplacementViewState extends ConsumerState<AddReplacementView> {
-  DateTime? dateTime;
-
   Future addReplacement() async {
     final User user =
         await AuthDataRepository(Dependencies().getIt.get()).getUser();
-    final Group? group = ref.watch(settingsProvider).group;
+    final Group? group =
+        ref.watch(selectedGroup) ?? ref.watch(settingsProvider).group;
     final Time? time = ref.watch(selectedTimeProvider);
     final Teacher? teacher = ref.watch(selectedTeacherProvider);
     final SubjectTitle? titleId = ref.watch(selectedSubjectTitleProvider);
     final int? selectedUndergroup = ref.watch(selectedUndergroupProvider);
     final ReplacementMode mode = ref.watch(selectedModeProvider);
+    final DateTime? dateTime = ref.watch(selectedDateProvider);
 
     if (titleId != null &&
         teacher != null &&
@@ -62,7 +61,7 @@ class _AddReplacementViewState extends ConsumerState<AddReplacementView> {
                         time: time,
                         teacher: teacher,
                         groupId: group!.id,
-                        date: dateTime!,
+                        date: dateTime,
                         mode: mode,
                         undergroup: mode == ReplacementMode.laboratory
                             ? selectedUndergroup
@@ -86,6 +85,15 @@ class _AddReplacementViewState extends ConsumerState<AddReplacementView> {
     mods.removeLast();
     final ReplacementMode mode = ref.watch(selectedModeProvider);
     final int? selectedUndergroup = ref.watch(selectedUndergroupProvider);
+    final SubjectTitle? title = ref.watch(selectedSubjectTitleProvider);
+    final Teacher? teacher = ref.watch(selectedTeacherProvider);
+    final DateTime? dateTime = ref.watch(selectedDateProvider);
+    final Time? time = ref.watch(selectedTimeProvider);
+
+    const ButtonStyle buttonStyle = ButtonStyle(
+        alignment: Alignment.centerLeft,
+        padding: MaterialStatePropertyAll(EdgeInsets.only(left: Insets.small)),
+        minimumSize: MaterialStatePropertyAll(Size(double.infinity, 60)));
 
     return Scaffold(
       appBar: AppBar(
@@ -103,11 +111,27 @@ class _AddReplacementViewState extends ConsumerState<AddReplacementView> {
                     icon: const Icon(Icons.done)))
           ]),
       body: CustomListWidget(children: [
-        const TitleDropdownWidget(),
-        const TeachersDropdownWidget(),
-        const TimeDropdownWidget(),
         Padding(
-            padding: const EdgeInsets.only(top: Insets.small),
+            padding: const EdgeInsets.only(bottom: Insets.small),
+            child: TextButton(
+                style: buttonStyle,
+                onPressed: () => context.goNamed(ViewsNames.replacementTitles),
+                child: Text(title?.title ?? t.subject.title))),
+        Padding(
+            padding: const EdgeInsets.only(bottom: Insets.small),
+            child: TextButton(
+                style: buttonStyle,
+                onPressed: () =>
+                    context.goNamed(ViewsNames.replacementTeachers),
+                child: Text(teacher?.initials ?? t.selection.teacher))),
+        TextButton(
+            style: buttonStyle,
+            onPressed: () => context.goNamed(ViewsNames.replacementTimes),
+            child: Text(time != null
+                ? '${time.start} - ${time.end}'
+                : t.selection.time)),
+        Padding(
+            padding: const EdgeInsets.symmetric(vertical: Insets.small),
             child: DropdownButtonFormField(
                 isExpanded: true,
                 iconEnabledColor: context.color.primaryColor,
@@ -124,7 +148,7 @@ class _AddReplacementViewState extends ConsumerState<AddReplacementView> {
                 })),
         mode == ReplacementMode.laboratory
             ? Padding(
-                padding: const EdgeInsets.only(top: Insets.small),
+                padding: const EdgeInsets.only(bottom: Insets.small),
                 child: DropdownButtonFormField(
                     isExpanded: true,
                     iconEnabledColor: context.color.primaryColor,
@@ -143,14 +167,20 @@ class _AddReplacementViewState extends ConsumerState<AddReplacementView> {
                     }))
             : const SizedBox.shrink(),
         TextButton(
-            onPressed: () async {
-              dateTime = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime.now(),
-                  lastDate: DateTime.now().add(const Duration(days: 60)));
+            style: buttonStyle,
+            onPressed: () {
+              showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime.now(),
+                      lastDate: DateTime.now().add(const Duration(days: 60)))
+                  .then((value) => ref
+                      .read(selectedDateProvider.notifier)
+                      .update((state) => value));
             },
-            child: Text('date'))
+            child: Text(dateTime != null
+                ? '${dateTime.day}/${dateTime.month}/${dateTime.year}'
+                : t.selection.date))
       ]),
     );
   }

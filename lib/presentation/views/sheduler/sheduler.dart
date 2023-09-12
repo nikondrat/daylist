@@ -2,9 +2,10 @@ import 'package:daylist/domain/model/group.dart';
 import 'package:daylist/domain/state/settings/settings_state.dart';
 import 'package:daylist/domain/state/sheduler/sheduler_state.dart';
 import 'package:daylist/domain/state/home/home_state.dart';
-import 'package:daylist/presentation/res/values.dart';
 import 'package:daylist/presentation/translations/translations.g.dart';
 import 'package:daylist/presentation/views/router.dart';
+import 'package:daylist/presentation/views/widgets/dialogs/add_group_dialog.dart';
+import 'package:daylist/presentation/views/widgets/list.dart';
 import 'package:daylist/presentation/views/widgets/loader.dart';
 import 'package:daylist/presentation/views/widgets/section.dart';
 import 'package:flutter/material.dart';
@@ -21,20 +22,24 @@ class ShedulerView extends HookConsumerWidget {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text(t.settings.scheduler),
-          leading: isOnlyScheduler
-              ? null
-              : IconButton(
-                  onPressed: () => context.goNamed(ViewsNames.home),
-                  splashRadius: 20,
-                  icon: const FaIcon(FontAwesomeIcons.house, size: 14)),
-        ),
-        body: ListView(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.symmetric(horizontal: Insets.small),
-            children: [
-              SectionWidget(title: t.settings.group, children: const [_Body()])
-            ]));
+            title: Text(t.settings.scheduler),
+            leading: isOnlyScheduler
+                ? null
+                : IconButton(
+                    onPressed: () => context.goNamed(ViewsNames.home),
+                    splashRadius: 20,
+                    icon: const FaIcon(FontAwesomeIcons.house, size: 14))),
+        body: CustomListWidget(children: [
+          SectionWidget(title: t.settings.group, actions: [
+            GestureDetector(
+                onTap: () => showDialog(
+                    context: context,
+                    builder: (context) => const AddGroupDialog()),
+                child: const Icon(Icons.add))
+          ], children: const [
+            _Body()
+          ])
+        ]));
   }
 }
 

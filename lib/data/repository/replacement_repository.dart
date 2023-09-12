@@ -4,7 +4,6 @@ import 'package:daylist/data/api/request/delete/delete_replacement_body.dart';
 import 'package:daylist/data/api/request/get/get_replacements_body.dart';
 import 'package:daylist/domain/model/replacement.dart';
 import 'package:daylist/domain/repository/replacement_repository.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 
 class ReplacementDataRepository extends ReplacementRepository {
   final ApiUtil _apiUtil;
@@ -14,16 +13,9 @@ class ReplacementDataRepository extends ReplacementRepository {
   @override
   Future<List<Replacement>> getReplacements(
       {required GetReplacementsBody body}) async {
-    final ConnectivityResult connectivityResult =
-        await Connectivity().checkConnectivity();
-    if (connectivityResult == ConnectivityResult.mobile ||
-        connectivityResult == ConnectivityResult.wifi) {
-      final List<Replacement> result =
-          await _apiUtil.getReplacements(body: body);
+    final List<Replacement> result = await _apiUtil.getReplacements(body: body);
 
-      return result;
-    }
-    return [];
+    return result;
   }
 
   @override
