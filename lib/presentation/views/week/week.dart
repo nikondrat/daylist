@@ -43,23 +43,14 @@ class WeekView extends HookConsumerWidget {
                   ]
                 : null,
             title: Text(isEven ? t.week.isEven[0] : t.week.isEven[1])),
-        body: RefreshIndicator(
-          color: context.color.primaryColor,
-          backgroundColor: context.color.backgroundColor,
-          onRefresh: () {
-            return SubjectDataRepository(Dependencies().getIt.get())
-                .clear()
-                .then((value) => ref.invalidate(subjectsProvider));
-          },
-          child: LoaderWidget(
-              config: subjects,
-              builder: (subjectsList) => CustomListWidget(
-                      children: t.week.days.full.map((e) {
-                    return SectionSubjectsWidget(
-                        weekday: t.week.days.full.indexOf(e) + 1,
-                        title: e,
-                        subjects: subjectsList);
-                  }).toList())),
-        ));
+        body: LoaderWidget(
+            config: subjects,
+            builder: (subjectsList) => CustomListWidget(
+                    children: t.week.days.full.map((e) {
+                  return SectionSubjectsWidget(
+                      weekday: t.week.days.full.indexOf(e) + 1,
+                      title: e,
+                      subjects: subjectsList);
+                }).toList())));
   }
 }
