@@ -127,6 +127,10 @@ class StorageUtil {
     return await _db.addSubject(subject: subject);
   }
 
+  Future clearSubjects() async {
+    return await _db.clearSubjects();
+  }
+
   Future<List<Teacher>> getTeachers() async {
     final List<StorageTeacher> result = await _db.getTeachers();
     final List<Teacher> convertedList =

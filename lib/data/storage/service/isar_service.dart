@@ -113,6 +113,12 @@ class IsarService {
     db.writeTxnSync(() => db.storageSubjects.putSync(subject));
   }
 
+  Future clearSubjects() async {
+    final Isar db = await _db;
+
+    db.writeTxnSync(() => db.storageSubjects.clearSync());
+  }
+
   Future<List<StorageTeacher>> getTeachers() async {
     final Isar db = await _db;
     return db.storageTeachers.where().findAllSync();

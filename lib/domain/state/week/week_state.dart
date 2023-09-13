@@ -33,20 +33,6 @@ final subjectsProvider = FutureProvider.family
   return subjects;
 });
 
-// final subjectsProvider = FutureProvider.autoDispose<List<Subject>>((ref) async {
-//   final String groupId = ref.watch(settingsProvider).group!.id;
-
-//   final List<Subject> subjects = await SubjectDataRepository(
-//           Dependencies().getIt.get(), Dependencies().getIt.get())
-//       .getSubjects(
-//           body: GetSubjectsBody(
-//               databaseId: dotenv.env['databaseId']!,
-//               collectionId: dotenv.env['subjectsCollectionId']!,
-//               groupId: groupId));
-
-//   return subjects;
-// });
-
 final timesProvider = FutureProvider.autoDispose<List<Time>>((ref) async {
   final List<Time> times = await TimeDataRepository(
           Dependencies().getIt.get(), Dependencies().getIt.get())

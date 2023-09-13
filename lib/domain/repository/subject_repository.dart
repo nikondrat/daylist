@@ -9,4 +9,6 @@ abstract class SubjectRepository {
   Future addSubject({required AddSubjectBody body});
 
   Future putSubject({required PutSubjectBody body});
+
+  Future clear();
 }

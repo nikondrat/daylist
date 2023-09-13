@@ -18,9 +18,9 @@ class SubjectDataRepository extends SubjectRepository {
 
   @override
   Future<List<Subject>> getSubjects({required GetSubjectsBody body}) async {
-    if (body.isDataFromStorage) {
-      final List<Subject> subjects = await _storageUtil.getSubjects();
+    final List<Subject> subjects = await _storageUtil.getSubjects();
 
+    if (body.isDataFromStorage && subjects.isNotEmpty) {
       return subjects;
     } else {
       final List<Subject> result = await _apiUtil.getSubjects(body: body);
@@ -45,5 +45,10 @@ class SubjectDataRepository extends SubjectRepository {
         teacher: StorageTeacher.fromApi(body.teacher),
         time: StorageTime.fromApi(body.time),
         title: StorageTitle.fromApi(body.title));
+  }
+
+  @override
+  Future clear() async {
+    return await _storageUtil.clearSubjects();
   }
 }
