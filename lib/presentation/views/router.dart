@@ -1,3 +1,4 @@
+import 'package:daylist/data/repository/auth_repository.dart';
 import 'package:daylist/data/repository/user_repository.dart';
 import 'package:daylist/data/storage/model/settings.dart';
 import 'package:daylist/presentation/views/auth/sign_in.dart';
@@ -35,7 +36,15 @@ final GoRouter router = GoRouter(navigatorKey: navigatorKey, routes: [
         } else if (settings == null) {
           router.goNamed(ViewsNames.selectionCity);
         } else {
-          router.goNamed(ViewsNames.home);
+          final bool isSheduler =
+              await AuthDataRepository(Dependencies().getIt.get())
+                  .isScheduler();
+
+          if (isSheduler && settings.group == null) {
+            router.goNamed(ViewsNames.sheduler);
+          } else {
+            router.goNamed(ViewsNames.home);
+          }
         }
 
         return null;
@@ -94,8 +103,7 @@ final GoRouter router = GoRouter(navigatorKey: navigatorKey, routes: [
               GoRoute(
                   name: ViewsNames.shedulerWeek,
                   path: ViewsPaths.shedulerWeek,
-                  builder: (context, state) =>
-                      const WeekView(isDataFromStorage: false),
+                  builder: (context, state) => const WeekView(isAdmin: true),
                   routes: [
                     GoRoute(
                         name: ViewsNames.addSubject,

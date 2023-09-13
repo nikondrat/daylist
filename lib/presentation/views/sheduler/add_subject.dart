@@ -44,8 +44,7 @@ class _AddSubjectViewState extends ConsumerState<AddSubjectView> {
 
     if (titleId != null && teacher != null && context.mounted) {
       try {
-        SubjectDataRepository(
-                Dependencies().getIt.get(), Dependencies().getIt.get())
+        SubjectDataRepository(Dependencies().getIt.get())
             .addSubject(
                 body: AddSubjectBody(
                     databaseId: dotenv.env['databaseId']!,

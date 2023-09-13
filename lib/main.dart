@@ -21,8 +21,6 @@ void main() async {
   await SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
-  // IsarService().clear();
-
   // var p = await SharedPreferences.getInstance();
   // p.clear();
 

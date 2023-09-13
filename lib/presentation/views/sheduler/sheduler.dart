@@ -18,7 +18,7 @@ class ShedulerView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isOnlyScheduler = ref.watch(settingsProvider).city == null;
+    final isOnlyScheduler = ref.watch(settingsProvider).group == null;
 
     return Scaffold(
         appBar: AppBar(

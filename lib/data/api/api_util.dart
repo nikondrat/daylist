@@ -179,7 +179,7 @@ class ApiUtil {
     return _appwriteService.updatePrefs(prefs);
   }
 
-  // Future<bool> isScheduler() async {
-  //   return _appwriteService.isScheduler();
-  // }
+  Future<bool> isScheduler() async {
+    return _appwriteService.isScheduler();
+  }
 }

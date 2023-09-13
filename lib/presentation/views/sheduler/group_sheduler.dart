@@ -22,7 +22,6 @@ class GroupShedulerView extends HookConsumerWidget {
     final DateTime today = DateTime.now();
 
     return SubjectsLoaderWidget(
-        isDataFromStorage: false,
         builder: (subjects, replacements) => Scaffold(
             appBar: AppBar(
                 leading: IconButton(

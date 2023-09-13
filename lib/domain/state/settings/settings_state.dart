@@ -44,6 +44,12 @@ class SettingsNotifier extends ChangeNotifier {
   Institution? get institution => _settings?.institution;
   set institution(Institution? v) {
     _settings?.institution = v;
+    if (_isScheduler) {
+      AuthDataRepository(Dependencies().getIt.get()).updatePrefs(data: {
+        'city': city!.id,
+        'institution': institution!.id,
+      });
+    }
     notifyListeners();
   }
 

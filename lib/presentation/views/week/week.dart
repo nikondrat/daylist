@@ -15,17 +15,14 @@ import 'package:daylist/presentation/utils/week_util.dart';
 import 'package:daylist/presentation/views/widgets/loader.dart';
 
 class WeekView extends HookConsumerWidget {
-  final bool isDataFromStorage;
-  const WeekView({super.key, this.isDataFromStorage = true});
+  final bool isAdmin;
+  const WeekView({super.key, this.isAdmin = false});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // TODO init loading data
-    // TODO add replacements and subjects view
     final DateTime now = DateTime.now();
     final bool isEven = WeekUtil.weekNumber(now).isEven;
-    final AsyncValue<List<Subject>> subjects =
-        ref.watch(subjectsProvider(isDataFromStorage));
+    final AsyncValue<List<Subject>> subjects = ref.watch(subjectsProvider);
 
     return Scaffold(
         appBar: AppBar(
@@ -33,26 +30,24 @@ class WeekView extends HookConsumerWidget {
                 onPressed: () => context.pop(),
                 splashRadius: 20,
                 icon: const Icon(Icons.arrow_back)),
-            actions: isDataFromStorage
-                ? null
-                : [
+            actions: isAdmin
+                ? [
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: IconButton(
-                          onPressed: () {
-                            context.goNamed(ViewsNames.addSubject);
-                          },
-                          splashRadius: 20,
-                          icon: const Icon(Icons.add)),
-                    )
-                  ],
+                        padding: const EdgeInsets.all(8.0),
+                        child: IconButton(
+                            onPressed: () {
+                              context.goNamed(ViewsNames.addSubject);
+                            },
+                            splashRadius: 20,
+                            icon: const Icon(Icons.add)))
+                  ]
+                : null,
             title: Text(isEven ? t.week.isEven[0] : t.week.isEven[1])),
         body: RefreshIndicator(
           color: context.color.primaryColor,
           backgroundColor: context.color.backgroundColor,
           onRefresh: () {
-            return SubjectDataRepository(
-                    Dependencies().getIt.get(), Dependencies().getIt.get())
+            return SubjectDataRepository(Dependencies().getIt.get())
                 .clear()
                 .then((value) => ref.invalidate(subjectsProvider));
           },

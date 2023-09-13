@@ -44,7 +44,11 @@ class SelectionInstitutionView extends HookConsumerWidget {
         itemBuilder: (v) => ListTile(
               onTap: () {
                 ref.read(settingsProvider.notifier).institution = v;
-                context.goNamed(ViewsNames.selectionGroup);
+                if (ref.watch(settingsProvider).isScheduler) {
+                  context.goNamed(ViewsNames.sheduler);
+                } else {
+                  context.goNamed(ViewsNames.selectionGroup);
+                }
               },
               title: Text(v.title),
             ));

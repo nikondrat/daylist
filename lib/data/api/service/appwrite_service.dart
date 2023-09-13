@@ -38,7 +38,7 @@ class AppwriteService {
   late final Account _account = Account(client);
   late final Databases _databases = Databases(client);
 
-  // late final Teams _teams = Teams(client);
+  late final Teams _teams = Teams(client);
 
   Future<List<ApiCity>> getCities({required GetCitiesBody body}) async {
     final DocumentList docs = await _databases.listDocuments(
@@ -242,14 +242,18 @@ class AppwriteService {
     return _account.updatePrefs(prefs: prefs);
   }
 
-  // Future<bool> isScheduler() async {
+  Future<bool> isScheduler() async {
+    final User user = await getUser();
 
-  //   return await _account.get().then((acc) => _teams
-  //       .listMemberships(teamId: dotenv.env['shedulersTeamId']!).onError((error, stackTrace) => false)
-  //       .then((value) =>
-  //           value.memberships.where((e) => e.userEmail == acc.email).isNotEmpty)
-  //       .onError((error, stackTrace) => false));
-  // }
+    return await _teams
+        .listMemberships(teamId: dotenv.env['shedulersTeamId']!)
+        .then((value) => value.memberships.isNotEmpty
+            ? value.memberships
+                .where((e) => e.userEmail == user.email)
+                .isNotEmpty
+            : false)
+        .onError((error, stackTrace) => false);
+  }
 
   Future<bool> isAuthorized() async {
     return await getUser()

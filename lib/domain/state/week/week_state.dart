@@ -16,26 +16,22 @@ import 'package:daylist/internal/dependencies/dependencies.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final subjectsProvider = FutureProvider.family
-    .autoDispose<List<Subject>, bool>((ref, isDataFromStorage) async {
+final subjectsProvider = FutureProvider.autoDispose<List<Subject>>((ref) async {
   final String groupId =
       ref.watch(selectedGroup)?.id ?? ref.watch(settingsProvider).group!.id;
 
-  final List<Subject> subjects = await SubjectDataRepository(
-          Dependencies().getIt.get(), Dependencies().getIt.get())
-      .getSubjects(
+  final List<Subject> subjects =
+      await SubjectDataRepository(Dependencies().getIt.get()).getSubjects(
           body: GetSubjectsBody(
               databaseId: dotenv.env['databaseId']!,
               collectionId: dotenv.env['subjectsCollectionId']!,
-              isDataFromStorage: isDataFromStorage,
               groupId: groupId));
 
   return subjects;
 });
 
 final timesProvider = FutureProvider.autoDispose<List<Time>>((ref) async {
-  final List<Time> times = await TimeDataRepository(
-          Dependencies().getIt.get(), Dependencies().getIt.get())
+  final List<Time> times = await TimeDataRepository(Dependencies().getIt.get())
       .getTimes(
           body: GetTimesBody(
               databaseId: dotenv.env['databaseId']!,
@@ -46,9 +42,8 @@ final timesProvider = FutureProvider.autoDispose<List<Time>>((ref) async {
 
 final titlesProvider =
     FutureProvider.autoDispose<List<SubjectTitle>>((ref) async {
-  final List<SubjectTitle> titles = await TitleDataRepository(
-          Dependencies().getIt.get(), Dependencies().getIt.get())
-      .getTitles(
+  final List<SubjectTitle> titles =
+      await TitleDataRepository(Dependencies().getIt.get()).getTitles(
           body: GetTitlesBody(
               databaseId: dotenv.env['databaseId']!,
               collectionId: dotenv.env['titlesCollectionId']!));
@@ -59,9 +54,8 @@ final titlesProvider =
 final teachersProvider = FutureProvider.autoDispose<List<Teacher>>((ref) async {
   final String institutionId = ref.watch(settingsProvider).institution!.id;
 
-  final List<Teacher> teachers = await TeacherDataRepository(
-          Dependencies().getIt.get(), Dependencies().getIt.get())
-      .getTeachers(
+  final List<Teacher> teachers =
+      await TeacherDataRepository(Dependencies().getIt.get()).getTeachers(
           body: GetTeachersBody(
               databaseId: dotenv.env['databaseId']!,
               collectionId: dotenv.env['teachersCollectionId']!,

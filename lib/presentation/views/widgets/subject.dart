@@ -31,13 +31,11 @@ class _SubjectWidget extends StatefulWidget {
 class __SubjectWidgetState extends State<_SubjectWidget> {
   @override
   void initState() {
-    SubjectDataRepository(
-            Dependencies().getIt.get(), Dependencies().getIt.get())
-        .putSubject(
-            body: PutSubjectBody(
-                teacher: widget.teacher,
-                time: widget.time,
-                title: widget.teacher.title));
+    SubjectDataRepository(Dependencies().getIt.get()).putSubject(
+        body: PutSubjectBody(
+            teacher: widget.teacher,
+            time: widget.time,
+            title: widget.teacher.title));
 
     super.initState();
   }
