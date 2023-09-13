@@ -1,9 +1,3 @@
-import 'package:daylist/data/repository/subject_repository.dart';
-import 'package:daylist/internal/dependencies/dependencies.dart';
-import 'package:daylist/presentation/extensions/theme/context.dart';
-import 'package:daylist/presentation/views/router.dart';
-import 'package:daylist/presentation/views/widgets/list.dart';
-import 'package:daylist/presentation/views/widgets/subject.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
