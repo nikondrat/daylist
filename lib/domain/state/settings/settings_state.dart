@@ -1,3 +1,4 @@
+import 'package:daylist/data/repository/auth_repository.dart';
 import 'package:daylist/data/repository/user_repository.dart';
 import 'package:daylist/data/storage/model/settings.dart';
 import 'package:daylist/domain/model/city.dart';
@@ -24,8 +25,15 @@ class SettingsNotifier extends ChangeNotifier {
 
     _settings =
         settings ?? Settings(city: null, institution: null, group: null);
+
+    _isScheduler =
+        await AuthDataRepository(Dependencies().getIt.get()).isScheduler();
+
     notifyListeners();
   }
+
+  bool _isScheduler = false;
+  bool get isScheduler => _isScheduler;
 
   City? get city => _settings?.city;
   set city(City? v) {
@@ -36,6 +44,12 @@ class SettingsNotifier extends ChangeNotifier {
   Institution? get institution => _settings?.institution;
   set institution(Institution? v) {
     _settings?.institution = v;
+    if (_isScheduler) {
+      AuthDataRepository(Dependencies().getIt.get()).updatePrefs(data: {
+        'city': city!.id,
+        'institution': institution!.id,
+      });
+    }
     notifyListeners();
   }
 
@@ -43,6 +57,11 @@ class SettingsNotifier extends ChangeNotifier {
   set group(Group? v) {
     _settings?.group = v;
     UserDataRepository(Dependencies().getIt.get()).setSettings(_settings!);
+    AuthDataRepository(Dependencies().getIt.get()).updatePrefs(data: {
+      'city': city!.id,
+      'institution': institution!.id,
+      'group': group!.id
+    });
     notifyListeners();
   }
 
@@ -55,21 +74,21 @@ class SettingsNotifier extends ChangeNotifier {
 
   bool get isDark => _settings?.isDark ?? false;
   void switchTheme() {
-    _settings?.isDark = !_settings!.isDark;
+    _settings!.isDark = !_settings!.isDark;
     UserDataRepository(Dependencies().getIt.get()).setSettings(_settings!);
     notifyListeners();
   }
 
   Color? get primaryColor => _settings?.primaryColor;
   set primaryColor(Color? v) {
-    _settings?.primaryColor = v;
+    _settings!.primaryColor = v;
     UserDataRepository(Dependencies().getIt.get()).setSettings(_settings!);
     notifyListeners();
   }
 
   Color? get backgroundColor => _settings?.backgroundColor;
   set backgroundColor(Color? v) {
-    _settings?.backgroundColor = v;
+    _settings!.backgroundColor = v;
     UserDataRepository(Dependencies().getIt.get()).setSettings(_settings!);
     notifyListeners();
   }
@@ -80,8 +99,23 @@ class SettingsNotifier extends ChangeNotifier {
     UserDataRepository(Dependencies().getIt.get()).setSettings(_settings!);
     notifyListeners();
   }
+
+  bool get isShowTime => _settings?.isShowTime ?? false;
+  set isShowTime(bool v) {
+    _settings!.isShowTime = v;
+    UserDataRepository(Dependencies().getIt.get()).setSettings(_settings!);
+    notifyListeners();
+  }
+
+  bool get isShortInitials => _settings?.isShortInitials ?? false;
+  set isShortInitials(bool v) {
+    _settings!.isShortInitials = v;
+    UserDataRepository(Dependencies().getIt.get()).setSettings(_settings!);
+    notifyListeners();
+  }
 }
 
-final settingsProvider = ChangeNotifierProvider<SettingsNotifier>((ref) {
+final settingsProvider =
+    ChangeNotifierProvider.autoDispose<SettingsNotifier>((ref) {
   return SettingsNotifier();
 });

@@ -8,5 +8,5 @@ final TextStyle kSmallText = GoogleFonts.comfortaa(fontSize: TextSize.small);
 class TextSize {
   static const double small = 12;
   static const double medium = 14;
-  static const double large = 18;
+  static const double large = 16;
 }

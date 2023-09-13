@@ -1,12 +1,12 @@
 /// Generated file. Do not edit.
 ///
-/// Original: lib/presentation/translations/views/auth
+/// Original: lib/presentation/translations/dialog
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 132 (66 per locale)
+/// Strings: 180 (90 per locale)
 ///
-/// Built on 2023-08-18 at 07:32 UTC
+/// Built on 2023-09-12 at 17:29 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -158,12 +158,52 @@ class _TranslationsEn implements BaseTranslations<AppLocale, _TranslationsEn> {
 	late final _TranslationsEn _root = this; // ignore: unused_field
 
 	// Translations
+	late final _TranslationsDialogEn dialog = _TranslationsDialogEn._(_root);
+	late final _TranslationsErrorsEn errors = _TranslationsErrorsEn._(_root);
 	late final _TranslationsAuthEn auth = _TranslationsAuthEn._(_root);
 	late final _TranslationsHomeEn home = _TranslationsHomeEn._(_root);
 	late final _TranslationsSelectionEn selection = _TranslationsSelectionEn._(_root);
 	late final _TranslationsSettingsEn settings = _TranslationsSettingsEn._(_root);
 	late final _TranslationsWeekEn week = _TranslationsWeekEn._(_root);
 	late final _TranslationsSubjectEn subject = _TranslationsSubjectEn._(_root);
+}
+
+// Path: dialog
+class _TranslationsDialogEn {
+	_TranslationsDialogEn._(this._root);
+
+	final _TranslationsEn _root; // ignore: unused_field
+
+	// Translations
+	String get wrong => 'Wrong';
+	String get initials => 'Surname Name Patronymic';
+	String get start => 'Start';
+	String get end => 'End';
+	String get number => 'Number of subject';
+	List<String> get subject_mode => [
+		'usual',
+		'exam',
+		'practice',
+		'laboratory',
+		'test',
+	];
+}
+
+// Path: errors
+class _TranslationsErrorsEn {
+	_TranslationsErrorsEn._(this._root);
+
+	final _TranslationsEn _root; // ignore: unused_field
+
+	// Translations
+	String get empty => 'The field should not be empty';
+	String get short => 'Too short';
+	String get email => 'Email is not correct';
+	String get used => 'A user with such an email already exists';
+	String get wrong => 'Password or email don\'t match';
+	String get digits => 'The field must not contain numbers';
+	String get connection => 'No internet connection';
+	String get already => 'There is such data in the database';
 }
 
 // Path: auth
@@ -180,7 +220,6 @@ class _TranslationsAuthEn {
 	String get name => 'Name';
 	String get surname => 'Surname';
 	String get password => 'Password';
-	late final _TranslationsAuthErrorsEn errors = _TranslationsAuthErrorsEn._(_root);
 	late final _TranslationsAuthHelpersEn helpers = _TranslationsAuthHelpersEn._(_root);
 }
 
@@ -205,6 +244,10 @@ class _TranslationsSelectionEn {
 	String get city => 'city';
 	String get institution => 'institution';
 	String get group => 'group';
+	String get teacher => 'Teacher';
+	String get day => 'Day';
+	String get date => 'Date';
+	String get time => 'Time';
 	String get add => 'Add';
 	String get title => 'Title';
 	String get shortTitle => 'Short title';
@@ -228,7 +271,8 @@ class _TranslationsSettingsEn {
 	final _TranslationsEn _root; // ignore: unused_field
 
 	// Translations
-	String get app_name => 'daylist';
+	String get app_name => 'Daylist';
+	String get scheduler => 'Change schedule';
 	String get back => 'Back';
 	String get cancel => 'Cancel';
 	String get title => 'Settings';
@@ -244,7 +288,9 @@ class _TranslationsSettingsEn {
 	String get primary_color => 'Main color';
 	String get background_color => 'Background color';
 	String get radius => 'Block angle';
+	String get short_initials => 'Abbreviated name of the teacher';
 	String get show_time => 'Show time';
+	late final _TranslationsSettingsSupportEn support = _TranslationsSettingsSupportEn._(_root);
 }
 
 // Path: week
@@ -258,6 +304,7 @@ class _TranslationsWeekEn {
 	List<String> get isEven => [
 		'Even ${_root.week.title}',
 		'Odd ${_root.week.title}',
+		'Regular ${_root.week.title}',
 	];
 	late final _TranslationsWeekDaysEn days = _TranslationsWeekDaysEn._(_root);
 }
@@ -269,22 +316,8 @@ class _TranslationsSubjectEn {
 	final _TranslationsEn _root; // ignore: unused_field
 
 	// Translations
+	String get title => 'Subject';
 	String get classroom => 'classroom';
-}
-
-// Path: auth.errors
-class _TranslationsAuthErrorsEn {
-	_TranslationsAuthErrorsEn._(this._root);
-
-	final _TranslationsEn _root; // ignore: unused_field
-
-	// Translations
-	String get empty => 'The field should not be empty';
-	String get short => 'Too short';
-	String get email => 'Email is not correct';
-	String get used => 'A user with such an email already exists';
-	String get wrong => 'Password or email don\'t match';
-	String get digits => 'The field must not contain numbers';
 }
 
 // Path: auth.helpers
@@ -333,6 +366,18 @@ class _TranslationsSettingsThemeModeEn {
 	String get dark => 'Dark';
 }
 
+// Path: settings.support
+class _TranslationsSettingsSupportEn {
+	_TranslationsSettingsSupportEn._(this._root);
+
+	final _TranslationsEn _root; // ignore: unused_field
+
+	// Translations
+	String get questions => 'Write questions and suggestions in Telegram:';
+	String get tag => 'studbin';
+	late final _TranslationsSettingsSupportMoneyEn money = _TranslationsSettingsSupportMoneyEn._(_root);
+}
+
 // Path: week.days
 class _TranslationsWeekDaysEn {
 	_TranslationsWeekDaysEn._(this._root);
@@ -371,6 +416,17 @@ class _TranslationsAuthHelpersTitlesEn {
 	String get signUp => 'Create your account';
 }
 
+// Path: settings.support.money
+class _TranslationsSettingsSupportMoneyEn {
+	_TranslationsSettingsSupportMoneyEn._(this._root);
+
+	final _TranslationsEn _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Support the author for project development and server payment';
+	String get url => 'https://yoomoney.ru/to/4100117575409230';
+}
+
 // Path: <root>
 class _TranslationsRu implements _TranslationsEn {
 
@@ -396,12 +452,52 @@ class _TranslationsRu implements _TranslationsEn {
 	@override late final _TranslationsRu _root = this; // ignore: unused_field
 
 	// Translations
+	@override late final _TranslationsDialogRu dialog = _TranslationsDialogRu._(_root);
+	@override late final _TranslationsErrorsRu errors = _TranslationsErrorsRu._(_root);
 	@override late final _TranslationsAuthRu auth = _TranslationsAuthRu._(_root);
 	@override late final _TranslationsHomeRu home = _TranslationsHomeRu._(_root);
 	@override late final _TranslationsSelectionRu selection = _TranslationsSelectionRu._(_root);
 	@override late final _TranslationsSettingsRu settings = _TranslationsSettingsRu._(_root);
 	@override late final _TranslationsWeekRu week = _TranslationsWeekRu._(_root);
 	@override late final _TranslationsSubjectRu subject = _TranslationsSubjectRu._(_root);
+}
+
+// Path: dialog
+class _TranslationsDialogRu implements _TranslationsDialogEn {
+	_TranslationsDialogRu._(this._root);
+
+	@override final _TranslationsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get wrong => 'Неправильно';
+	@override String get initials => 'Фамилия Имя Отчество';
+	@override String get start => 'Начало';
+	@override String get end => 'Конец';
+	@override String get number => 'Номер пары';
+	@override List<String> get subject_mode => [
+		'Обычный',
+		'Экзамен',
+		'Практика',
+		'Лабораторная',
+		'Тест',
+	];
+}
+
+// Path: errors
+class _TranslationsErrorsRu implements _TranslationsErrorsEn {
+	_TranslationsErrorsRu._(this._root);
+
+	@override final _TranslationsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get empty => 'Поле не должно быть пустым';
+	@override String get short => 'Слишком короткий';
+	@override String get email => 'Почта введена не правильно';
+	@override String get used => 'Пользователь с такой почтой уже существует';
+	@override String get wrong => 'Пароль или почта введены не верно';
+	@override String get digits => 'Поле не должно содержать цифры';
+	@override String get connection => 'Нет интернет соединения.';
+	@override String get already => 'В базе есть такие данные';
 }
 
 // Path: auth
@@ -418,7 +514,6 @@ class _TranslationsAuthRu implements _TranslationsAuthEn {
 	@override String get name => 'Имя';
 	@override String get surname => 'Фамилия';
 	@override String get password => 'Пароль';
-	@override late final _TranslationsAuthErrorsRu errors = _TranslationsAuthErrorsRu._(_root);
 	@override late final _TranslationsAuthHelpersRu helpers = _TranslationsAuthHelpersRu._(_root);
 }
 
@@ -443,6 +538,10 @@ class _TranslationsSelectionRu implements _TranslationsSelectionEn {
 	@override String get city => 'город';
 	@override String get institution => 'учреждение';
 	@override String get group => 'группа';
+	@override String get teacher => 'Преподаватель';
+	@override String get day => 'День';
+	@override String get date => 'Дата';
+	@override String get time => 'Время';
 	@override String get add => 'Добавить';
 	@override String get title => 'Название';
 	@override String get shortTitle => 'Короткое название';
@@ -450,11 +549,11 @@ class _TranslationsSelectionRu implements _TranslationsSelectionEn {
 	@override String select({required SelectType context}) {
 		switch (context) {
 			case SelectType.city:
-				return 'Выберите ${_root.selection.city}';
+				return 'Выбери ${_root.selection.city}';
 			case SelectType.institution:
-				return 'Выберите ${_root.selection.institution}';
+				return 'Выбери ${_root.selection.institution}';
 			case SelectType.group:
-				return 'Выберите группу';
+				return 'Выбери группу';
 		}
 	}
 }
@@ -466,7 +565,8 @@ class _TranslationsSettingsRu implements _TranslationsSettingsEn {
 	@override final _TranslationsRu _root; // ignore: unused_field
 
 	// Translations
-	@override String get app_name => 'daylist';
+	@override String get app_name => 'Daylist';
+	@override String get scheduler => 'Изменить расписание';
 	@override String get back => 'Назад';
 	@override String get cancel => 'Отмена';
 	@override String get title => 'Настройки';
@@ -482,7 +582,9 @@ class _TranslationsSettingsRu implements _TranslationsSettingsEn {
 	@override String get primary_color => 'Главный цвет';
 	@override String get background_color => 'Цвет фона';
 	@override String get radius => 'Угол блоков';
+	@override String get short_initials => 'Сокращённое имя преподавателя';
 	@override String get show_time => 'Показывать время';
+	@override late final _TranslationsSettingsSupportRu support = _TranslationsSettingsSupportRu._(_root);
 }
 
 // Path: week
@@ -496,6 +598,7 @@ class _TranslationsWeekRu implements _TranslationsWeekEn {
 	@override List<String> get isEven => [
 		'Чётная ${_root.week.title}',
 		'Нечётная ${_root.week.title}',
+		'Обычная ${_root.week.title}',
 	];
 	@override late final _TranslationsWeekDaysRu days = _TranslationsWeekDaysRu._(_root);
 }
@@ -507,22 +610,8 @@ class _TranslationsSubjectRu implements _TranslationsSubjectEn {
 	@override final _TranslationsRu _root; // ignore: unused_field
 
 	// Translations
+	@override String get title => 'Предмет';
 	@override String get classroom => 'кабинет';
-}
-
-// Path: auth.errors
-class _TranslationsAuthErrorsRu implements _TranslationsAuthErrorsEn {
-	_TranslationsAuthErrorsRu._(this._root);
-
-	@override final _TranslationsRu _root; // ignore: unused_field
-
-	// Translations
-	@override String get empty => 'Поле не должно быть пустым';
-	@override String get short => 'Слишком короткий';
-	@override String get email => 'Почта введена не правильно';
-	@override String get used => 'Пользователь с такой почтой уже существует';
-	@override String get wrong => 'Пароль или почта введены не верно';
-	@override String get digits => 'Поле не должно содержать цифры';
 }
 
 // Path: auth.helpers
@@ -571,6 +660,18 @@ class _TranslationsSettingsThemeModeRu implements _TranslationsSettingsThemeMode
 	@override String get dark => 'Тёмная';
 }
 
+// Path: settings.support
+class _TranslationsSettingsSupportRu implements _TranslationsSettingsSupportEn {
+	_TranslationsSettingsSupportRu._(this._root);
+
+	@override final _TranslationsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get questions => 'Вопросы и предложения пишите в Telegram:';
+	@override String get tag => 'studbin';
+	@override late final _TranslationsSettingsSupportMoneyRu money = _TranslationsSettingsSupportMoneyRu._(_root);
+}
+
 // Path: week.days
 class _TranslationsWeekDaysRu implements _TranslationsWeekDaysEn {
 	_TranslationsWeekDaysRu._(this._root);
@@ -609,12 +710,41 @@ class _TranslationsAuthHelpersTitlesRu implements _TranslationsAuthHelpersTitles
 	@override String get signUp => 'Создай новый аккаунт';
 }
 
+// Path: settings.support.money
+class _TranslationsSettingsSupportMoneyRu implements _TranslationsSettingsSupportMoneyEn {
+	_TranslationsSettingsSupportMoneyRu._(this._root);
+
+	@override final _TranslationsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Поддержать автора на развитие проекта и оплату серверов';
+	@override String get url => 'https://yoomoney.ru/to/4100117575409230';
+}
+
 /// Flat map(s) containing all translations.
 /// Only for edge cases! For simple maps, use the map function of this library.
 
 extension on _TranslationsEn {
 	dynamic _flatMapFunction(String path) {
 		switch (path) {
+			case 'dialog.wrong': return 'Wrong';
+			case 'dialog.initials': return 'Surname Name Patronymic';
+			case 'dialog.start': return 'Start';
+			case 'dialog.end': return 'End';
+			case 'dialog.number': return 'Number of subject';
+			case 'dialog.subject_mode.0': return 'usual';
+			case 'dialog.subject_mode.1': return 'exam';
+			case 'dialog.subject_mode.2': return 'practice';
+			case 'dialog.subject_mode.3': return 'laboratory';
+			case 'dialog.subject_mode.4': return 'test';
+			case 'errors.empty': return 'The field should not be empty';
+			case 'errors.short': return 'Too short';
+			case 'errors.email': return 'Email is not correct';
+			case 'errors.used': return 'A user with such an email already exists';
+			case 'errors.wrong': return 'Password or email don\'t match';
+			case 'errors.digits': return 'The field must not contain numbers';
+			case 'errors.connection': return 'No internet connection';
+			case 'errors.already': return 'There is such data in the database';
 			case 'auth.signIn': return 'Sign in';
 			case 'auth.signUp': return 'Sign up';
 			case 'auth.account': return 'account';
@@ -622,12 +752,6 @@ extension on _TranslationsEn {
 			case 'auth.name': return 'Name';
 			case 'auth.surname': return 'Surname';
 			case 'auth.password': return 'Password';
-			case 'auth.errors.empty': return 'The field should not be empty';
-			case 'auth.errors.short': return 'Too short';
-			case 'auth.errors.email': return 'Email is not correct';
-			case 'auth.errors.used': return 'A user with such an email already exists';
-			case 'auth.errors.wrong': return 'Password or email don\'t match';
-			case 'auth.errors.digits': return 'The field must not contain numbers';
 			case 'auth.helpers.titles.signIn': return 'Sign in to your account';
 			case 'auth.helpers.titles.signUp': return 'Create your account';
 			case 'auth.helpers.signUp': return ({required InlineSpanBuilder tapHere}) => TextSpan(children: [
@@ -639,6 +763,10 @@ extension on _TranslationsEn {
 			case 'selection.city': return 'city';
 			case 'selection.institution': return 'institution';
 			case 'selection.group': return 'group';
+			case 'selection.teacher': return 'Teacher';
+			case 'selection.day': return 'Day';
+			case 'selection.date': return 'Date';
+			case 'selection.time': return 'Time';
 			case 'selection.add': return 'Add';
 			case 'selection.title': return 'Title';
 			case 'selection.shortTitle': return 'Short title';
@@ -664,7 +792,8 @@ extension on _TranslationsEn {
 						return 'Select ${_root.selection.group}';
 				}
 			};
-			case 'settings.app_name': return 'daylist';
+			case 'settings.app_name': return 'Daylist';
+			case 'settings.scheduler': return 'Change schedule';
 			case 'settings.back': return 'Back';
 			case 'settings.cancel': return 'Cancel';
 			case 'settings.title': return 'Settings';
@@ -681,10 +810,16 @@ extension on _TranslationsEn {
 			case 'settings.primary_color': return 'Main color';
 			case 'settings.background_color': return 'Background color';
 			case 'settings.radius': return 'Block angle';
+			case 'settings.short_initials': return 'Abbreviated name of the teacher';
 			case 'settings.show_time': return 'Show time';
+			case 'settings.support.questions': return 'Write questions and suggestions in Telegram:';
+			case 'settings.support.tag': return 'studbin';
+			case 'settings.support.money.title': return 'Support the author for project development and server payment';
+			case 'settings.support.money.url': return 'https://yoomoney.ru/to/4100117575409230';
 			case 'week.title': return 'week';
 			case 'week.isEven.0': return 'Even ${_root.week.title}';
 			case 'week.isEven.1': return 'Odd ${_root.week.title}';
+			case 'week.isEven.2': return 'Regular ${_root.week.title}';
 			case 'week.days.short.0': return 'Mo';
 			case 'week.days.short.1': return 'Tu';
 			case 'week.days.short.2': return 'We';
@@ -699,6 +834,7 @@ extension on _TranslationsEn {
 			case 'week.days.full.4': return 'Friday';
 			case 'week.days.full.5': return 'Saturday';
 			case 'week.days.full.6': return 'Sunday';
+			case 'subject.title': return 'Subject';
 			case 'subject.classroom': return 'classroom';
 			default: return null;
 		}
@@ -708,6 +844,24 @@ extension on _TranslationsEn {
 extension on _TranslationsRu {
 	dynamic _flatMapFunction(String path) {
 		switch (path) {
+			case 'dialog.wrong': return 'Неправильно';
+			case 'dialog.initials': return 'Фамилия Имя Отчество';
+			case 'dialog.start': return 'Начало';
+			case 'dialog.end': return 'Конец';
+			case 'dialog.number': return 'Номер пары';
+			case 'dialog.subject_mode.0': return 'Обычный';
+			case 'dialog.subject_mode.1': return 'Экзамен';
+			case 'dialog.subject_mode.2': return 'Практика';
+			case 'dialog.subject_mode.3': return 'Лабораторная';
+			case 'dialog.subject_mode.4': return 'Тест';
+			case 'errors.empty': return 'Поле не должно быть пустым';
+			case 'errors.short': return 'Слишком короткий';
+			case 'errors.email': return 'Почта введена не правильно';
+			case 'errors.used': return 'Пользователь с такой почтой уже существует';
+			case 'errors.wrong': return 'Пароль или почта введены не верно';
+			case 'errors.digits': return 'Поле не должно содержать цифры';
+			case 'errors.connection': return 'Нет интернет соединения.';
+			case 'errors.already': return 'В базе есть такие данные';
 			case 'auth.signIn': return 'Вход';
 			case 'auth.signUp': return 'Зарегистрироваться';
 			case 'auth.account': return 'аккаунт';
@@ -715,12 +869,6 @@ extension on _TranslationsRu {
 			case 'auth.name': return 'Имя';
 			case 'auth.surname': return 'Фамилия';
 			case 'auth.password': return 'Пароль';
-			case 'auth.errors.empty': return 'Поле не должно быть пустым';
-			case 'auth.errors.short': return 'Слишком короткий';
-			case 'auth.errors.email': return 'Почта введена не правильно';
-			case 'auth.errors.used': return 'Пользователь с такой почтой уже существует';
-			case 'auth.errors.wrong': return 'Пароль или почта введены не верно';
-			case 'auth.errors.digits': return 'Поле не должно содержать цифры';
 			case 'auth.helpers.titles.signIn': return 'Вход в аккаунт';
 			case 'auth.helpers.titles.signUp': return 'Создай новый аккаунт';
 			case 'auth.helpers.signUp': return ({required InlineSpanBuilder tapHere}) => TextSpan(children: [
@@ -732,6 +880,10 @@ extension on _TranslationsRu {
 			case 'selection.city': return 'город';
 			case 'selection.institution': return 'учреждение';
 			case 'selection.group': return 'группа';
+			case 'selection.teacher': return 'Преподаватель';
+			case 'selection.day': return 'День';
+			case 'selection.date': return 'Дата';
+			case 'selection.time': return 'Время';
 			case 'selection.add': return 'Добавить';
 			case 'selection.title': return 'Название';
 			case 'selection.shortTitle': return 'Короткое название';
@@ -750,14 +902,15 @@ extension on _TranslationsRu {
 			case 'selection.select': return ({required SelectType context}) {
 				switch (context) {
 					case SelectType.city:
-						return 'Выберите ${_root.selection.city}';
+						return 'Выбери ${_root.selection.city}';
 					case SelectType.institution:
-						return 'Выберите ${_root.selection.institution}';
+						return 'Выбери ${_root.selection.institution}';
 					case SelectType.group:
-						return 'Выберите группу';
+						return 'Выбери группу';
 				}
 			};
-			case 'settings.app_name': return 'daylist';
+			case 'settings.app_name': return 'Daylist';
+			case 'settings.scheduler': return 'Изменить расписание';
 			case 'settings.back': return 'Назад';
 			case 'settings.cancel': return 'Отмена';
 			case 'settings.title': return 'Настройки';
@@ -774,10 +927,16 @@ extension on _TranslationsRu {
 			case 'settings.primary_color': return 'Главный цвет';
 			case 'settings.background_color': return 'Цвет фона';
 			case 'settings.radius': return 'Угол блоков';
+			case 'settings.short_initials': return 'Сокращённое имя преподавателя';
 			case 'settings.show_time': return 'Показывать время';
+			case 'settings.support.questions': return 'Вопросы и предложения пишите в Telegram:';
+			case 'settings.support.tag': return 'studbin';
+			case 'settings.support.money.title': return 'Поддержать автора на развитие проекта и оплату серверов';
+			case 'settings.support.money.url': return 'https://yoomoney.ru/to/4100117575409230';
 			case 'week.title': return 'неделя';
 			case 'week.isEven.0': return 'Чётная ${_root.week.title}';
 			case 'week.isEven.1': return 'Нечётная ${_root.week.title}';
+			case 'week.isEven.2': return 'Обычная ${_root.week.title}';
 			case 'week.days.short.0': return 'Пн';
 			case 'week.days.short.1': return 'Вт';
 			case 'week.days.short.2': return 'Ср';
@@ -792,6 +951,7 @@ extension on _TranslationsRu {
 			case 'week.days.full.4': return 'Пятница';
 			case 'week.days.full.5': return 'Суббота';
 			case 'week.days.full.6': return 'Воскресенье';
+			case 'subject.title': return 'Предмет';
 			case 'subject.classroom': return 'кабинет';
 			default: return null;
 		}

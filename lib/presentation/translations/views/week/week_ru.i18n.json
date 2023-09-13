@@ -2,7 +2,8 @@
     "title": "неделя",
     "isEven": [
         "Чётная @:week.title",
-        "Нечётная @:week.title"
+        "Нечётная @:week.title",
+        "Обычная @:week.title"
     ],
     "days": {
         "short": [

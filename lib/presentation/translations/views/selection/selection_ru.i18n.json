@@ -2,6 +2,10 @@
     "city": "город",
     "institution": "учреждение",
     "group": "группа",
+    "teacher": "Преподаватель",
+    "day": "День",
+    "date": "Дата",
+    "time": "Время",
     "add": "Добавить",
     "title": "Название",
     "shortTitle": "Короткое название",
@@ -11,8 +15,8 @@
         "group(rich)": "Нет твоей группы? ${tapHere(@:selection.add)}"
     },
     "select(context=SelectType)": {
-        "city": "Выберите @:selection.city",
-        "institution": "Выберите @:selection.institution",
-        "group": "Выберите группу"
+        "city": "Выбери @:selection.city",
+        "institution": "Выбери @:selection.institution",
+        "group": "Выбери группу"
     }
 }

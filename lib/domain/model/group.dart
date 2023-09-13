@@ -23,7 +23,7 @@ class Group {
     return Group(
       id: map['id'] as String,
       title: map['title'] as String,
-      institutionId: map['institutionId'] as String,
+      institutionId: map['institutionId'],
     );
   }
 }

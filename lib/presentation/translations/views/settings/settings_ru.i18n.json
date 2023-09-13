@@ -1,5 +1,6 @@
 {
-    "app_name": "daylist",
+    "app_name": "Daylist",
+    "scheduler": "Изменить расписание",
     "back": "Назад",
     "cancel": "Отмена",
     "title": "Настройки",
@@ -18,5 +19,14 @@
     "primary_color": "Главный цвет",
     "background_color": "Цвет фона",
     "radius": "Угол блоков",
-    "show_time": "Показывать время"
+    "short_initials": "Сокращённое имя преподавателя",
+    "show_time": "Показывать время",
+    "support": {
+        "questions": "Вопросы и предложения пишите в Telegram:",
+        "tag": "studbin",
+        "money": {
+            "title": "Поддержать автора на развитие проекта и оплату серверов",
+            "url": "https://yoomoney.ru/to/4100117575409230"
+        }
+    }
 }

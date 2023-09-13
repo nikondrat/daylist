@@ -16,4 +16,14 @@ class UserDataRepository extends UserRepository {
   Future setSettings(Settings settings) async {
     return await _storageUtil.setSettings(settings);
   }
+
+  @override
+  Future<bool> isAuthorized() async {
+    return await _storageUtil.isAuthorized();
+  }
+
+  @override
+  Future setIsAuthorized(bool value) async {
+    return await _storageUtil.setIsAuthorized(value);
+  }
 }

@@ -1,9 +1,10 @@
-import 'package:daylist/presentation/res/values.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
 import 'package:daylist/domain/model/city.dart';
 import 'package:daylist/domain/model/group.dart';
 import 'package:daylist/domain/model/institution.dart';
+import 'package:daylist/presentation/res/values.dart';
 
 class Settings {
   City? city;
@@ -12,6 +13,8 @@ class Settings {
   int undergroup;
 
   bool isDark;
+  bool isShowTime;
+  bool isShortInitials;
   Color? primaryColor;
   Color? backgroundColor;
   double radius;
@@ -20,10 +23,12 @@ class Settings {
       {this.city,
       this.institution,
       this.group,
-      this.undergroup = 1,
-      this.isDark = false,
       this.primaryColor,
+      this.isDark = false,
+      this.undergroup = 1,
       this.backgroundColor,
+      this.isShowTime = false,
+      this.isShortInitials = false,
       this.radius = kDefaultRadius});
 
   Map<String, dynamic> toMap() {
@@ -33,9 +38,11 @@ class Settings {
       'group': group!.toMap(),
       'undergroup': undergroup,
       'isDark': isDark,
+      'isShowTime': isShowTime,
       'primaryColor': primaryColor?.value,
       'backgroundColor': backgroundColor?.value,
-      'radius': radius
+      'radius': radius,
+      'isShortInitials': isShortInitials
     };
   }
 
@@ -45,13 +52,20 @@ class Settings {
         institution: Institution.fromMap(map['institution']),
         group: Group.fromMap(map['group']),
         undergroup: map['undergroup'] ?? 1,
-        isDark: map['isDark'] as bool,
+        isDark: map['isDark'] ?? false,
+        isShowTime: map['isShowTime'] ?? false,
+        isShortInitials: map['isShortInitials'] ?? false,
         primaryColor: map['primaryColor'] != null
             ? Color(map['primaryColor'] as int)
             : null,
         backgroundColor: map['backgroundColor'] != null
             ? Color(map['backgroundColor'] as int)
             : null,
-        radius: map['radius']);
+        radius: map['radius'] ?? kDefaultRadius);
+  }
+
+  @override
+  String toString() {
+    return 'Settings(city: $city, institution: $institution, group: $group, undergroup: $undergroup, isDark: $isDark, primaryColor: $primaryColor, backgroundColor: $backgroundColor, radius: $radius)';
   }
 }

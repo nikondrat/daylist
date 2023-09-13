@@ -1,16 +1,21 @@
 import 'package:appwrite/appwrite.dart';
+import 'package:daylist/data/api/request/auth/sign_in_body.dart';
+import 'package:daylist/data/repository/auth_repository.dart';
+import 'package:daylist/data/repository/user_repository.dart';
 import 'package:daylist/domain/state/auth/auth_state.dart';
+import 'package:daylist/domain/state/settings/settings_state.dart';
+import 'package:daylist/internal/dependencies/dependencies.dart';
+import 'package:daylist/presentation/extensions/theme/context.dart';
 import 'package:daylist/presentation/utils/validator.dart';
+import 'package:daylist/presentation/views/router.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:unicons/unicons.dart';
 
-import 'package:daylist/presentation/extensions/context.dart';
 import 'package:daylist/presentation/res/values.dart';
 import 'package:daylist/presentation/translations/translations.g.dart';
-import 'package:daylist/presentation/views/router.dart';
 import 'package:daylist/presentation/views/widgets/adaptive.dart';
 
 class LoginView extends StatefulHookConsumerWidget {
@@ -49,19 +54,22 @@ class _LoginViewState extends ConsumerState<LoginView> {
         !passwordState.currentState!.validate()) return;
 
     try {
-      throw Exception();
-      // await AuthDataRepository(Dependencies().getIt.get())
-      //     .login(
-      //         body: SignInBody(
-      //             email: emailController.text.trim(),
-      //             password: passwordController.text.trim()))
-      //     .then((value) => context.goNamed(ViewsNames.home));
+      await AuthDataRepository(Dependencies().getIt.get())
+          .login(
+              body: SignInBody(
+                  email: emailController.text.trim(),
+                  password: passwordController.text.trim()))
+          .then((value) {
+        UserDataRepository(Dependencies().getIt.get()).setIsAuthorized(true);
+
+        context.goNamed(ViewsNames.selectionCity);
+      });
     } on AppwriteException catch (e) {
       switch (e.code) {
         case 401:
           ref
               .read(authErrorProvider.notifier)
-              .update((state) => t.auth.errors.wrong);
+              .update((state) => t.errors.wrong);
           break;
         default:
       }
@@ -183,12 +191,12 @@ class _Fields extends HookConsumerWidget {
   }
 }
 
-class _SignInButton extends StatelessWidget {
+class _SignInButton extends HookConsumerWidget {
   final Future Function() signIn;
   const _SignInButton({required this.signIn});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
         padding: EdgeInsets.only(top: context.value.padding),
         child: Row(children: [
@@ -275,7 +283,7 @@ class _Mobile extends StatelessWidget {
   }
 }
 
-class _Tablet extends StatelessWidget {
+class _Tablet extends HookConsumerWidget {
   final GlobalKey<FormState> emailState;
   final GlobalKey<FormState> passwordState;
   final TextEditingController emailController;
@@ -291,15 +299,17 @@ class _Tablet extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final double radius = ref.watch(settingsProvider).radius;
+
     return Scaffold(
         body: Row(children: [
       Expanded(
           child: DecoratedBox(
               decoration: BoxDecoration(
                   color: context.color.primaryColor,
-                  borderRadius: BorderRadius.horizontal(
-                      right: Radius.circular(context.value.radius))),
+                  borderRadius:
+                      BorderRadius.horizontal(right: Radius.circular(radius))),
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -330,7 +340,7 @@ class _Tablet extends StatelessWidget {
   }
 }
 
-class _Desktop extends StatelessWidget {
+class _Desktop extends HookConsumerWidget {
   final GlobalKey<FormState> emailState;
   final GlobalKey<FormState> passwordState;
   final TextEditingController emailController;
@@ -347,15 +357,17 @@ class _Desktop extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final double radius = ref.watch(settingsProvider).radius;
+
     return Scaffold(
         body: Row(children: [
       Expanded(
           child: DecoratedBox(
               decoration: BoxDecoration(
                   color: context.color.primaryColor,
-                  borderRadius: BorderRadius.horizontal(
-                      right: Radius.circular(context.value.radius))),
+                  borderRadius:
+                      BorderRadius.horizontal(right: Radius.circular(radius))),
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

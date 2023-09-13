@@ -1,31 +1,6 @@
-import 'package:daylist/presentation/translations/translations.g.dart';
 import 'package:flutter/material.dart';
-
-import 'package:daylist/domain/model/replacement.dart';
-import 'package:daylist/domain/model/subject.dart';
-import 'package:daylist/domain/model/teacher.dart';
-import 'package:daylist/domain/model/time.dart';
-import 'package:daylist/domain/model/title.dart';
-import 'package:daylist/presentation/extensions/context.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
-class SubsectionSubject {
-  final Time time;
-
-  final Teacher teacher;
-  final SubjectTitle title;
-
-  final Replacement? replacement;
-  final Subject? subject;
-
-  SubsectionSubject({
-    required this.time,
-    required this.teacher,
-    required this.title,
-    this.replacement,
-    this.subject,
-  }) : assert(replacement == null || subject == null);
-}
+import 'package:daylist/presentation/extensions/theme/context.dart';
 
 class Subsection {
   final Function()? onTap;
@@ -33,33 +8,24 @@ class Subsection {
   final String title;
   final List<Widget>? trailing;
 
-  Subsection({
-    this.onTap,
-    this.icon,
-    required this.title,
-    this.trailing,
-  });
+  Subsection({this.onTap, this.icon, required this.title, this.trailing});
 }
 
 class SubsectionWidget extends StatelessWidget {
-  final Subsection? subsection;
-  final SubsectionSubject? subsectionSubject;
+  final Subsection subsection;
 
   const SubsectionWidget({
     super.key,
-    this.subsection,
-    this.subsectionSubject,
-  }) : assert(subsection == null || subsectionSubject == null);
+    required this.subsection,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return subsection != null
-        ? _Body(subsection: subsection!)
-        : _Subject(subject: subsectionSubject!);
+    return _Body(subsection: subsection);
   }
 }
 
-class _Body extends StatelessWidget {
+class _Body extends HookConsumerWidget {
   final Subsection subsection;
 
   const _Body({
@@ -68,7 +34,7 @@ class _Body extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ListTile(
         onTap: subsection.onTap,
         leading: subsection.icon,
@@ -82,43 +48,66 @@ class _Body extends StatelessWidget {
   }
 }
 
-class _Subject extends StatelessWidget {
-  final SubsectionSubject subject;
-  const _Subject({required this.subject});
 
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-        dense: true,
-        leading: _Leading(time: subject.time),
-        title: Text(subject.title.title, style: context.text.largeText),
-        subtitle: _Subtitle(teacher: subject.teacher));
-  }
-}
 
-class _Leading extends HookConsumerWidget {
-  final Time time;
-  const _Leading({required this.time});
+// class _Delete extends HookConsumerWidget {
+//   final SubsectionSubject subject;
+//   const _Delete({
+//     required this.subject,
+//   });
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Text('${time.start}\n${time.end}');
-  }
-}
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     final Group group = ref.watch(settingsProvider).group!;
 
-class _Subtitle extends HookConsumerWidget {
-  final Teacher teacher;
-  const _Subtitle({required this.teacher});
+//     return isChangeSchedule && subject.isHomeView
+//         ? IconButton(
+//             onPressed: () async {
+//               final ConnectivityResult connectivityResult =
+//                   await Connectivity().checkConnectivity();
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text('${teacher.classroom} ${t.subject.classroom}',
-              style: context.text.mediumText),
-          Text(teacher.initials)
-        ]);
-  }
-}
+//               if (connectivityResult == ConnectivityResult.mobile ||
+//                   connectivityResult == ConnectivityResult.wifi) {
+//                 final User user =
+//                     await AuthDataRepository(Dependencies().getIt.get())
+//                         .getUser();
+
+//                 if (subject.replacement != null) {
+//                   ReplacementDataRepository(Dependencies().getIt.get())
+//                       .deleteReplacement(
+//                           body: DeleteReplacementBody(
+//                               databaseId: dotenv.env['databaseId']!,
+//                               collectionId:
+//                                   dotenv.env['replacementsCollectionId']!,
+//                               id: subject.replacement!.id));
+//                 } else {
+//                   ReplacementDataRepository(Dependencies().getIt.get())
+//                       .addReplacement(
+//                           body: AddReplacementBody(
+//                               databaseId: dotenv.env['databaseId']!,
+//                               collectionId:
+//                                   dotenv.env['replacementsCollectionId']!,
+//                               replacement: Replacement(
+//                                   id: ID.custom(Generator.generateId()),
+//                                   time: subject.time,
+//                                   teacher: subject.teacher,
+//                                   groupId: group.id,
+//                                   date: subject.dateTime!,
+//                                   mode: ReplacementMode.cancel,
+//                                   undergroup: null,
+//                                   createdBy: user.$id)));
+//                 }
+//                 ref.invalidate(replacementsProvider);
+//               } else {
+//                 if (context.mounted) {
+//                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+//                       content: Text(t.errors.connection),
+//                       backgroundColor: Colors.red));
+//                 }
+//               }
+//             },
+//             splashRadius: 20,
+//             icon: const Icon(Icons.delete))
+//         : const SizedBox.shrink();
+//   }
+// }

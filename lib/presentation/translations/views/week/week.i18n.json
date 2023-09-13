@@ -2,7 +2,8 @@
     "title": "week",
     "isEven": [
         "Even @:week.title",
-        "Odd @:week.title"
+        "Odd @:week.title",
+        "Regular @:week.title"
     ],
     "days": {
         "short": [

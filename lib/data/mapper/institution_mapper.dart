@@ -1,5 +1,4 @@
 import 'package:daylist/data/api/model/api_institution.dart';
-import 'package:daylist/data/storage/model/storage_institution.dart';
 import 'package:daylist/domain/model/institution.dart';
 
 class InstitutionMapper {
@@ -8,14 +7,15 @@ class InstitutionMapper {
         id: institution.id,
         title: institution.title,
         shortTitle: institution.shortTitle,
+        createdBy: institution.createdBy,
         cityId: institution.cityId);
   }
 
-  static Institution fromStorage(StorageInstitution institution) {
-    return Institution(
-        id: institution.id,
-        title: institution.title,
-        shortTitle: institution.shortTitle,
-        cityId: institution.cityId);
-  }
+  // static Institution fromStorage(StorageInstitution institution) {
+  //   return Institution(
+  //       id: institution.id,
+  //       title: institution.title,
+  //       shortTitle: institution.shortTitle,
+  //       cityId: institution.cityId);
+  // }
 }

@@ -9,6 +9,14 @@ import 'package:daylist/data/api/model/api_title.dart';
 import 'package:daylist/data/api/request/add/add_city_body.dart';
 import 'package:daylist/data/api/request/add/add_group_body.dart';
 import 'package:daylist/data/api/request/add/add_institution_body.dart';
+import 'package:daylist/data/api/request/add/add_replacement_body.dart';
+import 'package:daylist/data/api/request/add/add_subject_body.dart';
+import 'package:daylist/data/api/request/add/add_teacher_body.dart';
+import 'package:daylist/data/api/request/add/add_time_body.dart';
+import 'package:daylist/data/api/request/add/add_title_body.dart';
+import 'package:daylist/data/api/request/auth/sign_in_body.dart';
+import 'package:daylist/data/api/request/auth/sign_up_body.dart';
+import 'package:daylist/data/api/request/delete/delete_replacement_body.dart';
 import 'package:daylist/data/api/request/get/get_cities_body.dart';
 import 'package:daylist/data/api/request/get/get_groups_body.dart';
 import 'package:daylist/data/api/request/get/get_institutions_body.dart';
@@ -54,6 +62,7 @@ class ApiUtil {
       {required GetInstitutionsBody body}) async {
     final List<ApiInstitution> result =
         await _appwriteService.getInstitutions(body: body);
+
     final List<Institution> convertedList =
         result.map((e) => InstitutionMapper.fromApi(e)).toList();
 
@@ -84,6 +93,10 @@ class ApiUtil {
     return convertedList;
   }
 
+  Future addTitle({required AddTitleBody body}) async {
+    return _appwriteService.addTitle(body: body);
+  }
+
   Future<List<Teacher>> getTeachers({required GetTeachersBody body}) async {
     final List<ApiTeacher> result =
         await _appwriteService.getTeachers(body: body);
@@ -93,12 +106,20 @@ class ApiUtil {
     return convertedList;
   }
 
+  Future addTeacher({required AddTecherBody body}) async {
+    return _appwriteService.addTeacher(body: body);
+  }
+
   Future<List<Time>> getTimes({required GetTimesBody body}) async {
     final List<ApiTime> result = await _appwriteService.getTimes(body: body);
     final List<Time> convertedList =
         result.map((e) => TimeMapper.fromApi(e)).toList();
 
     return convertedList;
+  }
+
+  Future addTime({required AddTimeBody body}) async {
+    return _appwriteService.addTime(body: body);
   }
 
   Future<List<Subject>> getSubjects({required GetSubjectsBody body}) async {
@@ -110,23 +131,36 @@ class ApiUtil {
     return convertedList;
   }
 
+  Future addSubject({required AddSubjectBody body}) async {
+    return _appwriteService.addSubject(body: body);
+  }
+
   Future<List<Replacement>> getReplacements(
       {required GetReplacementsBody body}) async {
     final List<ApiReplacement> result =
         await _appwriteService.getReplacements(body: body);
+
     final List<Replacement> convertedList =
         result.map((e) => ReplacementMapper.fromApi(e)).toList();
 
     return convertedList;
   }
 
-  // Future signUp({required SignUpBody body}) async {
-  //   return _appwriteService.signUp(body: body).then((value) =>
-  //       signIn(body: SignInBody(email: body.email, password: body.password)));
-  // }
+  Future addReplacement({required AddReplacementBody body}) async {
+    return _appwriteService.addReplacement(body: body);
+  }
 
-  Future signIn() async {
-    return _appwriteService.signIn();
+  Future deleteReplacement({required DeleteReplacementBody body}) async {
+    return _appwriteService.deleteReplacement(body: body);
+  }
+
+  Future signUp({required SignUpBody body}) async {
+    return _appwriteService.signUp(body: body).then((value) =>
+        signIn(body: SignInBody(email: body.email, password: body.password)));
+  }
+
+  Future signIn({required SignInBody body}) async {
+    return _appwriteService.signIn(body: body);
   }
 
   Future<bool> isAuthorized() async {
@@ -143,5 +177,9 @@ class ApiUtil {
 
   Future updatePrefs(Map prefs) async {
     return _appwriteService.updatePrefs(prefs);
+  }
+
+  Future<bool> isScheduler() async {
+    return _appwriteService.isScheduler();
   }
 }

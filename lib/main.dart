@@ -1,19 +1,25 @@
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:daylist/domain/state/settings/settings_state.dart';
 import 'package:daylist/internal/dependencies/dependencies.dart';
 import 'package:daylist/presentation/res/theme.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
-
 import 'presentation/translations/translations.g.dart';
 import 'presentation/views/router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   LocaleSettings.useDeviceLocale();
-
-  // IsarService().clear();
+  // if (kDebugMode) {
+  //   dotenv.testLoad(fileInput: File('.env').readAsStringSync());
+  // } else {
+  await dotenv.load(mergeWith: Platform.environment);
+  // }
+  await SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
   // var p = await SharedPreferences.getInstance();
   // p.clear();
@@ -29,9 +35,9 @@ class MyApp extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bool isDark = ref.watch(settingsProvider).isDark;
+    final double radius = ref.watch(settingsProvider).radius;
     final Color? primaryColor = ref.watch(settingsProvider).primaryColor;
     final Color? backgroundColor = ref.watch(settingsProvider).backgroundColor;
-    final double radius = ref.watch(settingsProvider).radius;
 
     return MaterialApp.router(
         routerConfig: router,

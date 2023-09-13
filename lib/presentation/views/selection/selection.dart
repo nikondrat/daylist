@@ -1,32 +1,14 @@
-import 'package:appwrite/appwrite.dart';
-import 'package:appwrite/models.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
-import 'package:daylist/.env';
-import 'package:daylist/data/api/request/add/add_city_body.dart';
-import 'package:daylist/data/api/request/add/add_group_body.dart';
-import 'package:daylist/data/api/request/add/add_institution_body.dart';
-import 'package:daylist/data/repository/auth_repository.dart';
-import 'package:daylist/data/repository/city_data_repository.dart';
-import 'package:daylist/data/repository/group_repository.dart';
-import 'package:daylist/data/repository/institution_repository.dart';
-import 'package:daylist/domain/model/city.dart';
-import 'package:daylist/domain/model/group.dart';
-import 'package:daylist/domain/model/institution.dart';
 import 'package:daylist/domain/state/home/home_state.dart';
 import 'package:daylist/domain/state/settings/settings_state.dart';
-import 'package:daylist/internal/dependencies/dependencies.dart';
-import 'package:daylist/presentation/extensions/context.dart';
+import 'package:daylist/presentation/extensions/theme/context.dart';
 import 'package:daylist/presentation/res/values.dart';
 import 'package:daylist/presentation/translations/translations.g.dart';
-import 'package:daylist/presentation/utils/string_gen.dart';
-import 'package:daylist/presentation/utils/validator.dart';
 import 'package:daylist/presentation/views/router.dart';
 import 'package:daylist/presentation/views/widgets/adaptive.dart';
-import 'package:daylist/presentation/views/widgets/dialog.dart';
 import 'package:daylist/presentation/views/widgets/loader.dart';
 
 enum _Type { city, institution, group }
@@ -62,7 +44,11 @@ class SelectionInstitutionView extends HookConsumerWidget {
         itemBuilder: (v) => ListTile(
               onTap: () {
                 ref.read(settingsProvider.notifier).institution = v;
-                context.goNamed(ViewsNames.selectionGroup);
+                if (ref.watch(settingsProvider).isScheduler) {
+                  context.goNamed(ViewsNames.sheduler);
+                } else {
+                  context.goNamed(ViewsNames.selectionGroup);
+                }
               },
               title: Text(v.title),
             ));
@@ -94,7 +80,7 @@ class _Selection<T> extends HookConsumerWidget {
   final String title;
   final bool isCanBack;
   final Widget Function(T) itemBuilder;
-  final FutureProvider<List<T>> provider;
+  final AutoDisposeFutureProvider<List<T>> provider;
 
   const _Selection(
       {this.isCanBack = true,
@@ -132,297 +118,51 @@ class _Selection<T> extends HookConsumerWidget {
   }
 }
 
-class _AddButtonWidget extends StatelessWidget {
-  final _Type type;
-  const _AddButtonWidget({required this.type});
+// class _AddButtonWidget extends StatelessWidget {
+//   final _Type type;
+//   const _AddButtonWidget({required this.type});
 
-  @override
-  Widget build(BuildContext context) {
-    switch (type) {
-      case _Type.city:
-        return Text.rich(t.selection.addText.city(
-            tapHere: (v) => TextSpan(
-                text: v,
-                style: context.text.mediumText
-                    .copyWith(fontWeight: FontWeight.bold),
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () => showDialog(
-                      context: context,
-                      builder: (context) => const _AddCityDialog()))));
-      case _Type.institution:
-        return Text.rich(t.selection.addText.institution(
-            tapHere: (v) => TextSpan(
-                text: v,
-                style: context.text.mediumText
-                    .copyWith(fontWeight: FontWeight.bold),
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () => showDialog(
-                      context: context,
-                      builder: (context) => const _AddInstitutionDialog()))));
-      case _Type.group:
-        return Text.rich(t.selection.addText.group(
-            tapHere: (v) => TextSpan(
-                text: v,
-                style: context.text.mediumText
-                    .copyWith(fontWeight: FontWeight.bold),
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () => showDialog(
-                      context: context,
-                      builder: (context) => const _AddGroupDialog()))));
-      default:
-    }
+//   @override
+//   Widget build(BuildContext context) {
+//     switch (type) {
+//       case _Type.city:
+//         return Text.rich(t.selection.addText.city(
+//             tapHere: (v) => TextSpan(
+//                 text: v,
+//                 style: context.text.mediumText
+//                     .copyWith(fontWeight: FontWeight.bold),
+//                 recognizer: TapGestureRecognizer()
+//                   ..onTap = () => showDialog(
+//                       context: context,
+//                       builder: (context) => const AddCityDialog()))));
+//       case _Type.institution:
+//         return Text.rich(t.selection.addText.institution(
+//             tapHere: (v) => TextSpan(
+//                 text: v,
+//                 style: context.text.mediumText
+//                     .copyWith(fontWeight: FontWeight.bold),
+//                 recognizer: TapGestureRecognizer()
+//                   ..onTap = () => showDialog(
+//                       context: context,
+//                       builder: (context) => const AddInstitutionDialog()))));
+//       case _Type.group:
+//         return Text.rich(t.selection.addText.group(
+//             tapHere: (v) => TextSpan(
+//                 text: v,
+//                 style: context.text.mediumText
+//                     .copyWith(fontWeight: FontWeight.bold),
+//                 recognizer: TapGestureRecognizer()
+//                   ..onTap = () => showDialog(
+//                       context: context,
+//                       builder: (context) => const AddGroupDialog()))));
+//       default:
+//     }
 
-    return const Placeholder();
-  }
-}
+//     return const Placeholder();
+//   }
+// }
 
-class _AddCityDialog extends StatefulHookConsumerWidget {
-  const _AddCityDialog();
-
-  @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _AddCityDialogState();
-}
-
-class _AddCityDialogState extends ConsumerState<_AddCityDialog> {
-  late GlobalKey<FormState> formKey;
-  late TextEditingController controller;
-
-  @override
-  void initState() {
-    controller = TextEditingController();
-    formKey = GlobalKey();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-
-  Future addCity() async {
-    final User user =
-        await AuthDataRepository(Dependencies().getIt.get()).getUser();
-
-    try {
-      await CityDataRepository(
-              Dependencies().getIt.get(), Dependencies().getIt.get())
-          .addCity(
-              body: AddCityBody(
-                  databaseId: databaseId,
-                  collectionId: citiesCollectionId,
-                  city: City(
-                      id: ID.custom(StringGenerator.generate()),
-                      createdBy: user.$id,
-                      title: controller.text)))
-          .then((value) {
-        ref.invalidate(citiesProvider);
-        context.pop();
-      });
-    } catch (e) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('$e')));
-      }
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomDialog(
-        title: t.selection.add,
-        onSubmitted: addCity,
-        children: [
-          Form(
-              key: formKey,
-              child: TextFormField(
-                  controller: controller,
-                  validator: (v) => Validator().initials(v, checkLen: false),
-                  onEditingComplete: () => formKey.currentState!.validate(),
-                  onSaved: (newValue) => formKey.currentState!.validate(),
-                  onFieldSubmitted: (value) => addCity(),
-                  onChanged: (value) => formKey.currentState!.validate(),
-                  decoration: InputDecoration(labelText: t.selection.title)))
-        ]);
-  }
-}
-
-class _AddInstitutionDialog extends StatefulHookConsumerWidget {
-  const _AddInstitutionDialog();
-
-  @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      __AddInstitutionState();
-}
-
-class __AddInstitutionState extends ConsumerState<_AddInstitutionDialog> {
-  late TextEditingController title;
-  late GlobalKey<FormState> titleState;
-
-  late TextEditingController shortTitle;
-  late GlobalKey<FormState> shortTitleState;
-
-  @override
-  void initState() {
-    title = TextEditingController();
-    titleState = GlobalKey();
-
-    shortTitle = TextEditingController();
-    shortTitleState = GlobalKey();
-
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    title.dispose();
-    shortTitle.dispose();
-    super.dispose();
-  }
-
-  Future addInstitution() async {
-    final User user =
-        await AuthDataRepository(Dependencies().getIt.get()).getUser();
-
-    try {
-      await InstitutionDataRepository(
-              Dependencies().getIt.get(), Dependencies().getIt.get())
-          .addInstitution(
-              body: AddInstitutionBody(
-                  databaseId: databaseId,
-                  collectionId: institutionsCollectionId,
-                  institution: Institution(
-                      id: ID.custom(StringGenerator.generate()),
-                      title: title.text.trim(),
-                      shortTitle: shortTitle.text.trim(),
-                      createdBy: user.$id,
-                      cityId: ref.watch(settingsProvider).city!.id)))
-          .then((value) {
-        ref.invalidate(institutionsProvider);
-        context.pop();
-      });
-    } catch (e) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('$e')));
-      }
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomDialog(
-        title: t.selection.add,
-        onSubmitted: addInstitution,
-        children: [
-          Form(
-              key: titleState,
-              child: TextFormField(
-                  controller: title,
-                  textInputAction: TextInputAction.next,
-                  validator: (v) => Validator().initials(v, checkLen: false),
-                  onEditingComplete: () => titleState.currentState!.validate(),
-                  onSaved: (newValue) => titleState.currentState!.validate(),
-                  onFieldSubmitted: (value) =>
-                      titleState.currentState!.validate(),
-                  onChanged: (value) => titleState.currentState!.validate(),
-                  decoration: InputDecoration(labelText: t.selection.title))),
-          Padding(
-            padding: const EdgeInsets.only(top: Insets.small),
-            child: Form(
-                key: shortTitleState,
-                child: TextFormField(
-                    controller: shortTitle,
-                    onFieldSubmitted: (value) => addInstitution(),
-                    validator: (v) => Validator().initials(v, checkLen: false),
-                    onChanged: (value) =>
-                        shortTitleState.currentState!.validate(),
-                    onSaved: (newValue) =>
-                        shortTitleState.currentState!.validate(),
-                    onEditingComplete: () =>
-                        shortTitleState.currentState!.validate(),
-                    decoration:
-                        InputDecoration(labelText: t.selection.shortTitle))),
-          ),
-        ]);
-  }
-}
-
-class _AddGroupDialog extends StatefulHookConsumerWidget {
-  const _AddGroupDialog();
-
-  @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      __AddGroupDialogState();
-}
-
-class __AddGroupDialogState extends ConsumerState<_AddGroupDialog> {
-  late GlobalKey<FormState> formKey;
-  late TextEditingController controller;
-
-  @override
-  void initState() {
-    controller = TextEditingController();
-    formKey = GlobalKey();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-
-  Future addGroup() async {
-    final User user =
-        await AuthDataRepository(Dependencies().getIt.get()).getUser();
-
-    try {
-      await GroupDataRepository(
-              Dependencies().getIt.get(), Dependencies().getIt.get())
-          .addGroup(
-              body: AddGroupBody(
-                  databaseId: databaseId,
-                  collectionId: groupsCollectionId,
-                  group: Group(
-                      id: ID.custom(StringGenerator.generate()),
-                      title: controller.text.trim(),
-                      createdBy: user.$id,
-                      institutionId:
-                          ref.watch(settingsProvider).institution!.id)))
-          .then((value) {
-        ref.invalidate(groupsProvider);
-        context.pop();
-      });
-    } catch (e) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('$e')));
-      }
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomDialog(
-        title: t.selection.add,
-        onSubmitted: addGroup,
-        children: [
-          Form(
-              key: formKey,
-              child: TextFormField(
-                  controller: controller,
-                  validator: (v) => Validator.standart(v, checkLen: false),
-                  onEditingComplete: () => formKey.currentState!.validate(),
-                  onSaved: (newValue) => formKey.currentState!.validate(),
-                  onFieldSubmitted: (value) => addGroup(),
-                  onChanged: (value) => formKey.currentState!.validate(),
-                  decoration: InputDecoration(labelText: t.selection.title)))
-        ]);
-  }
-}
-
-class _List<T> extends StatelessWidget {
+class _List<T> extends HookConsumerWidget {
   final _Type type;
   final List<T> data;
   final Widget Function(T) itemBuilder;
@@ -435,26 +175,15 @@ class _List<T> extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ScrollConfiguration(
         behavior: ScrollConfiguration.of(context).copyWith(
             dragDevices: {PointerDeviceKind.mouse, PointerDeviceKind.touch}),
         child: ListView.builder(
             physics: const BouncingScrollPhysics(),
             padding: const EdgeInsets.symmetric(horizontal: Insets.small),
-            itemCount: data.length + 1,
-            itemBuilder: (context, index) => (index != data.length)
-                ? itemBuilder(data[index])
-                : Center(
-                    child: Container(
-                        margin: const EdgeInsets.only(top: Insets.small),
-                        padding: const EdgeInsets.all(Insets.small),
-                        decoration: BoxDecoration(
-                            border:
-                                Border.all(color: context.color.primaryColor),
-                            borderRadius:
-                                BorderRadius.circular(context.value.radius)),
-                        child: _AddButtonWidget(type: type)))));
+            itemCount: data.length,
+            itemBuilder: (context, index) => itemBuilder(data[index])));
   }
 }
 
@@ -480,7 +209,7 @@ class _Mobile<T> extends StatelessWidget {
   }
 }
 
-class _Tablet<T> extends StatelessWidget {
+class _Tablet<T> extends HookConsumerWidget {
   final _Type type;
   final String title;
   final List<T> data;
@@ -496,15 +225,17 @@ class _Tablet<T> extends StatelessWidget {
       : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final double radius = ref.watch(settingsProvider).radius;
+
     return Scaffold(
         body: Row(children: [
       Expanded(
           child: DecoratedBox(
               decoration: BoxDecoration(
                   color: context.color.primaryColor,
-                  borderRadius: BorderRadius.horizontal(
-                      right: Radius.circular(context.value.radius))),
+                  borderRadius:
+                      BorderRadius.horizontal(right: Radius.circular(radius))),
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -531,7 +262,7 @@ class _Tablet<T> extends StatelessWidget {
   }
 }
 
-class _Desktop<T> extends StatelessWidget {
+class _Desktop<T> extends HookConsumerWidget {
   final _Type type;
   final String title;
   final List<T> data;
@@ -547,7 +278,9 @@ class _Desktop<T> extends StatelessWidget {
       : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final double radius = ref.watch(settingsProvider).radius;
+
     return Scaffold(
         body: Row(children: [
       Expanded(
@@ -555,8 +288,8 @@ class _Desktop<T> extends StatelessWidget {
           child: DecoratedBox(
               decoration: BoxDecoration(
                   color: context.color.primaryColor,
-                  borderRadius: BorderRadius.horizontal(
-                      right: Radius.circular(context.value.radius))),
+                  borderRadius:
+                      BorderRadius.horizontal(right: Radius.circular(radius))),
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
