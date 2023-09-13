@@ -1,6 +1,3 @@
-import 'package:daylist/presentation/views/widgets/dialogs/add_city_dialog.dart';
-import 'package:daylist/presentation/views/widgets/dialogs/add_group_dialog.dart';
-import 'package:daylist/presentation/views/widgets/dialogs/add_institution_dialog.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -47,7 +44,11 @@ class SelectionInstitutionView extends HookConsumerWidget {
         itemBuilder: (v) => ListTile(
               onTap: () {
                 ref.read(settingsProvider.notifier).institution = v;
-                context.goNamed(ViewsNames.selectionGroup);
+                if (ref.watch(settingsProvider).isScheduler) {
+                  context.goNamed(ViewsNames.sheduler);
+                } else {
+                  context.goNamed(ViewsNames.selectionGroup);
+                }
               },
               title: Text(v.title),
             ));
@@ -79,7 +80,7 @@ class _Selection<T> extends HookConsumerWidget {
   final String title;
   final bool isCanBack;
   final Widget Function(T) itemBuilder;
-  final FutureProvider<List<T>> provider;
+  final AutoDisposeFutureProvider<List<T>> provider;
 
   const _Selection(
       {this.isCanBack = true,
@@ -117,49 +118,49 @@ class _Selection<T> extends HookConsumerWidget {
   }
 }
 
-class _AddButtonWidget extends StatelessWidget {
-  final _Type type;
-  const _AddButtonWidget({required this.type});
+// class _AddButtonWidget extends StatelessWidget {
+//   final _Type type;
+//   const _AddButtonWidget({required this.type});
 
-  @override
-  Widget build(BuildContext context) {
-    switch (type) {
-      case _Type.city:
-        return Text.rich(t.selection.addText.city(
-            tapHere: (v) => TextSpan(
-                text: v,
-                style: context.text.mediumText
-                    .copyWith(fontWeight: FontWeight.bold),
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () => showDialog(
-                      context: context,
-                      builder: (context) => const AddCityDialog()))));
-      case _Type.institution:
-        return Text.rich(t.selection.addText.institution(
-            tapHere: (v) => TextSpan(
-                text: v,
-                style: context.text.mediumText
-                    .copyWith(fontWeight: FontWeight.bold),
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () => showDialog(
-                      context: context,
-                      builder: (context) => const AddInstitutionDialog()))));
-      case _Type.group:
-        return Text.rich(t.selection.addText.group(
-            tapHere: (v) => TextSpan(
-                text: v,
-                style: context.text.mediumText
-                    .copyWith(fontWeight: FontWeight.bold),
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () => showDialog(
-                      context: context,
-                      builder: (context) => const AddGroupDialog()))));
-      default:
-    }
+//   @override
+//   Widget build(BuildContext context) {
+//     switch (type) {
+//       case _Type.city:
+//         return Text.rich(t.selection.addText.city(
+//             tapHere: (v) => TextSpan(
+//                 text: v,
+//                 style: context.text.mediumText
+//                     .copyWith(fontWeight: FontWeight.bold),
+//                 recognizer: TapGestureRecognizer()
+//                   ..onTap = () => showDialog(
+//                       context: context,
+//                       builder: (context) => const AddCityDialog()))));
+//       case _Type.institution:
+//         return Text.rich(t.selection.addText.institution(
+//             tapHere: (v) => TextSpan(
+//                 text: v,
+//                 style: context.text.mediumText
+//                     .copyWith(fontWeight: FontWeight.bold),
+//                 recognizer: TapGestureRecognizer()
+//                   ..onTap = () => showDialog(
+//                       context: context,
+//                       builder: (context) => const AddInstitutionDialog()))));
+//       case _Type.group:
+//         return Text.rich(t.selection.addText.group(
+//             tapHere: (v) => TextSpan(
+//                 text: v,
+//                 style: context.text.mediumText
+//                     .copyWith(fontWeight: FontWeight.bold),
+//                 recognizer: TapGestureRecognizer()
+//                   ..onTap = () => showDialog(
+//                       context: context,
+//                       builder: (context) => const AddGroupDialog()))));
+//       default:
+//     }
 
-    return const Placeholder();
-  }
-}
+//     return const Placeholder();
+//   }
+// }
 
 class _List<T> extends HookConsumerWidget {
   final _Type type;
@@ -175,26 +176,14 @@ class _List<T> extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final double radius = ref.watch(settingsProvider).radius;
-
     return ScrollConfiguration(
         behavior: ScrollConfiguration.of(context).copyWith(
             dragDevices: {PointerDeviceKind.mouse, PointerDeviceKind.touch}),
         child: ListView.builder(
             physics: const BouncingScrollPhysics(),
             padding: const EdgeInsets.symmetric(horizontal: Insets.small),
-            itemCount: data.length + 1,
-            itemBuilder: (context, index) => (index != data.length)
-                ? itemBuilder(data[index])
-                : Center(
-                    child: Container(
-                        margin: const EdgeInsets.only(top: Insets.small),
-                        padding: const EdgeInsets.all(Insets.small),
-                        decoration: BoxDecoration(
-                            border:
-                                Border.all(color: context.color.primaryColor),
-                            borderRadius: BorderRadius.circular(radius)),
-                        child: _AddButtonWidget(type: type)))));
+            itemCount: data.length,
+            itemBuilder: (context, index) => itemBuilder(data[index])));
   }
 }
 

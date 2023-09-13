@@ -47,12 +47,11 @@ class _AddCityDialogState extends ConsumerState<AddCityDialog> {
         await AuthDataRepository(Dependencies().getIt.get()).getUser();
 
     try {
-      await CityDataRepository(
-              Dependencies().getIt.get(), Dependencies().getIt.get())
+      await CityDataRepository(Dependencies().getIt.get())
           .addCity(
               body: AddCityBody(
-                  databaseId: dotenv.env['const databaseId']!,
-                  collectionId: dotenv.env['const citiesCollectionId']!,
+                  databaseId: dotenv.env['databaseId']!,
+                  collectionId: dotenv.env['citiesCollectionId']!,
                   city: City(
                       id: ID.custom(Generator.generateId()),
                       createdBy: user.$id,

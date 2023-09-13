@@ -25,8 +25,15 @@ class SettingsNotifier extends ChangeNotifier {
 
     _settings =
         settings ?? Settings(city: null, institution: null, group: null);
+
+    _isScheduler =
+        await AuthDataRepository(Dependencies().getIt.get()).isScheduler();
+
     notifyListeners();
   }
+
+  bool _isScheduler = false;
+  bool get isScheduler => _isScheduler;
 
   City? get city => _settings?.city;
   set city(City? v) {
@@ -37,6 +44,12 @@ class SettingsNotifier extends ChangeNotifier {
   Institution? get institution => _settings?.institution;
   set institution(Institution? v) {
     _settings?.institution = v;
+    if (_isScheduler) {
+      AuthDataRepository(Dependencies().getIt.get()).updatePrefs(data: {
+        'city': city!.id,
+        'institution': institution!.id,
+      });
+    }
     notifyListeners();
   }
 
@@ -102,6 +115,7 @@ class SettingsNotifier extends ChangeNotifier {
   }
 }
 
-final settingsProvider = ChangeNotifierProvider<SettingsNotifier>((ref) {
+final settingsProvider =
+    ChangeNotifierProvider.autoDispose<SettingsNotifier>((ref) {
   return SettingsNotifier();
 });

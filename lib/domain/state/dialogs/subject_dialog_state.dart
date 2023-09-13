@@ -1,16 +1,18 @@
 import 'package:daylist/domain/model/replacement.dart';
 import 'package:daylist/domain/model/teacher.dart';
+import 'package:daylist/domain/model/time.dart';
+import 'package:daylist/domain/model/title.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final selectedTeacherProvider = StateProvider<Teacher?>((ref) {
   return null;
 });
 
-final selectedSubjectTitleProvider = StateProvider<String?>((ref) {
+final selectedSubjectTitleProvider = StateProvider<SubjectTitle?>((ref) {
   return null;
 });
 
-final selectedTimeProvider = StateProvider<String?>((ref) {
+final selectedTimeProvider = StateProvider<Time?>((ref) {
   return null;
 });
 
@@ -24,4 +26,8 @@ final selectedModeProvider = StateProvider<ReplacementMode>((ref) {
 
 final selectedWeekdayProvider = StateProvider<int>((ref) {
   return 1;
+});
+
+final selectedDateProvider = StateProvider<DateTime?>((ref) {
+  return null;
 });

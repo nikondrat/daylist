@@ -1,19 +1,23 @@
+import 'package:daylist/data/api/model/api_teacher.dart';
+import 'package:daylist/data/api/model/api_time.dart';
+
 class ApiReplacement {
   final String id;
-  final String teacherId;
+  final ApiTeacher teacher;
+  final ApiTime time;
   final String groupId;
-  final String timeId;
-  final String date;
+
+  final DateTime date;
   final String mode;
   final int? undergroup;
   final String? createdBy;
 
   ApiReplacement.fromApi(Map<String, dynamic> map)
       : id = map['\$id'],
-        teacherId = map['teacherId'],
+        teacher = ApiTeacher.fromApi(map['teacher']),
+        time = ApiTime.fromApi(map['time']),
         groupId = map['groupId'],
-        timeId = map['timeId'],
-        date = map['date'],
+        date = DateTime.parse(map['date']),
         mode = map['mode'],
         undergroup = map['undergroup'],
         createdBy = map['createdBy'];

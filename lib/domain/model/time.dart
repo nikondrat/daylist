@@ -14,7 +14,7 @@ class Time {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'documentId': id,
+      'id': id,
       'start': start,
       'end': end,
       'number': number,
@@ -24,7 +24,7 @@ class Time {
 
   factory Time.fromMap(Map<String, dynamic> map) {
     return Time(
-        id: map['documentId'] as String,
+        id: map['id'],
         start: map['start'] as String,
         end: map['end'] as String,
         number: map['number'] as int,

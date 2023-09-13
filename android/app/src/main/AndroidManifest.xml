@@ -6,6 +6,7 @@
         android:label="Daylist"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -32,6 +33,9 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <meta-data
+            android:name="io.flutter.embedding.android.EnableImpeller"
+            android:value="true" />
 
         <activity android:exported="true" android:name="com.linusu.flutter_web_auth_2.CallbackActivity" >
             <intent-filter android:label="flutter_web_auth_2">

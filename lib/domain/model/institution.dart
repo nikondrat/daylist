@@ -24,10 +24,10 @@ class Institution {
 
   factory Institution.fromMap(Map<String, dynamic> map) {
     return Institution(
-      id: map['id'] as String,
-      title: map['title'] as String,
-      shortTitle: map['shortTitle'] as String,
-      cityId: map['cityId'] as String,
-    );
+        id: map['id'] as String,
+        title: map['title'] as String,
+        shortTitle: map['shortTitle'] as String,
+        cityId: map['cityId'],
+        createdBy: map['createdBy']);
   }
 }

@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 176 (88 per locale)
+/// Strings: 180 (90 per locale)
 ///
-/// Built on 2023-09-03 at 17:57 UTC
+/// Built on 2023-09-12 at 17:29 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -246,6 +246,7 @@ class _TranslationsSelectionEn {
 	String get group => 'group';
 	String get teacher => 'Teacher';
 	String get day => 'Day';
+	String get date => 'Date';
 	String get time => 'Time';
 	String get add => 'Add';
 	String get title => 'Title';
@@ -271,6 +272,7 @@ class _TranslationsSettingsEn {
 
 	// Translations
 	String get app_name => 'Daylist';
+	String get scheduler => 'Change schedule';
 	String get back => 'Back';
 	String get cancel => 'Cancel';
 	String get title => 'Settings';
@@ -538,6 +540,7 @@ class _TranslationsSelectionRu implements _TranslationsSelectionEn {
 	@override String get group => 'группа';
 	@override String get teacher => 'Преподаватель';
 	@override String get day => 'День';
+	@override String get date => 'Дата';
 	@override String get time => 'Время';
 	@override String get add => 'Добавить';
 	@override String get title => 'Название';
@@ -563,6 +566,7 @@ class _TranslationsSettingsRu implements _TranslationsSettingsEn {
 
 	// Translations
 	@override String get app_name => 'Daylist';
+	@override String get scheduler => 'Изменить расписание';
 	@override String get back => 'Назад';
 	@override String get cancel => 'Отмена';
 	@override String get title => 'Настройки';
@@ -761,6 +765,7 @@ extension on _TranslationsEn {
 			case 'selection.group': return 'group';
 			case 'selection.teacher': return 'Teacher';
 			case 'selection.day': return 'Day';
+			case 'selection.date': return 'Date';
 			case 'selection.time': return 'Time';
 			case 'selection.add': return 'Add';
 			case 'selection.title': return 'Title';
@@ -788,6 +793,7 @@ extension on _TranslationsEn {
 				}
 			};
 			case 'settings.app_name': return 'Daylist';
+			case 'settings.scheduler': return 'Change schedule';
 			case 'settings.back': return 'Back';
 			case 'settings.cancel': return 'Cancel';
 			case 'settings.title': return 'Settings';
@@ -876,6 +882,7 @@ extension on _TranslationsRu {
 			case 'selection.group': return 'группа';
 			case 'selection.teacher': return 'Преподаватель';
 			case 'selection.day': return 'День';
+			case 'selection.date': return 'Дата';
 			case 'selection.time': return 'Время';
 			case 'selection.add': return 'Добавить';
 			case 'selection.title': return 'Название';
@@ -903,6 +910,7 @@ extension on _TranslationsRu {
 				}
 			};
 			case 'settings.app_name': return 'Daylist';
+			case 'settings.scheduler': return 'Изменить расписание';
 			case 'settings.back': return 'Назад';
 			case 'settings.cancel': return 'Отмена';
 			case 'settings.title': return 'Настройки';

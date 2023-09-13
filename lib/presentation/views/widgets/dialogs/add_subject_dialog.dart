@@ -4,6 +4,8 @@ import 'package:daylist/data/repository/auth_repository.dart';
 import 'package:daylist/data/repository/subject_repository.dart';
 import 'package:daylist/domain/model/subject.dart';
 import 'package:daylist/domain/model/teacher.dart';
+import 'package:daylist/domain/model/time.dart';
+import 'package:daylist/domain/model/title.dart';
 import 'package:daylist/domain/state/dialogs/subject_dialog_state.dart';
 import 'package:daylist/domain/state/settings/settings_state.dart';
 import 'package:daylist/domain/state/week/week_state.dart';
@@ -39,24 +41,23 @@ class __AddSubjectDialogState extends ConsumerState<AddSubjectDialog> {
     final String? groupId = ref.watch(settingsProvider).group?.id;
 
     final Teacher? teacher = ref.watch(selectedTeacherProvider);
-    final String? titleId = ref.watch(selectedSubjectTitleProvider);
-    final String? timeId = ref.watch(selectedTimeProvider);
+    final SubjectTitle? titleId = ref.watch(selectedSubjectTitleProvider);
+    final Time? time = ref.watch(selectedTimeProvider);
     final int weekday = ref.watch(selectedWeekdayProvider);
 
     if (titleId != null && teacher != null && context.mounted) {
       try {
-        SubjectDataRepository(
-                Dependencies().getIt.get(), Dependencies().getIt.get())
+        SubjectDataRepository(Dependencies().getIt.get())
             .addSubject(
                 body: AddSubjectBody(
-                    databaseId: dotenv.env['const databaseId']!,
-                    collectionId: dotenv.env['const subjectsCollectionId']!,
+                    databaseId: dotenv.env['databaseId']!,
+                    collectionId: dotenv.env['subjectsCollectionId']!,
                     subject: Subject(
                         id: Generator.generateId(),
-                        teacherId: teacher.id,
-                        timeId: timeId!,
-                        isEven: isEven,
+                        teacher: teacher,
+                        time: time!,
                         groupId: groupId!,
+                        isEven: isEven,
                         weekday: weekday,
                         createdBy: user.$id)))
             .then((value) {

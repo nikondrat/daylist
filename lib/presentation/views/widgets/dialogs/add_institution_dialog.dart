@@ -58,12 +58,11 @@ class __AddInstitutionState extends ConsumerState<AddInstitutionDialog> {
         await AuthDataRepository(Dependencies().getIt.get()).getUser();
 
     try {
-      await InstitutionDataRepository(
-              Dependencies().getIt.get(), Dependencies().getIt.get())
+      await InstitutionDataRepository(Dependencies().getIt.get())
           .addInstitution(
               body: AddInstitutionBody(
-                  databaseId: dotenv.env['const databaseId']!,
-                  collectionId: dotenv.env['const institutionsCollectionId']!,
+                  databaseId: dotenv.env['databaseId']!,
+                  collectionId: dotenv.env['institutionsCollectionId']!,
                   institution: Institution(
                       id: ID.custom(Generator.generateId()),
                       title: title.text.trim(),

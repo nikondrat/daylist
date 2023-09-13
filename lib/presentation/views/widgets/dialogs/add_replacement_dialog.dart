@@ -3,8 +3,11 @@ import 'package:appwrite/models.dart';
 import 'package:daylist/data/api/request/add/add_replacement_body.dart';
 import 'package:daylist/data/repository/auth_repository.dart';
 import 'package:daylist/data/repository/replacement_repository.dart';
+import 'package:daylist/domain/model/group.dart';
 import 'package:daylist/domain/model/replacement.dart';
 import 'package:daylist/domain/model/teacher.dart';
+import 'package:daylist/domain/model/time.dart';
+import 'package:daylist/domain/model/title.dart';
 import 'package:daylist/domain/state/dialogs/subject_dialog_state.dart';
 import 'package:daylist/domain/state/home/home_state.dart';
 import 'package:daylist/domain/state/settings/settings_state.dart';
@@ -21,7 +24,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:intl/intl.dart';
 
 class AddReplacementDialog extends StatefulHookConsumerWidget {
   final DateTime dateTime;
@@ -36,31 +38,26 @@ class _AddReplacementDialog extends ConsumerState<AddReplacementDialog> {
   Future addReplacement() async {
     final User user =
         await AuthDataRepository(Dependencies().getIt.get()).getUser();
-    final String? groupId = ref.watch(settingsProvider).group?.id;
-
+    final Group? group = ref.watch(settingsProvider).group;
+    final Time? time = ref.watch(selectedTimeProvider);
     final Teacher? teacher = ref.watch(selectedTeacherProvider);
-    final String? titleId = ref.watch(selectedSubjectTitleProvider);
-    final String? timeId = ref.watch(selectedTimeProvider);
+    final SubjectTitle? titleId = ref.watch(selectedSubjectTitleProvider);
     final int? selectedUndergroup = ref.watch(selectedUndergroupProvider);
     final ReplacementMode mode = ref.watch(selectedModeProvider);
 
-    if (titleId != null &&
-        teacher != null &&
-        timeId != null &&
-        context.mounted) {
+    if (titleId != null && teacher != null && time != null && context.mounted) {
       try {
-        ReplacementDataRepository(
-                Dependencies().getIt.get(), Dependencies().getIt.get())
+        ReplacementDataRepository(Dependencies().getIt.get())
             .addReplacement(
                 body: AddReplacementBody(
-                    databaseId: dotenv.env['const databaseId']!,
-                    collectionId: dotenv.env['const replacementsCollectionId']!,
+                    databaseId: dotenv.env['databaseId']!,
+                    collectionId: dotenv.env['replacementsCollectionId']!,
                     replacement: Replacement(
                         id: ID.custom(Generator.generateId()),
-                        teacherId: teacher.id,
-                        groupId: groupId!,
-                        timeId: timeId,
-                        date: DateFormat.yMd().format(widget.dateTime),
+                        time: time,
+                        teacher: teacher,
+                        groupId: group!.id,
+                        date: widget.dateTime,
                         mode: mode,
                         undergroup: mode == ReplacementMode.laboratory
                             ? selectedUndergroup

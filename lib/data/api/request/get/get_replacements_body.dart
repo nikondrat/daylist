@@ -2,14 +2,12 @@ class GetReplacementsBody {
   final String databaseId;
   final String collectionId;
   final String groupId;
-  final String today;
-  final String tomorrow;
+  final DateTime day;
 
   GetReplacementsBody({
     required this.databaseId,
     required this.collectionId,
     required this.groupId,
-    required this.today,
-    required this.tomorrow,
+    required this.day,
   });
 }

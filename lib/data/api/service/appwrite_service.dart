@@ -32,11 +32,13 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class AppwriteService {
   final Client client = Client()
-      .setEndpoint(dotenv.env['const endPoint']!)
-      .setProject(dotenv.env['const key']!);
+      .setEndpoint(dotenv.env['endPoint']!)
+      .setProject(dotenv.env['key']!);
 
   late final Account _account = Account(client);
   late final Databases _databases = Databases(client);
+
+  late final Teams _teams = Teams(client);
 
   Future<List<ApiCity>> getCities({required GetCitiesBody body}) async {
     final DocumentList docs = await _databases.listDocuments(
@@ -127,7 +129,7 @@ class AppwriteService {
         collectionId: body.collectionId,
         documentId: body.teacher.id,
         data: {
-          'titleId': body.teacher.titleId,
+          'title': body.teacher.title.id,
           'initials': body.teacher.initials,
           'classroom': body.teacher.classroom,
           'institutionId': body.teacher.institutionId,
@@ -137,7 +139,9 @@ class AppwriteService {
 
   Future<List<ApiTime>> getTimes({required GetTimesBody body}) async {
     final DocumentList docs = await _databases.listDocuments(
-        databaseId: body.databaseId, collectionId: body.collectionId);
+        databaseId: body.databaseId,
+        collectionId: body.collectionId,
+        queries: [Query.orderAsc('number')]);
 
     return docs.documents.map((e) => ApiTime.fromApi(e.data)).toList();
   }
@@ -170,9 +174,9 @@ class AppwriteService {
         collectionId: body.collectionId,
         documentId: body.subject.id,
         data: {
-          'teacherId': body.subject.teacherId,
+          'teacher': body.subject.teacher.id,
+          'time': body.subject.time.id,
           'groupId': body.subject.groupId,
-          'timeId': body.subject.timeId,
           'isEven': body.subject.isEven,
           'weekday': body.subject.weekday,
           'createdBy': body.subject.createdBy
@@ -186,9 +190,6 @@ class AppwriteService {
         collectionId: body.collectionId,
         queries: [
           Query.equal('groupId', body.groupId),
-          // TODO
-          // Query.equal('date', body.today),
-          // Query.equal('tomorrow', body.tomorrow),
         ]);
 
     return docs.documents.map((e) => ApiReplacement.fromApi(e.data)).toList();
@@ -200,13 +201,13 @@ class AppwriteService {
         collectionId: body.collectionId,
         documentId: body.replacement.id,
         data: {
-          'teacherId': body.replacement.teacherId,
-          'groupId': body.replacement.groupId,
-          'timeId': body.replacement.timeId,
-          'date': body.replacement.date,
+          'date': body.replacement.date.toIso8601String(),
           'mode': body.replacement.mode.name,
           'createdBy': body.replacement.createdBy,
-          'undergroup': body.replacement.undergroup
+          'undergroup': body.replacement.undergroup,
+          'groupId': body.replacement.groupId,
+          'teacher': body.replacement.teacher.id,
+          'time': body.replacement.time.id
         });
   }
 
@@ -241,11 +242,22 @@ class AppwriteService {
     return _account.updatePrefs(prefs: prefs);
   }
 
+  Future<bool> isScheduler() async {
+    final User user = await getUser();
+
+    return await _teams
+        .listMemberships(teamId: dotenv.env['shedulersTeamId']!)
+        .then((value) => value.memberships.isNotEmpty
+            ? value.memberships
+                .where((e) => e.userEmail == user.email)
+                .isNotEmpty
+            : false)
+        .onError((error, stackTrace) => false);
+  }
+
   Future<bool> isAuthorized() async {
-    try {
-      return await getUser().then((value) => true);
-    } catch (e) {
-      return false;
-    }
+    return await getUser()
+        .then((value) => true)
+        .onError((error, stackTrace) => false);
   }
 }

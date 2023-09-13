@@ -4,6 +4,7 @@ import 'package:daylist/data/api/request/add/add_teacher_body.dart';
 import 'package:daylist/data/repository/auth_repository.dart';
 import 'package:daylist/data/repository/teacher_repository.dart';
 import 'package:daylist/domain/model/teacher.dart';
+import 'package:daylist/domain/model/title.dart';
 import 'package:daylist/domain/state/dialogs/subject_dialog_state.dart';
 import 'package:daylist/domain/state/settings/settings_state.dart';
 import 'package:daylist/domain/state/week/week_state.dart';
@@ -64,20 +65,19 @@ class _AddTeacherDialogState extends ConsumerState<AddTeacherDialog> {
         await AuthDataRepository(Dependencies().getIt.get()).getUser();
 
     final String institutionId = ref.watch(settingsProvider).institution!.id;
-    final String? titleId = ref.watch(selectedSubjectTitleProvider);
+    final SubjectTitle? title = ref.watch(selectedSubjectTitleProvider);
 
     try {
-      await TeacherDataRepository(
-              Dependencies().getIt.get(), Dependencies().getIt.get())
+      await TeacherDataRepository(Dependencies().getIt.get())
           .addTeacher(
               body: AddTecherBody(
-                  databaseId: dotenv.env['const databaseId']!,
-                  collectionId: dotenv.env['const teachersCollectionId']!,
+                  databaseId: dotenv.env['databaseId']!,
+                  collectionId: dotenv.env['teachersCollectionId']!,
                   teacher: Teacher(
                       id: ID.custom(Generator.generateId()),
                       initials: initials.text,
                       institutionId: institutionId,
-                      titleId: titleId!,
+                      title: title!,
                       classroom: classroom.text.trim(),
                       createdBy: user.$id)))
           .then((value) {
@@ -94,7 +94,7 @@ class _AddTeacherDialogState extends ConsumerState<AddTeacherDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final String? titleId = ref.watch(selectedSubjectTitleProvider);
+    final SubjectTitle? title = ref.watch(selectedSubjectTitleProvider);
 
     return CustomDialog(
         title: t.selection.add,
@@ -134,7 +134,7 @@ class _AddTeacherDialogState extends ConsumerState<AddTeacherDialog> {
                     return DropdownButtonFormField(
                         isExpanded: true,
                         isDense: false,
-                        value: titleId,
+                        value: title,
                         icon: GestureDetector(
                             onTap: () => showDialog(
                                 context: context,
@@ -144,10 +144,12 @@ class _AddTeacherDialogState extends ConsumerState<AddTeacherDialog> {
                                 color: context.color.primaryColor)),
                         hint: Text(t.subject.title,
                             style: context.text.mediumText),
-                        items: i
-                            .map((e) => DropdownMenuItem(
-                                value: e.id, child: Text(e.title)))
-                            .toList(),
+                        items: i.isNotEmpty
+                            ? i
+                                .map((e) => DropdownMenuItem(
+                                    value: e, child: Text(e.title)))
+                                .toList()
+                            : <DropdownMenuItem>[],
                         onChanged: (v) {
                           ref
                               .read(selectedSubjectTitleProvider.notifier)

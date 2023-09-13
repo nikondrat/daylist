@@ -8,4 +8,5 @@ abstract class AuthRepository {
   Future<User> getUser();
   Future updatePrefs({required Map data});
   Future<Map> getPrefs();
+  Future<bool> isScheduler();
 }

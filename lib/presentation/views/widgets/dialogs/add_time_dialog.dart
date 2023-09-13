@@ -1,3 +1,4 @@
+import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
 import 'package:daylist/data/api/request/add/add_time_body.dart';
 import 'package:daylist/data/repository/auth_repository.dart';
@@ -37,14 +38,13 @@ class _AddTimeDialogState extends ConsumerState<AddTimeDialog> {
           '${'${end.hour}'.padLeft(2, '0')}:${'${end.minute}'.padLeft(2, '0')}';
 
       try {
-        TimeDataRepository(
-                Dependencies().getIt.get(), Dependencies().getIt.get())
+        TimeDataRepository(Dependencies().getIt.get())
             .addTime(
                 body: AddTimeBody(
-                    databaseId: dotenv.env['const databaseId']!,
-                    collectionId: dotenv.env['const timesCollectionId']!,
+                    databaseId: dotenv.env['databaseId']!,
+                    collectionId: dotenv.env['timesCollectionId']!,
                     time: Time(
-                        id: Generator.generateId(),
+                        id: ID.custom(Generator.generateId()),
                         start: startString,
                         end: endString,
                         number: number,

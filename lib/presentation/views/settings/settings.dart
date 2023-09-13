@@ -3,9 +3,10 @@ import 'package:daylist/presentation/extensions/theme/context.dart';
 import 'package:daylist/presentation/res/values.dart';
 import 'package:daylist/presentation/translations/translations.g.dart';
 import 'package:daylist/presentation/views/router.dart';
+import 'package:daylist/presentation/views/widgets/list.dart';
 import 'package:daylist/presentation/views/widgets/section.dart';
 import 'package:daylist/presentation/views/widgets/subsection.dart';
-import 'package:flutter/gestures.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -27,21 +28,11 @@ class SettingsView extends HookConsumerWidget {
                     splashRadius: 20,
                     icon: const Icon(Icons.arrow_back)),
                 title: Text(t.settings.title)),
-            body: ScrollConfiguration(
-                behavior: ScrollConfiguration.of(context).copyWith(
-                    dragDevices: {
-                      PointerDeviceKind.mouse,
-                      PointerDeviceKind.touch
-                    }),
-                child: ListView(
-                    physics: const BouncingScrollPhysics(),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: Insets.small),
-                    children: const [
-                      _GeneralSectionWidget(),
-                      _ThemeSectionWidget(),
-                      _Info()
-                    ]))));
+            body: const CustomListWidget(children: [
+              _GeneralSectionWidget(),
+              _ThemeSectionWidget(),
+              _Info()
+            ])));
     // const AdaptiveWidget(
     // mobile: _Mobile(), tablet: _Tablet(), desktop: _Desktop()));
   }
@@ -55,6 +46,14 @@ class _GeneralSectionWidget extends HookConsumerWidget {
     final settings = ref.watch(settingsProvider);
 
     return SectionWidget(title: t.settings.general, children: [
+      settings.isScheduler || kDebugMode
+          ? SubsectionWidget(
+              subsection: Subsection(
+                  icon: const Icon(UniconsLine.constructor),
+                  onTap: () => context.goNamed(ViewsNames.sheduler),
+                  trailing: [const Icon(Icons.arrow_forward)],
+                  title: t.settings.scheduler))
+          : const SizedBox.shrink(),
       SubsectionWidget(
           subsection: Subsection(
               icon: const Icon(UniconsLine.building),
@@ -267,7 +266,8 @@ class _Info extends StatelessWidget {
                           backgroundColor: Colors.red));
                     }
                   },
-                  title: t.settings.support.money.title)),
+                  trailing: [const Icon(UniconsLine.external_link_alt)],
+                  title: t.settings.support.money.title))
         ]);
   }
 }

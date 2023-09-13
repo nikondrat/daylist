@@ -19,7 +19,7 @@ class TimeDropdownWidget extends HookConsumerWidget {
     final AsyncValue<List<Time>> times = ref.watch(timesProvider);
     final double radius = ref.watch(settingsProvider).radius;
 
-    final String? timeId = ref.watch(selectedTimeProvider);
+    final Time? time = ref.watch(selectedTimeProvider);
 
     return LoaderWidget(
         config: times,
@@ -27,7 +27,7 @@ class TimeDropdownWidget extends HookConsumerWidget {
             padding: const EdgeInsets.only(top: Insets.small),
             child: DropdownButtonFormField(
                 isExpanded: true,
-                value: timeId,
+                value: time,
                 icon: GestureDetector(
                     onTap: () => showDialog(
                                 context: context,
@@ -44,7 +44,7 @@ class TimeDropdownWidget extends HookConsumerWidget {
                 hint: Text(t.selection.time, style: context.text.mediumText),
                 items: v
                     .map((e) => DropdownMenuItem(
-                        value: e.id,
+                        value: e,
                         child: Row(children: [
                           Container(
                               height: 30,
