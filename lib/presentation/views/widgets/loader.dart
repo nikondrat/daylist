@@ -32,13 +32,16 @@ class LoaderWidget<T> extends StatelessWidget {
 }
 
 class SubjectsLoaderWidget extends HookConsumerWidget {
+  final bool isDataFromStorage;
   final Widget Function(List<Subject> subjects, List<Replacement> replacements)
       builder;
-  const SubjectsLoaderWidget({super.key, required this.builder});
+  const SubjectsLoaderWidget(
+      {super.key, this.isDataFromStorage = true, required this.builder});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<List<Subject>> subjects = ref.watch(subjectsProvider);
+    final AsyncValue<List<Subject>> subjects =
+        ref.watch(subjectsProvider(isDataFromStorage));
     final AsyncValue<List<Replacement>> replacements =
         ref.watch(replacementsProvider);
 

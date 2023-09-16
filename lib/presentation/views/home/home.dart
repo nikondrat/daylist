@@ -13,11 +13,11 @@ import 'package:daylist/presentation/translations/translations.g.dart';
 import 'package:daylist/presentation/views/router.dart';
 import 'package:daylist/presentation/views/widgets/loader.dart';
 
-class HomeView extends HookConsumerWidget {
+class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return SubjectsLoaderWidget(
         builder: (subjects, replacements) =>
             _Body(subjects: subjects, replacements: replacements));
@@ -40,6 +40,7 @@ class _Body extends HookConsumerWidget {
     final DateTime tomorrow = now.add(const Duration(days: 1));
 
     final int undergroup = ref.watch(settingsProvider).undergroup;
+    final bool isEvenWeek = ref.watch(isEvenWeekProvider);
 
     return Scaffold(
         appBar: AppBar(
@@ -63,6 +64,7 @@ class _Body extends HookConsumerWidget {
                   '${t.home.today}, ${now.day} ${t.week.days.short[now.weekday - 1]}',
               dateTime: now,
               subjects: subjects,
+              isEvenWeek: isEvenWeek,
               undergroup: undergroup,
               replacements: replacements),
           SectionSubjectsWidget(
@@ -70,6 +72,7 @@ class _Body extends HookConsumerWidget {
                   '${t.home.tomorrow}, ${tomorrow.day} ${t.week.days.short[tomorrow.weekday - 1]}',
               dateTime: tomorrow,
               subjects: subjects,
+              isEvenWeek: isEvenWeek,
               undergroup: undergroup,
               replacements: replacements),
         ]));

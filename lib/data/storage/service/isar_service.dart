@@ -1,14 +1,27 @@
+import 'package:daylist/data/storage/model/storage_subject.dart';
+import 'package:daylist/data/storage/model/storage_teacher.dart';
+import 'package:daylist/data/storage/model/storage_time.dart';
+import 'package:daylist/data/storage/model/storage_title.dart';
+import 'package:isar/isar.dart';
+import 'package:path_provider/path_provider.dart';
+
 class IsarService {
-  // late final Future<Isar> _db;
+  late final Future<Isar> _db;
 
-  // IsarService() {
-  //   _db = _openDB();
-  // }
+  IsarService() {
+    _db = _openDB();
+  }
 
-  // Future clear() async {
-  //   final Isar db = await _db;
-  //   db.writeTxnSync(() => db.clearSync());
-  // }
+  Future putLink({required IsarLink link}) async {
+    final Isar db = await _db;
+
+    return await db.writeTxnSync(() => link.saveSync());
+  }
+
+  Future clear() async {
+    final Isar db = await _db;
+    db.writeTxnSync(() => db.clearSync());
+  }
 
   // Future<List<StorageCity>> getCities() async {
   //   final Isar db = await _db;
@@ -78,116 +91,105 @@ class IsarService {
   //       () => db.storageReplacements.deleteSync(Generator.fastHash(id)));
   // }
 
-  // Future<List<StorageSubject>> getSubjects() async {
-  //   final Isar db = await _db;
-  //   return db.storageSubjects.where().findAllSync();
-  // }
+  Future<List<StorageSubject>> getSubjects() async {
+    final Isar db = await _db;
+    return db.storageSubjects.where().findAllSync();
+  }
 
-  // Future putSubject(
-  //     {required StorageTeacher teacher,
-  //     required StorageTime time,
-  //     required StorageTitle title}) async {
-  //   final Isar db = await _db;
+  Future putSubject(
+      {required StorageTeacher teacher,
+      required StorageTime time,
+      required StorageTitle title}) async {
+    final Isar db = await _db;
 
-  //   db.writeTxnSync(() {
-  //     db.storageTitles.putSync(title);
-  //     db.storageTeachers.putSync(teacher);
-  //     db.storageTimes.putSync(time);
-  //   });
-  // }
+    db.writeTxnSync(() {
+      db.storageTitles.putSync(title);
+      db.storageTeachers.putSync(teacher);
+      db.storageTimes.putSync(time);
+    });
+  }
 
-  // Future putSubjects({required List<StorageSubject> subjects}) async {
-  //   final Isar db = await _db;
+  Future addSubject({required StorageSubject subject}) async {
+    final Isar db = await _db;
 
-  //   // for (var i in subjects) {
-  //   //   db.writeTxn(() async {
-  //   //     await i.teacher.save();
-  //   //     await i.time.save();
-  //   //     await db.storageSubjects.put(i);
-  //   //   });
-  //   // }
+    return await db.writeTxn(() async {
+      await db.storageSubjects.put(subject);
+      await db.storageTeachers.put(subject.teacher.value!);
+      await db.storageTitles.put(subject.teacher.value!.title.value!);
+      await db.storageTimes.put(subject.time.value!);
+      await subject.teacher.save();
+      await subject.time.save();
+      await subject.teacher.value!.title.save();
+    });
+  }
 
-  //   db.writeTxnSync(() {
-  //     db.storageSubjects.putAllSync(subjects);
+  Future clearSubjects() async {
+    final Isar db = await _db;
 
-  //     // for (var e in subjects) {
-  //     //   e.teacher.saveSync();
-  //     //   e.time.saveSync();
-  //     // }
-  //   });
-  // }
+    db.writeTxnSync(() => db.storageSubjects.clearSync());
+  }
 
-  // Future addSubject({required StorageSubject subject}) async {
-  //   final Isar db = await _db;
-  //   db.writeTxnSync(() => db.storageSubjects.putSync(subject));
-  // }
+  Future<List<StorageTeacher>> getTeachers() async {
+    final Isar db = await _db;
+    return db.storageTeachers.where().findAllSync();
+  }
 
-  // Future clearSubjects() async {
-  //   final Isar db = await _db;
+  Future putTeachers({required List<StorageTeacher> teachers}) async {
+    final Isar db = await _db;
+    db.writeTxnSync(() => db.storageTeachers.putAllSync(teachers));
+  }
 
-  //   db.writeTxnSync(() => db.storageSubjects.clearSync());
-  // }
+  Future addTeacher({required StorageTeacher teacher}) async {
+    final Isar db = await _db;
+    db.writeTxnSync(() => db.storageTeachers.putSync(teacher));
+  }
 
-  // Future<List<StorageTeacher>> getTeachers() async {
-  //   final Isar db = await _db;
-  //   return db.storageTeachers.where().findAllSync();
-  // }
+  Future<List<StorageTime>> getTimes() async {
+    final Isar db = await _db;
+    return db.storageTimes.where().findAllSync();
+  }
 
-  // Future putTeachers({required List<StorageTeacher> teachers}) async {
-  //   final Isar db = await _db;
-  //   db.writeTxnSync(() => db.storageTeachers.putAllSync(teachers));
-  // }
+  Future putTimes({required List<StorageTime> times}) async {
+    final Isar db = await _db;
+    db.writeTxnSync(() => db.storageTimes.putAllSync(times));
+  }
 
-  // Future addTeacher({required StorageTeacher teacher}) async {
-  //   final Isar db = await _db;
-  //   db.writeTxnSync(() => db.storageTeachers.putSync(teacher));
-  // }
+  Future addTime({required StorageTime time}) async {
+    final Isar db = await _db;
+    db.writeTxnSync(() => db.storageTimes.putSync(time));
+  }
 
-  // Future<List<StorageTime>> getTimes() async {
-  //   final Isar db = await _db;
-  //   return db.storageTimes.where().findAllSync();
-  // }
+  Future<List<StorageTitle>> getTitles() async {
+    final Isar db = await _db;
+    return db.storageTitles.where().findAllSync();
+  }
 
-  // Future putTimes({required List<StorageTime> times}) async {
-  //   final Isar db = await _db;
-  //   db.writeTxnSync(() => db.storageTimes.putAllSync(times));
-  // }
+  Future putTitles({required List<StorageTitle> titles}) async {
+    final Isar db = await _db;
+    db.writeTxnSync(() => db.storageTitles.putAllSync(titles));
+  }
 
-  // Future addTime({required StorageTime time}) async {
-  //   final Isar db = await _db;
-  //   db.writeTxnSync(() => db.storageTimes.putSync(time));
-  // }
+  Future addTitle({required StorageTitle title}) async {
+    final Isar db = await _db;
+    db.writeTxnSync(() => db.storageTitles.putSync(title));
+  }
 
-  // Future<List<StorageTitle>> getTitles() async {
-  //   final Isar db = await _db;
-  //   return db.storageTitles.where().findAllSync();
-  // }
+  Future<Isar> _openDB() async {
+    final dir = await getApplicationCacheDirectory();
 
-  // Future putTitles({required List<StorageTitle> titles}) async {
-  //   final Isar db = await _db;
-  //   db.writeTxnSync(() => db.storageTitles.putAllSync(titles));
-  // }
-
-  // Future addTitle({required StorageTitle title}) async {
-  //   final Isar db = await _db;
-  //   db.writeTxnSync(() => db.storageTitles.putSync(title));
-  // }
-
-  // Future<Isar> _openDB() async {
-  //   final dir = await getTemporaryDirectory();
-  //   if (Isar.instanceNames.isEmpty) {
-  //     return await Isar.open([
-  //       // StorageCitySchema,
-  //       // StorageInstitutionSchema,
-  //       // StorageGroupSchema,
-  //       // StorageTitleSchema,
-  //       // StorageReplacementSchema,
-  //       // StorageSubjectSchema,
-  //       // StorageTeacherSchema,
-  //       // StorageTimeSchema
-  //     ], directory: dir.path, inspector: true);
-  //   } else {
-  //     return Isar.getInstance()!;
-  //   }
-  // }
+    if (Isar.instanceNames.isEmpty) {
+      return await Isar.open([
+        // StorageCitySchema,
+        // StorageInstitutionSchema,
+        // StorageGroupSchema,
+        StorageTitleSchema,
+        // StorageReplacementSchema,
+        StorageSubjectSchema,
+        StorageTeacherSchema,
+        StorageTimeSchema
+      ], directory: dir.path, inspector: true);
+    } else {
+      return Isar.getInstance()!;
+    }
+  }
 }

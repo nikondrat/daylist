@@ -1,8 +1,22 @@
+import 'package:daylist/data/mapper/subject_mapper.dart';
+import 'package:daylist/data/mapper/teacher_mapper.dart';
+import 'package:daylist/data/mapper/time_mapper.dart';
+import 'package:daylist/data/mapper/title_mapper.dart';
 import 'package:daylist/data/storage/model/settings.dart';
+import 'package:daylist/data/storage/model/storage_subject.dart';
+import 'package:daylist/data/storage/model/storage_teacher.dart';
+import 'package:daylist/data/storage/model/storage_time.dart';
+import 'package:daylist/data/storage/model/storage_title.dart';
+import 'package:daylist/data/storage/service/isar_service.dart';
 import 'package:daylist/data/storage/service/shared_prefs_service.dart';
+import 'package:daylist/domain/model/subject.dart';
+import 'package:daylist/domain/model/teacher.dart';
+import 'package:daylist/domain/model/time.dart';
+import 'package:daylist/domain/model/title.dart';
+import 'package:isar/isar.dart';
 
 class StorageUtil {
-  // late final IsarService _db = IsarService();
+  late final IsarService _db = IsarService();
   late final SharedPrefsService _prefs = SharedPrefsService();
 
   Future<bool> isAuthorized() async {
@@ -19,6 +33,10 @@ class StorageUtil {
 
   Future<Settings?> getSettings() async {
     return await _prefs.getSettings();
+  }
+
+  Future putLink({required IsarLink link}) async {
+    return await _db.putLink(link: link);
   }
 
   // Future<List<City>> getCities() async {
@@ -91,78 +109,74 @@ class StorageUtil {
   //   await _db.deleteReplacement(id: id);
   // }
 
-  // Future<List<Subject>> getSubjects() async {
-  //   final List<StorageSubject> result = await _db.getSubjects();
-  //   final List<Subject> convertedList =
-  //       result.map((e) => SubjectMapper.fromStorage(e)).toList();
+  Future<List<Subject>> getSubjects() async {
+    final List<StorageSubject> result = await _db.getSubjects();
+    final List<Subject> convertedList =
+        result.map((e) => SubjectMapper.fromStorage(e)).toList();
 
-  //   return convertedList;
-  // }
+    return convertedList;
+  }
 
-  // Future putSubject(
-  //     {required StorageTeacher teacher,
-  //     required StorageTime time,
-  //     required StorageTitle title}) async {
-  //   return await _db.putSubject(teacher: teacher, time: time, title: title);
-  // }
+  Future putSubject(
+      {required StorageTeacher teacher,
+      required StorageTime time,
+      required StorageTitle title}) async {
+    return await _db.putSubject(teacher: teacher, time: time, title: title);
+  }
 
-  // Future putSubjects({required List<StorageSubject> subjects}) async {
-  //   await _db.putSubjects(subjects: subjects);
-  // }
+  Future addSubject({required StorageSubject subject}) async {
+    return await _db.addSubject(subject: subject);
+  }
 
-  // Future addSubject({required StorageSubject subject}) async {
-  //   return await _db.addSubject(subject: subject);
-  // }
+  Future clearSubjects() async {
+    return await _db.clearSubjects();
+  }
 
-  // Future clearSubjects() async {
-  //   return await _db.clearSubjects();
-  // }
+  Future<List<Teacher>> getTeachers() async {
+    final List<StorageTeacher> result = await _db.getTeachers();
+    final List<Teacher> convertedList =
+        result.map((e) => TeacherMapper.fromStorage(e)).toList();
 
-  // Future<List<Teacher>> getTeachers() async {
-  //   final List<StorageTeacher> result = await _db.getTeachers();
-  //   final List<Teacher> convertedList =
-  //       result.map((e) => TeacherMapper.fromStorage(e)).toList();
+    return convertedList;
+  }
 
-  //   return convertedList;
-  // }
+  Future putTeachers({required List<StorageTeacher> teachers}) async {
+    await _db.putTeachers(teachers: teachers);
+  }
 
-  // Future putTeachers({required List<StorageTeacher> teachers}) async {
-  //   await _db.putTeachers(teachers: teachers);
-  // }
+  Future addTeacher({required StorageTeacher teacher}) async {
+    return await _db.addTeacher(teacher: teacher);
+  }
 
-  // Future addTeacher({required StorageTeacher teacher}) async {
-  //   return await _db.addTeacher(teacher: teacher);
-  // }
+  Future<List<Time>> getTimes() async {
+    final List<StorageTime> result = await _db.getTimes();
+    final List<Time> convertedList =
+        result.map((e) => TimeMapper.fromStorage(e)).toList();
 
-  // Future<List<Time>> getTimes() async {
-  //   final List<StorageTime> result = await _db.getTimes();
-  //   final List<Time> convertedList =
-  //       result.map((e) => TimeMapper.fromStorage(e)).toList();
+    return convertedList;
+  }
 
-  //   return convertedList;
-  // }
+  Future putTimes({required List<StorageTime> times}) async {
+    await _db.putTimes(times: times);
+  }
 
-  // Future putTimes({required List<StorageTime> times}) async {
-  //   await _db.putTimes(times: times);
-  // }
+  Future addTime({required StorageTime time}) async {
+    return await _db.addTime(time: time);
+  }
 
-  // Future addTime({required StorageTime time}) async {
-  //   return await _db.addTime(time: time);
-  // }
+  Future<List<SubjectTitle>> getTitles() async {
+    final List<StorageTitle> result = await _db.getTitles();
+    final List<SubjectTitle> convertedList =
+        result.map((e) => TitleMapper.fromStorage(e)).toList();
 
-  // Future<List<SubjectTitle>> getTitles() async {
-  //   final List<StorageTitle> result = await _db.getTitles();
-  //   final List<SubjectTitle> convertedList =
-  //       result.map((e) => TitleMapper.fromStorage(e)).toList();
+    return convertedList;
+  }
 
-  //   return convertedList;
-  // }
+  Future putTitles({required List<StorageTitle> titles}) async {
+    await _db.putTitles(titles: titles);
+  }
 
-  // Future putTitles({required List<StorageTitle> titles}) async {
-  //   await _db.putTitles(titles: titles);
-  // }
-
-  // Future addTitle({required StorageTitle title}) async {
-  //   return await _db.addTitle(title: title);
-  // }
+  Future addTitle({required StorageTitle title}) async {
+    return await _db.addTitle(title: title);
+  }
 }

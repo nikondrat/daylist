@@ -9,113 +9,322 @@ import 'package:daylist/presentation/res/values.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class SettingsNotifier extends ChangeNotifier {
-  Settings? _settings;
-  set settings(Settings settings) {
-    _settings = settings;
-  }
+// class SettingsNotifier extends ChangeNotifier {
+//   Settings? _settings;
+//   set settings(Settings settings) {
+//     _settings = settings;
+//   }
 
-  SettingsNotifier() {
+//   SettingsNotifier() {
+//     _init();
+//   }
+
+//   void _init() async {
+//     final Settings? settings =
+//         await UserDataRepository(Dependencies().getIt.get()).getSettings();
+
+//     _settings =
+//         settings ?? Settings(city: null, institution: null, group: null);
+
+//     _isScheduler =
+//         await AuthDataRepository(Dependencies().getIt.get()).isScheduler();
+
+//     notifyListeners();
+//   }
+
+//   bool _isScheduler = false;
+//   bool get isScheduler => _isScheduler;
+
+//   City? get city => _settings?.city;
+//   set city(City? v) {
+//     _settings?.city = v;
+//     notifyListeners();
+//   }
+
+//   Institution? get institution => _settings?.institution;
+//   set institution(Institution? v) {
+//     _settings?.institution = v;
+//     if (_isScheduler) {
+//       AuthDataRepository(Dependencies().getIt.get()).updatePrefs(data: {
+//         'city': city!.id,
+//         'institution': institution!.id,
+//       });
+//     }
+//     notifyListeners();
+//   }
+
+//   Group? get group => _settings?.group;
+//   set group(Group? v) {
+//     _settings?.group = v;
+//     UserDataRepository(Dependencies().getIt.get()).setSettings(_settings!);
+//     AuthDataRepository(Dependencies().getIt.get()).updatePrefs(data: {
+//       'city': city!.id,
+//       'institution': institution!.id,
+//       'group': group!.id
+//     });
+//     notifyListeners();
+//   }
+
+//   int get undergroup => _settings!.undergroup;
+//   set undergroup(int v) {
+//     _settings!.undergroup = v;
+//     UserDataRepository(Dependencies().getIt.get()).setSettings(_settings!);
+//     notifyListeners();
+//   }
+
+//   bool get isDark => _settings?.isDark ?? false;
+//   void switchTheme() {
+//     _settings!.isDark = !_settings!.isDark;
+//     UserDataRepository(Dependencies().getIt.get()).setSettings(_settings!);
+//     notifyListeners();
+//   }
+
+//   Color? get primaryColor => _settings?.primaryColor;
+//   set primaryColor(Color? v) {
+//     _settings!.primaryColor = v;
+//     UserDataRepository(Dependencies().getIt.get()).setSettings(_settings!);
+//     notifyListeners();
+//   }
+
+//   Color? get backgroundColor => _settings?.backgroundColor;
+//   set backgroundColor(Color? v) {
+//     _settings!.backgroundColor = v;
+//     UserDataRepository(Dependencies().getIt.get()).setSettings(_settings!);
+//     notifyListeners();
+//   }
+
+//   double get radius => _settings?.radius ?? kDefaultRadius;
+//   set radius(double v) {
+//     _settings!.radius = v;
+//     UserDataRepository(Dependencies().getIt.get()).setSettings(_settings!);
+//     notifyListeners();
+//   }
+
+//   bool get isShowTime => _settings?.isShowTime ?? false;
+//   set isShowTime(bool v) {
+//     _settings!.isShowTime = v;
+//     UserDataRepository(Dependencies().getIt.get()).setSettings(_settings!);
+//     notifyListeners();
+//   }
+
+//   bool get isShortInitials => _settings?.isShortInitials ?? false;
+//   set isShortInitials(bool v) {
+//     _settings!.isShortInitials = v;
+//     UserDataRepository(Dependencies().getIt.get()).setSettings(_settings!);
+//     notifyListeners();
+//   }
+// }
+
+// final settingsProvider =
+//     ChangeNotifierProvider.autoDispose<SettingsNotifier>((ref) {
+//   return SettingsNotifier();
+// });
+
+// final getSettingsProvider = FutureProvider<Settings>((ref) async {
+//   final Settings? settings =
+//       await UserDataRepository(Dependencies().getIt.get()).getSettings();
+
+//   return settings ?? Settings(city: null, institution: null, group: null);
+// });
+
+// final primaryColorProvider = StateProvider<Color?>((ref) {
+//   final Settings settings = SettingsData().settings;
+//   // final Settings settings = ref.watch(getSettingsProvider);
+
+//   return settings.primaryColor;
+// });
+
+final settingsProvider = Provider(SettingsNotifier.new);
+
+class SettingsNotifier {
+  SettingsNotifier(this.ref) {
     _init();
   }
 
-  void _init() async {
-    final Settings? settings =
-        await UserDataRepository(Dependencies().getIt.get()).getSettings();
+  Settings? _settings;
+  set settings(Settings settings) {
+    _settings = settings;
+    ref.read(cityProvider.notifier).update((state) => settings.city);
+    ref.read(groupProvider.notifier).update((state) => settings.group);
+    ref
+        .read(institutionProvider.notifier)
+        .update((state) => settings.institution);
+    ref
+        .read(undergroupProvider.notifier)
+        .update((state) => settings.undergroup);
+    ref.read(isDarkProvider.notifier).update((state) => settings.isDark);
+    ref
+        .read(primaryColorProvider.notifier)
+        .update((state) => settings.primaryColor);
+    ref
+        .read(backgroundColorProvider.notifier)
+        .update((state) => settings.backgroundColor);
+    ref.read(radiusProvider.notifier).update((state) => settings.radius);
+    ref
+        .read(isShowTimeProvider.notifier)
+        .update((state) => settings.isShowTime);
+    ref
+        .read(isShortInitialsProvider.notifier)
+        .update((state) => settings.isShortInitials);
+  }
 
-    _settings =
-        settings ?? Settings(city: null, institution: null, group: null);
+  final Ref ref;
+
+  void _init() async {
+    settings =
+        await UserDataRepository(Dependencies().getIt.get()).getSettings() ??
+            Settings(city: null, institution: null, group: null);
 
     _isScheduler =
         await AuthDataRepository(Dependencies().getIt.get()).isScheduler();
+  }
 
-    notifyListeners();
+  updateSettings() {
+    UserDataRepository(Dependencies().getIt.get()).setSettings(_settings!);
   }
 
   bool _isScheduler = false;
   bool get isScheduler => _isScheduler;
 
   City? get city => _settings?.city;
-  set city(City? v) {
-    _settings?.city = v;
-    notifyListeners();
+  set city(City? city) {
+    _settings?.city = city;
+    ref.read(cityProvider.notifier).update((state) => city);
   }
 
   Institution? get institution => _settings?.institution;
-  set institution(Institution? v) {
-    _settings?.institution = v;
-    if (_isScheduler) {
-      AuthDataRepository(Dependencies().getIt.get()).updatePrefs(data: {
-        'city': city!.id,
-        'institution': institution!.id,
-      });
-    }
-    notifyListeners();
+  set institution(Institution? institution) {
+    _settings?.institution = institution;
+    ref.read(institutionProvider.notifier).update((state) => institution);
   }
 
   Group? get group => _settings?.group;
-  set group(Group? v) {
-    _settings?.group = v;
-    UserDataRepository(Dependencies().getIt.get()).setSettings(_settings!);
-    AuthDataRepository(Dependencies().getIt.get()).updatePrefs(data: {
-      'city': city!.id,
-      'institution': institution!.id,
-      'group': group!.id
-    });
-    notifyListeners();
+  set group(Group? group) {
+    _settings?.group = group;
+    updateSettings();
+    ref.read(groupProvider.notifier).update((state) => group);
   }
 
   int get undergroup => _settings!.undergroup;
-  set undergroup(int v) {
-    _settings!.undergroup = v;
-    UserDataRepository(Dependencies().getIt.get()).setSettings(_settings!);
-    notifyListeners();
+  set undergroup(int undergroup) {
+    _settings?.undergroup = undergroup;
+    updateSettings();
+    ref.read(undergroupProvider.notifier).update((state) => undergroup);
   }
 
   bool get isDark => _settings?.isDark ?? false;
-  void switchTheme() {
-    _settings!.isDark = !_settings!.isDark;
-    UserDataRepository(Dependencies().getIt.get()).setSettings(_settings!);
-    notifyListeners();
+  set isDark(bool isDark) {
+    _settings?.isDark = isDark;
+    updateSettings();
+    ref.read(isDarkProvider.notifier).update((state) => isDark);
+  }
+
+  bool get isEvenWeek => _settings?.isEvenWeek ?? false;
+  set isEvenWeek(bool isEvenWeek) {
+    _settings?.isEvenWeek = isEvenWeek;
+    updateSettings();
+    ref.read(isEvenWeekProvider.notifier).update((state) => isEvenWeek);
   }
 
   Color? get primaryColor => _settings?.primaryColor;
-  set primaryColor(Color? v) {
-    _settings!.primaryColor = v;
-    UserDataRepository(Dependencies().getIt.get()).setSettings(_settings!);
-    notifyListeners();
+  set primaryColor(Color? primaryColor) {
+    _settings?.primaryColor = primaryColor;
+    ref.read(primaryColorProvider.notifier).update((state) => primaryColor);
   }
 
   Color? get backgroundColor => _settings?.backgroundColor;
-  set backgroundColor(Color? v) {
-    _settings!.backgroundColor = v;
-    UserDataRepository(Dependencies().getIt.get()).setSettings(_settings!);
-    notifyListeners();
+  set backgroundColor(Color? backgroundColor) {
+    _settings?.backgroundColor = backgroundColor;
+    ref
+        .read(backgroundColorProvider.notifier)
+        .update((state) => backgroundColor);
   }
 
   double get radius => _settings?.radius ?? kDefaultRadius;
-  set radius(double v) {
-    _settings!.radius = v;
-    UserDataRepository(Dependencies().getIt.get()).setSettings(_settings!);
-    notifyListeners();
+  set radius(double radius) {
+    _settings?.radius = radius;
+    ref.read(radiusProvider.notifier).update((state) => radius);
   }
 
   bool get isShowTime => _settings?.isShowTime ?? false;
-  set isShowTime(bool v) {
-    _settings!.isShowTime = v;
-    UserDataRepository(Dependencies().getIt.get()).setSettings(_settings!);
-    notifyListeners();
+  set isShowTime(bool isShowTime) {
+    _settings?.isShowTime = isShowTime;
+    updateSettings();
+    ref.read(isShowTimeProvider.notifier).update((state) => isShowTime);
   }
 
   bool get isShortInitials => _settings?.isShortInitials ?? false;
-  set isShortInitials(bool v) {
-    _settings!.isShortInitials = v;
-    UserDataRepository(Dependencies().getIt.get()).setSettings(_settings!);
-    notifyListeners();
+  set isShortInitials(bool isShortInitials) {
+    _settings?.isShortInitials = isShortInitials;
+    updateSettings();
+    ref
+        .read(isShortInitialsProvider.notifier)
+        .update((state) => isShortInitials);
   }
 }
 
-final settingsProvider =
-    ChangeNotifierProvider.autoDispose<SettingsNotifier>((ref) {
-  return SettingsNotifier();
+final cityProvider = StateProvider<City?>((ref) {
+  final City? city = ref.watch(settingsProvider).city;
+
+  return city;
+});
+
+final institutionProvider = StateProvider<Institution?>((ref) {
+  final Institution? institution = ref.watch(settingsProvider).institution;
+
+  return institution;
+});
+
+final groupProvider = StateProvider<Group?>((ref) {
+  final Group? group = ref.watch(settingsProvider).group;
+
+  return group;
+});
+
+final undergroupProvider = StateProvider<int>((ref) {
+  final int undergroup = ref.watch(settingsProvider).undergroup;
+
+  return undergroup;
+});
+
+final isDarkProvider = StateProvider<bool>((ref) {
+  final bool isDark = ref.watch(settingsProvider).isDark;
+
+  return isDark;
+});
+
+final isEvenWeekProvider = StateProvider<bool>((ref) {
+  final bool isEvenWeek = ref.watch(settingsProvider).isEvenWeek;
+
+  return isEvenWeek;
+});
+
+final primaryColorProvider = StateProvider<Color?>((ref) {
+  final Color? color = ref.watch(settingsProvider).primaryColor;
+
+  return color;
+});
+
+final backgroundColorProvider = StateProvider<Color?>((ref) {
+  final Color? color = ref.watch(settingsProvider).backgroundColor;
+
+  return color;
+});
+
+final radiusProvider = StateProvider<double>((ref) {
+  final double radius = ref.watch(settingsProvider).radius;
+
+  return radius;
+});
+
+final isShowTimeProvider = StateProvider<bool>((ref) {
+  final bool isShowTime = ref.watch(settingsProvider).isShowTime;
+
+  return isShowTime;
+});
+
+final isShortInitialsProvider = StateProvider<bool>((ref) {
+  final bool isShortInitials = ref.watch(settingsProvider).isShortInitials;
+
+  return isShortInitials;
 });

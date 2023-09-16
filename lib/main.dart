@@ -21,6 +21,8 @@ void main() async {
   await SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
+  // IsarService().clear();
+
   // var p = await SharedPreferences.getInstance();
   // p.clear();
 
@@ -34,10 +36,10 @@ class MyApp extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bool isDark = ref.watch(settingsProvider).isDark;
-    final double radius = ref.watch(settingsProvider).radius;
-    final Color? primaryColor = ref.watch(settingsProvider).primaryColor;
-    final Color? backgroundColor = ref.watch(settingsProvider).backgroundColor;
+    final bool isDark = ref.watch(isDarkProvider);
+    final double radius = ref.watch(radiusProvider);
+    final Color? primaryColor = ref.watch(primaryColorProvider);
+    final Color? backgroundColor = ref.watch(backgroundColorProvider);
 
     return MaterialApp.router(
         routerConfig: router,

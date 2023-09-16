@@ -21,8 +21,9 @@
     "radius": "Block angle",
     "short_initials": "Abbreviated name of the teacher",
     "show_time": "Show time",
+    "optional": "Optional",
     "support": {
-        "questions": "Write questions and suggestions in Telegram:",
+        "questions": "Write questions and suggestions in Telegram",
         "tag": "studbin",
         "money": {
             "title": "Support the author for project development and server payment",

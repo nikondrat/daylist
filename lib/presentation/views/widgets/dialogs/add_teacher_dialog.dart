@@ -68,7 +68,8 @@ class _AddTeacherDialogState extends ConsumerState<AddTeacherDialog> {
     final SubjectTitle? title = ref.watch(selectedSubjectTitleProvider);
 
     try {
-      await TeacherDataRepository(Dependencies().getIt.get())
+      await TeacherDataRepository(
+              Dependencies().getIt.get(), Dependencies().getIt.get())
           .addTeacher(
               body: AddTecherBody(
                   databaseId: dotenv.env['databaseId']!,

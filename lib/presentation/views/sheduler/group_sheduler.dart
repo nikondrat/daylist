@@ -20,6 +20,7 @@ class GroupShedulerView extends HookConsumerWidget {
     final Group group = ref.watch(selectedGroup)!;
     final int undergroup = ref.watch(settingsProvider).undergroup;
     final DateTime today = DateTime.now();
+    final bool isEvenWeek = ref.watch(isEvenWeekProvider);
 
     return SubjectsLoaderWidget(
         builder: (subjects, replacements) => Scaffold(
@@ -50,6 +51,7 @@ class GroupShedulerView extends HookConsumerWidget {
               SectionSubjectsWidget(
                   title: t.home.today,
                   dateTime: today,
+                  isEvenWeek: isEvenWeek,
                   subjects: subjects,
                   replacements: replacements,
                   undergroup: undergroup),
@@ -57,6 +59,7 @@ class GroupShedulerView extends HookConsumerWidget {
                   title: t.home.tomorrow,
                   dateTime: today.add(const Duration(days: 1)),
                   subjects: subjects,
+                  isEvenWeek: isEvenWeek,
                   replacements: replacements,
                   undergroup: undergroup),
             ])));

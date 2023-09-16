@@ -13,6 +13,7 @@ class Settings {
   int undergroup;
 
   bool isDark;
+  bool isEvenWeek;
   bool isShowTime;
   bool isShortInitials;
   Color? primaryColor;
@@ -25,6 +26,7 @@ class Settings {
       this.group,
       this.primaryColor,
       this.isDark = false,
+      this.isEvenWeek = false,
       this.undergroup = 1,
       this.backgroundColor,
       this.isShowTime = false,
@@ -38,6 +40,7 @@ class Settings {
       'group': group!.toMap(),
       'undergroup': undergroup,
       'isDark': isDark,
+      'isEvenWeek': isEvenWeek,
       'isShowTime': isShowTime,
       'primaryColor': primaryColor?.value,
       'backgroundColor': backgroundColor?.value,
@@ -51,6 +54,7 @@ class Settings {
         city: City.fromMap(map['city']),
         institution: Institution.fromMap(map['institution']),
         group: Group.fromMap(map['group']),
+        isEvenWeek: map['isEvenWeek'] ?? false,
         undergroup: map['undergroup'] ?? 1,
         isDark: map['isDark'] ?? false,
         isShowTime: map['isShowTime'] ?? false,
@@ -66,6 +70,34 @@ class Settings {
 
   @override
   String toString() {
-    return 'Settings(city: $city, institution: $institution, group: $group, undergroup: $undergroup, isDark: $isDark, primaryColor: $primaryColor, backgroundColor: $backgroundColor, radius: $radius)';
+    return 'Settings(city: $city, institution: $institution, group: $group, undergroup: $undergroup, isDark: $isDark, isEvenWeek: $isEvenWeek, primaryColor: $primaryColor, backgroundColor: $backgroundColor, radius: $radius)';
+  }
+
+  Settings copyWith({
+    City? city,
+    Institution? institution,
+    Group? group,
+    int? undergroup,
+    bool? isDark,
+    bool? isEvenWeek,
+    bool? isShowTime,
+    bool? isShortInitials,
+    Color? primaryColor,
+    Color? backgroundColor,
+    double? radius,
+  }) {
+    return Settings(
+      city: city ?? this.city,
+      institution: institution ?? this.institution,
+      group: group ?? this.group,
+      undergroup: undergroup ?? this.undergroup,
+      isDark: isDark ?? this.isDark,
+      isEvenWeek: isEvenWeek ?? this.isEvenWeek,
+      isShowTime: isShowTime ?? this.isShowTime,
+      isShortInitials: isShortInitials ?? this.isShortInitials,
+      primaryColor: primaryColor ?? this.primaryColor,
+      backgroundColor: backgroundColor ?? this.backgroundColor,
+      radius: radius ?? this.radius,
+    );
   }
 }

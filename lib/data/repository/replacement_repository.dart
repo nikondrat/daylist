@@ -15,6 +15,8 @@ class ReplacementDataRepository extends ReplacementRepository {
       {required GetReplacementsBody body}) async {
     final List<Replacement> result = await _apiUtil.getReplacements(body: body);
 
+    print('LOAD REPLACEMENTS FROM SERVER');
+
     return result;
   }
 

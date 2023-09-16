@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 180 (90 per locale)
+/// Strings: 182 (91 per locale)
 ///
-/// Built on 2023-09-12 at 17:29 UTC
+/// Built on 2023-09-15 at 17:19 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -290,6 +290,7 @@ class _TranslationsSettingsEn {
 	String get radius => 'Block angle';
 	String get short_initials => 'Abbreviated name of the teacher';
 	String get show_time => 'Show time';
+	String get optional => 'Optional';
 	late final _TranslationsSettingsSupportEn support = _TranslationsSettingsSupportEn._(_root);
 }
 
@@ -373,7 +374,7 @@ class _TranslationsSettingsSupportEn {
 	final _TranslationsEn _root; // ignore: unused_field
 
 	// Translations
-	String get questions => 'Write questions and suggestions in Telegram:';
+	String get questions => 'Write questions and suggestions in Telegram';
 	String get tag => 'studbin';
 	late final _TranslationsSettingsSupportMoneyEn money = _TranslationsSettingsSupportMoneyEn._(_root);
 }
@@ -584,6 +585,7 @@ class _TranslationsSettingsRu implements _TranslationsSettingsEn {
 	@override String get radius => 'Угол блоков';
 	@override String get short_initials => 'Сокращённое имя преподавателя';
 	@override String get show_time => 'Показывать время';
+	@override String get optional => 'Дополнительно';
 	@override late final _TranslationsSettingsSupportRu support = _TranslationsSettingsSupportRu._(_root);
 }
 
@@ -667,7 +669,7 @@ class _TranslationsSettingsSupportRu implements _TranslationsSettingsSupportEn {
 	@override final _TranslationsRu _root; // ignore: unused_field
 
 	// Translations
-	@override String get questions => 'Вопросы и предложения пишите в Telegram:';
+	@override String get questions => 'Вопросы и предложения пишите в Telegram';
 	@override String get tag => 'studbin';
 	@override late final _TranslationsSettingsSupportMoneyRu money = _TranslationsSettingsSupportMoneyRu._(_root);
 }
@@ -812,7 +814,8 @@ extension on _TranslationsEn {
 			case 'settings.radius': return 'Block angle';
 			case 'settings.short_initials': return 'Abbreviated name of the teacher';
 			case 'settings.show_time': return 'Show time';
-			case 'settings.support.questions': return 'Write questions and suggestions in Telegram:';
+			case 'settings.optional': return 'Optional';
+			case 'settings.support.questions': return 'Write questions and suggestions in Telegram';
 			case 'settings.support.tag': return 'studbin';
 			case 'settings.support.money.title': return 'Support the author for project development and server payment';
 			case 'settings.support.money.url': return 'https://yoomoney.ru/to/4100117575409230';
@@ -929,7 +932,8 @@ extension on _TranslationsRu {
 			case 'settings.radius': return 'Угол блоков';
 			case 'settings.short_initials': return 'Сокращённое имя преподавателя';
 			case 'settings.show_time': return 'Показывать время';
-			case 'settings.support.questions': return 'Вопросы и предложения пишите в Telegram:';
+			case 'settings.optional': return 'Дополнительно';
+			case 'settings.support.questions': return 'Вопросы и предложения пишите в Telegram';
 			case 'settings.support.tag': return 'studbin';
 			case 'settings.support.money.title': return 'Поддержать автора на развитие проекта и оплату серверов';
 			case 'settings.support.money.url': return 'https://yoomoney.ru/to/4100117575409230';

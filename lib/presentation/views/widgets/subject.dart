@@ -31,11 +31,13 @@ class _SubjectWidget extends StatefulWidget {
 class __SubjectWidgetState extends State<_SubjectWidget> {
   @override
   void initState() {
-    SubjectDataRepository(Dependencies().getIt.get()).putSubject(
-        body: PutSubjectBody(
-            teacher: widget.teacher,
-            time: widget.time,
-            title: widget.teacher.title));
+    SubjectDataRepository(
+            Dependencies().getIt.get(), Dependencies().getIt.get())
+        .putSubject(
+            body: PutSubjectBody(
+                teacher: widget.teacher,
+                time: widget.time,
+                title: widget.teacher.title));
 
     super.initState();
   }
@@ -59,7 +61,7 @@ class _Body extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bool isShowTime = ref.watch(settingsProvider).isShowTime;
+    final bool isShowTime = ref.watch(isShowTimeProvider);
 
     final bool isReplacement = replacement != null;
     final bool isCanceled =
@@ -93,7 +95,7 @@ class _Subtitle extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bool isShortInitials = ref.watch(settingsProvider).isShortInitials;
+    final bool isShortInitials = ref.watch(isShortInitialsProvider);
 
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -181,6 +183,8 @@ class SectionSubjectsWidget extends StatelessWidget {
   final int? weekday;
   final DateTime? dateTime;
 
+  final bool isEvenWeek;
+
   const SectionSubjectsWidget(
       {super.key,
       required this.title,
@@ -188,6 +192,7 @@ class SectionSubjectsWidget extends StatelessWidget {
       this.subjects,
       this.replacements,
       this.undergroup,
+      required this.isEvenWeek,
       this.weekday})
       : assert(
             subjects != null || (replacements != null && undergroup != null));
@@ -224,7 +229,7 @@ class SectionSubjectsWidget extends StatelessWidget {
                   : s.weekday == weekday;
 
               final bool isEven = s.isEven == null ||
-                  s.isEven == WeekUtil.weekNumber(DateTime.now()).isEven;
+                  s.isEven == WeekUtil().isEvenWeek(DateTime.now(), isEvenWeek);
 
               return isThisDay && time != null && isEven;
             }).firstOrNull;

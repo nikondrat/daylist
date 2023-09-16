@@ -25,7 +25,7 @@ class SelectionCityView extends HookConsumerWidget {
         provider: citiesProvider,
         itemBuilder: (v) => ListTile(
             onTap: () {
-              ref.read(settingsProvider.notifier).city = v;
+              ref.read(settingsProvider).city = v;
               context.goNamed(ViewsNames.selectionInstitution);
             },
             title: Text(v.title)));
@@ -43,7 +43,7 @@ class SelectionInstitutionView extends HookConsumerWidget {
         provider: institutionsProvider,
         itemBuilder: (v) => ListTile(
               onTap: () {
-                ref.read(settingsProvider.notifier).institution = v;
+                ref.read(settingsProvider).institution = v;
                 if (ref.watch(settingsProvider).isScheduler) {
                   context.goNamed(ViewsNames.sheduler);
                 } else {
@@ -66,7 +66,7 @@ class SelectionGroupView extends HookConsumerWidget {
         provider: groupsProvider,
         itemBuilder: (v) => ListTile(
               onTap: () {
-                ref.read(settingsProvider.notifier).group = v;
+                ref.read(settingsProvider).group = v;
 
                 context.goNamed(ViewsNames.home);
               },

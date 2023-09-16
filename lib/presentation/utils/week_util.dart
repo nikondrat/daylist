@@ -18,22 +18,17 @@ class WeekUtil {
     return woy;
   }
 
+  bool isEvenWeek(DateTime date, bool isEven) {
+    final int week = weekNumber(date);
+
+    final bool isEvenWeek = isEven ? week.isEven : week.isOdd;
+
+    return isEvenWeek;
+  }
+
   static int daysBetween(DateTime from, DateTime to) {
     from = DateTime(from.year, from.month, from.day);
     to = DateTime(to.year, to.month, to.day);
     return (to.difference(from).inHours / 24).round();
   }
-
-  // static List<Subject> subjectsAtDay(
-  //     List<Subject> subjects, int weekday, DateTime date) {
-  //   return subjects
-  //       .where((e) =>
-  //           e.weekday == weekday &&
-  //           (e.isEven == null || e.isEven == weekNumber(date).isEven))
-  //       .toList();
-  // }
-
-  // static String dayToString(int day, int weekday) {
-  //   return '$day ${t.days.short[weekday - 1]}';
-  // }
 }

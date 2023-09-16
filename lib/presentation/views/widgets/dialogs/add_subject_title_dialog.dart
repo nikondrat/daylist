@@ -48,7 +48,8 @@ class _AddSubjectTitleDialogState extends ConsumerState<AddSubjectTitleDialog> {
         await AuthDataRepository(Dependencies().getIt.get()).getUser();
 
     try {
-      await TitleDataRepository(Dependencies().getIt.get())
+      await TitleDataRepository(
+              Dependencies().getIt.get(), Dependencies().getIt.get())
           .addTitle(
               body: AddTitleBody(
                   databaseId: dotenv.env['databaseId']!,

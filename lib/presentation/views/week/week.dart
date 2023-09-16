@@ -1,6 +1,4 @@
-import 'package:daylist/data/repository/subject_repository.dart';
-import 'package:daylist/internal/dependencies/dependencies.dart';
-import 'package:daylist/presentation/extensions/theme/context.dart';
+import 'package:daylist/domain/state/settings/settings_state.dart';
 import 'package:daylist/presentation/views/router.dart';
 import 'package:daylist/presentation/views/widgets/list.dart';
 import 'package:daylist/presentation/views/widgets/subject.dart';
@@ -21,8 +19,10 @@ class WeekView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final DateTime now = DateTime.now();
-    final bool isEven = WeekUtil.weekNumber(now).isEven;
-    final AsyncValue<List<Subject>> subjects = ref.watch(subjectsProvider);
+    final bool isEvenWeek = ref.watch(isEvenWeekProvider);
+    final bool isEven = WeekUtil().isEvenWeek(now, isEvenWeek);
+    final AsyncValue<List<Subject>> subjects =
+        ref.watch(subjectsProvider(!isAdmin));
 
     return Scaffold(
         appBar: AppBar(
@@ -49,6 +49,7 @@ class WeekView extends HookConsumerWidget {
                     children: t.week.days.full.map((e) {
                   return SectionSubjectsWidget(
                       weekday: t.week.days.full.indexOf(e) + 1,
+                      isEvenWeek: isEvenWeek,
                       title: e,
                       subjects: subjectsList);
                 }).toList())));

@@ -38,7 +38,8 @@ class _AddTimeDialogState extends ConsumerState<AddTimeDialog> {
           '${'${end.hour}'.padLeft(2, '0')}:${'${end.minute}'.padLeft(2, '0')}';
 
       try {
-        TimeDataRepository(Dependencies().getIt.get())
+        TimeDataRepository(
+                Dependencies().getIt.get(), Dependencies().getIt.get())
             .addTime(
                 body: AddTimeBody(
                     databaseId: dotenv.env['databaseId']!,

@@ -1,5 +1,6 @@
 import 'package:daylist/data/api/model/api_teacher.dart';
 import 'package:daylist/data/mapper/title_mapper.dart';
+import 'package:daylist/data/storage/model/storage_teacher.dart';
 import 'package:daylist/domain/model/teacher.dart';
 
 class TeacherMapper {
@@ -13,13 +14,13 @@ class TeacherMapper {
         createdBy: teacher.createdBy);
   }
 
-  // static Teacher fromStorage(StorageTeacher teacher) {
-  //   return Teacher(
-  //       id: teacher.id,
-  //       initials: teacher.initials,
-  //       institutionId: teacher.institutionId,
-  //       title: TitleMapper.fromStorage(teacher.title.value!),
-  //       classroom: teacher.classroom,
-  //       createdBy: teacher.createdBy);
-  // }
+  static Teacher fromStorage(StorageTeacher teacher) {
+    return Teacher(
+        id: teacher.id,
+        initials: teacher.initials,
+        institutionId: teacher.institutionId,
+        title: TitleMapper.fromStorage(teacher.title.value!),
+        classroom: teacher.classroom,
+        createdBy: teacher.createdBy);
+  }
 }
