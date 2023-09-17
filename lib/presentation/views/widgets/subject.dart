@@ -1,8 +1,17 @@
+import 'package:appwrite/appwrite.dart';
+import 'package:appwrite/models.dart';
+import 'package:daylist/data/api/request/add/add_replacement_body.dart';
 import 'package:daylist/data/api/request/put/put_subject_body.dart';
+import 'package:daylist/data/repository/auth_repository.dart';
+import 'package:daylist/data/repository/replacement_repository.dart';
 import 'package:daylist/data/repository/subject_repository.dart';
+import 'package:daylist/domain/model/group.dart';
+import 'package:daylist/domain/state/home/home_state.dart';
 import 'package:daylist/internal/dependencies/dependencies.dart';
+import 'package:daylist/presentation/utils/generator.dart';
 import 'package:daylist/presentation/utils/week_util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:daylist/domain/model/replacement.dart';
@@ -18,10 +27,17 @@ import 'package:daylist/presentation/views/widgets/section.dart';
 class _SubjectWidget extends StatefulWidget {
   final Time time;
   final Teacher teacher;
+  final DateTime? date;
+  final bool isShedulerView;
   final Replacement? replacement;
 
   const _SubjectWidget(
-      {Key? key, required this.time, required this.teacher, this.replacement})
+      {Key? key,
+      required this.time,
+      required this.date,
+      required this.teacher,
+      required this.isShedulerView,
+      this.replacement})
       : super(key: key);
 
   @override
@@ -45,6 +61,8 @@ class __SubjectWidgetState extends State<_SubjectWidget> {
   @override
   Widget build(BuildContext context) {
     return _Body(
+        isShedulerView: widget.isShedulerView,
+        date: widget.date,
         time: widget.time,
         teacher: widget.teacher,
         replacement: widget.replacement);
@@ -55,9 +73,15 @@ class _Body extends HookConsumerWidget {
   final Time time;
   final Teacher teacher;
   final Replacement? replacement;
+  final bool isShedulerView;
+  final DateTime? date;
 
   const _Body(
-      {required this.time, required this.teacher, required this.replacement});
+      {required this.time,
+      required this.teacher,
+      required this.replacement,
+      required this.isShedulerView,
+      required this.date});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -67,25 +91,59 @@ class _Body extends HookConsumerWidget {
     final bool isCanceled =
         isReplacement && replacement!.mode == ReplacementMode.cancel;
 
-    return ListTile(
-        dense: true,
-        leading: isShowTime
-            ? _Leading(time: time)
-            : _LeadingIndex(number: time.number),
-        title: Row(children: [
-          Expanded(
-              child: Text(teacher.title.title,
-                  style: context.text.largeText.copyWith(
-                      color:
-                          isCanceled ? Colors.red : context.color.primaryColor,
-                      fontWeight: FontWeight.bold,
-                      decoration:
-                          isCanceled ? TextDecoration.lineThrough : null))),
-          isReplacement
-              ? _Mode(mode: replacement!.mode)
-              : const SizedBox.shrink()
-        ]),
-        subtitle: _Subtitle(teacher: teacher));
+    final bool isScheduler = ref.watch(settingsProvider).isScheduler;
+
+    return isCanceled
+        ? const SizedBox.shrink()
+        : ListTile(
+            dense: true,
+            leading: isShowTime
+                ? _Leading(time: time)
+                : _LeadingIndex(number: time.number),
+            title: Row(children: [
+              Expanded(
+                  child: Text(teacher.title.title,
+                      style: context.text.largeText.copyWith(
+                          color: isCanceled
+                              ? Colors.red
+                              : context.color.primaryColor,
+                          fontWeight: FontWeight.bold,
+                          decoration:
+                              isCanceled ? TextDecoration.lineThrough : null))),
+              isReplacement
+                  ? _Mode(mode: replacement!.mode)
+                  : const SizedBox.shrink()
+            ]),
+            subtitle: _Subtitle(teacher: teacher),
+            trailing: isScheduler && date != null && isShedulerView
+                ? GestureDetector(
+                    onTap: () async {
+                      final User user =
+                          await AuthDataRepository(Dependencies().getIt.get())
+                              .getUser();
+                      final Group? group = ref.watch(settingsProvider).group;
+
+                      ReplacementDataRepository(Dependencies().getIt.get())
+                          .addReplacement(
+                              body: AddReplacementBody(
+                                  databaseId: dotenv.env['databaseId']!,
+                                  collectionId:
+                                      dotenv.env['replacementsCollectionId']!,
+                                  replacement: Replacement(
+                                      id: ID.custom(Generator.generateId()),
+                                      time: time,
+                                      teacher: teacher,
+                                      groupId: group!.id,
+                                      date: date!,
+                                      mode: ReplacementMode.cancel,
+                                      undergroup: null,
+                                      createdBy: user.$id)));
+                      ref.invalidate(replacementsProvider);
+                    },
+                    child: const Icon(Icons.close),
+                  )
+                : const SizedBox.shrink(),
+          );
   }
 }
 
@@ -181,6 +239,7 @@ class SectionSubjectsWidget extends StatelessWidget {
   final List<Replacement>? replacements;
   final int? undergroup;
   final int? weekday;
+  final bool isShedulerView;
   final DateTime? dateTime;
 
   final bool isEvenWeek;
@@ -192,6 +251,7 @@ class SectionSubjectsWidget extends StatelessWidget {
       this.subjects,
       this.replacements,
       this.undergroup,
+      this.isShedulerView = false,
       required this.isEvenWeek,
       this.weekday})
       : assert(
@@ -218,6 +278,8 @@ class SectionSubjectsWidget extends StatelessWidget {
 
           if (replacement != null) {
             return _SubjectWidget(
+                isShedulerView: isShedulerView,
+                date: dateTime!,
                 time: time!,
                 teacher: replacement.teacher,
                 replacement: replacement);
@@ -235,7 +297,11 @@ class SectionSubjectsWidget extends StatelessWidget {
             }).firstOrNull;
 
             if (subject != null) {
-              return _SubjectWidget(time: time!, teacher: subject.teacher);
+              return _SubjectWidget(
+                  isShedulerView: isShedulerView,
+                  date: dateTime,
+                  time: time!,
+                  teacher: subject.teacher);
             }
           }
 

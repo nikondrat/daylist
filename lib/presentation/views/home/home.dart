@@ -74,7 +74,7 @@ class _Body extends HookConsumerWidget {
               subjects: subjects,
               isEvenWeek: isEvenWeek,
               undergroup: undergroup,
-              replacements: replacements),
+              replacements: replacements)
         ]));
   }
 }

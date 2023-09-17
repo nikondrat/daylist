@@ -1,5 +1,4 @@
 import 'package:daylist/domain/model/group.dart';
-import 'package:daylist/domain/state/settings/settings_state.dart';
 import 'package:daylist/domain/state/sheduler/sheduler_state.dart';
 import 'package:daylist/domain/state/home/home_state.dart';
 import 'package:daylist/presentation/translations/translations.g.dart';
@@ -18,17 +17,13 @@ class ShedulerView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isOnlyScheduler = ref.watch(settingsProvider).group == null;
-
     return Scaffold(
         appBar: AppBar(
             title: Text(t.settings.scheduler),
-            leading: isOnlyScheduler
-                ? null
-                : IconButton(
-                    onPressed: () => context.goNamed(ViewsNames.home),
-                    splashRadius: 20,
-                    icon: const FaIcon(FontAwesomeIcons.house, size: 14))),
+            leading: IconButton(
+                onPressed: () => context.goNamed(ViewsNames.home),
+                splashRadius: 20,
+                icon: const FaIcon(FontAwesomeIcons.house, size: 14))),
         body: CustomListWidget(children: [
           SectionWidget(title: t.settings.group, actions: [
             GestureDetector(

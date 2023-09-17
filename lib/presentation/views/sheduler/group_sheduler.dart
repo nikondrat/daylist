@@ -23,6 +23,7 @@ class GroupShedulerView extends HookConsumerWidget {
     final bool isEvenWeek = ref.watch(isEvenWeekProvider);
 
     return SubjectsLoaderWidget(
+        isDataFromStorage: false,
         builder: (subjects, replacements) => Scaffold(
             appBar: AppBar(
                 leading: IconButton(
@@ -45,12 +46,13 @@ class GroupShedulerView extends HookConsumerWidget {
                               context.goNamed(ViewsNames.shedulerWeek),
                           color: context.color.primaryColor,
                           splashRadius: 20,
-                          icon: const Icon(UniconsLine.schedule))),
+                          icon: const Icon(UniconsLine.schedule)))
                 ]),
             body: CustomListWidget(children: [
               SectionSubjectsWidget(
                   title: t.home.today,
                   dateTime: today,
+                  isShedulerView: true,
                   isEvenWeek: isEvenWeek,
                   subjects: subjects,
                   replacements: replacements,
@@ -59,6 +61,7 @@ class GroupShedulerView extends HookConsumerWidget {
                   title: t.home.tomorrow,
                   dateTime: today.add(const Duration(days: 1)),
                   subjects: subjects,
+                  isShedulerView: true,
                   isEvenWeek: isEvenWeek,
                   replacements: replacements,
                   undergroup: undergroup),

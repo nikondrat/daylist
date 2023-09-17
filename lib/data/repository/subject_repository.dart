@@ -21,13 +21,9 @@ class SubjectDataRepository extends SubjectRepository {
     final List<Subject> subjects = await _storageUtil.getSubjects();
 
     if (body.isDataFromStorage && subjects.isNotEmpty) {
-      print('LOAD SUBJECTS FROM LOCAL');
-
       return subjects;
     } else {
       final List<Subject> result = await _apiUtil.getSubjects(body: body);
-
-      print('LOAD SUBJECTS FROM SERVER');
 
       final List<StorageSubject> convertedList =
           result.map((e) => StorageSubject.fromApi(e)).toList();

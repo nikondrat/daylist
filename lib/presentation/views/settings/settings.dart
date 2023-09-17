@@ -232,70 +232,78 @@ class _OptionalSectionWidget extends HookConsumerWidget {
     final bool isShortInitials = ref.watch(isShortInitialsProvider);
     final bool isEvenWeek = ref.watch(isEvenWeekProvider);
 
-    return SectionWidget(title: t.settings.optional, children: [
-      SubsectionWidget(
-          subsection: Subsection(
-              icon: !isEvenWeek
-                  ? const Icon(FontAwesomeIcons.squarePlus)
-                  : const Icon(FontAwesomeIcons.squareMinus),
-              title: !isEvenWeek ? t.week.isEven[0] : t.week.isEven[1],
-              trailing: [
-                Switch(
-                    value: !isEvenWeek,
-                    onChanged: (v) => ref.read(settingsProvider).isEvenWeek = v)
-              ],
-              onTap: () =>
-                  ref.read(settingsProvider).isEvenWeek = !isEvenWeek)),
-      SubsectionWidget(
-          subsection: Subsection(
-              title: t.settings.show_time,
-              icon: const Icon(UniconsLine.clock),
-              trailing: [
-                Switch(
-                    value: isShowTime,
-                    onChanged: (v) => ref.read(settingsProvider).isShowTime = v)
-              ],
-              onTap: () =>
-                  ref.read(settingsProvider).isShowTime = !isShowTime)),
-      SubsectionWidget(
-          subsection: Subsection(
-              title: t.settings.short_initials,
-              icon: const Icon(UniconsLine.text),
-              trailing: [
-                Switch(
-                    value: isShortInitials,
-                    onChanged: (v) =>
-                        ref.read(settingsProvider).isShortInitials = v)
-              ],
-              onTap: () => ref.read(settingsProvider).isShortInitials =
-                  !isShortInitials)),
-      SubsectionWidget(
-          subsection: Subsection(
-              onTap: () async {
-                if (!await launchUrl(
-                        Uri.parse('https://t.me/${t.settings.support.tag}'),
-                        mode: LaunchMode.externalApplication) &&
-                    context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text('ERROR!'), backgroundColor: Colors.red));
-                }
-              },
-              icon: const Icon(UniconsLine.comment_alt_exclamation),
-              title: t.settings.support.questions,
-              trailing: [const Icon(UniconsLine.external_link_alt)])),
-      SubsectionWidget(
-          subsection: Subsection(
-              onTap: () async {
-                if (!await launchUrl(Uri.parse(t.settings.support.money.url)) &&
-                    context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text('ERROR!'), backgroundColor: Colors.red));
-                }
-              },
-              icon: const Icon(UniconsLine.dollar_sign),
-              trailing: [const Icon(UniconsLine.external_link_alt)],
-              title: t.settings.support.money.title)),
-    ]);
+    return SectionWidget(
+        title: t.settings.optional,
+        margin: const EdgeInsets.only(bottom: Insets.small),
+        children: [
+          SubsectionWidget(
+              subsection: Subsection(
+                  icon: !isEvenWeek
+                      ? const Icon(FontAwesomeIcons.squarePlus)
+                      : const Icon(FontAwesomeIcons.squareMinus),
+                  title: !isEvenWeek ? t.week.isEven[0] : t.week.isEven[1],
+                  trailing: [
+                    Switch(
+                        value: !isEvenWeek,
+                        onChanged: (v) =>
+                            ref.read(settingsProvider).isEvenWeek = v)
+                  ],
+                  onTap: () =>
+                      ref.read(settingsProvider).isEvenWeek = !isEvenWeek)),
+          SubsectionWidget(
+              subsection: Subsection(
+                  title: t.settings.show_time,
+                  icon: const Icon(UniconsLine.clock),
+                  trailing: [
+                    Switch(
+                        value: isShowTime,
+                        onChanged: (v) =>
+                            ref.read(settingsProvider).isShowTime = v)
+                  ],
+                  onTap: () =>
+                      ref.read(settingsProvider).isShowTime = !isShowTime)),
+          SubsectionWidget(
+              subsection: Subsection(
+                  title: t.settings.short_initials,
+                  icon: const Icon(UniconsLine.text),
+                  trailing: [
+                    Switch(
+                        value: isShortInitials,
+                        onChanged: (v) =>
+                            ref.read(settingsProvider).isShortInitials = v)
+                  ],
+                  onTap: () => ref.read(settingsProvider).isShortInitials =
+                      !isShortInitials)),
+          SubsectionWidget(
+              subsection: Subsection(
+                  onTap: () async {
+                    if (!await launchUrl(
+                            Uri.parse('https://t.me/${t.settings.support.tag}'),
+                            mode: LaunchMode.externalApplication) &&
+                        context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text('ERROR!'),
+                          backgroundColor: Colors.red));
+                    }
+                  },
+                  icon: const Icon(UniconsLine.comment_alt_exclamation),
+                  title: t.settings.support.questions,
+                  trailing: [const Icon(UniconsLine.external_link_alt)])),
+          SubsectionWidget(
+              subsection: Subsection(
+                  onTap: () async {
+                    if (!await launchUrl(
+                            Uri.parse(t.settings.support.money.url)) &&
+                        context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text('ERROR!'),
+                          backgroundColor: Colors.red));
+                    }
+                  },
+                  icon: const Icon(UniconsLine.dollar_sign),
+                  trailing: [const Icon(UniconsLine.external_link_alt)],
+                  title: t.settings.support.money.title)),
+        ]);
   }
 }
 
