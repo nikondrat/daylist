@@ -13,6 +13,7 @@ import 'presentation/views/router.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   LocaleSettings.useDeviceLocale();
+
   // if (kDebugMode) {
   //   dotenv.testLoad(fileInput: File('.env').readAsStringSync());
   // } else {

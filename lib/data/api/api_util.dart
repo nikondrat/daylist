@@ -164,11 +164,15 @@ class ApiUtil {
   }
 
   Future<bool> isAuthorized() async {
-    return _appwriteService.isAuthorized();
+    return await _appwriteService.isAuthorized();
   }
 
   Future getUser() async {
     return _appwriteService.getUser();
+  }
+
+  Future<List> getLabels() async {
+    return await _appwriteService.getLabels();
   }
 
   Future getPrefs() async {
@@ -177,9 +181,5 @@ class ApiUtil {
 
   Future updatePrefs(Map prefs) async {
     return _appwriteService.updatePrefs(prefs);
-  }
-
-  Future<bool> isScheduler() async {
-    return _appwriteService.isScheduler();
   }
 }

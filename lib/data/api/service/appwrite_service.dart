@@ -38,8 +38,6 @@ class AppwriteService {
   late final Account _account = Account(client);
   late final Databases _databases = Databases(client);
 
-  late final Teams _teams = Teams(client);
-
   Future<List<ApiCity>> getCities({required GetCitiesBody body}) async {
     final DocumentList docs = await _databases.listDocuments(
         databaseId: body.databaseId, collectionId: body.collectionId);
@@ -219,17 +217,22 @@ class AppwriteService {
   }
 
   Future signUp({required SignUpBody body}) async {
-    return _account.create(
+    return await _account.create(
         userId: ID.unique(), email: body.email, password: body.password);
   }
 
   Future signIn({required SignInBody body}) async {
-    return _account.createEmailSession(
+    return await _account.createEmailSession(
         email: body.email, password: body.password);
   }
 
   Future getUser() async {
-    return _account.get();
+    return await _account.get();
+  }
+
+  Future<List> getLabels() async {
+    final User user = await _account.get();
+    return user.labels;
   }
 
   Future getPrefs() async {
@@ -239,20 +242,7 @@ class AppwriteService {
   }
 
   Future updatePrefs(Map prefs) async {
-    return _account.updatePrefs(prefs: prefs);
-  }
-
-  Future<bool> isScheduler() async {
-    final User user = await getUser();
-
-    return await _teams
-        .listMemberships(teamId: dotenv.env['shedulersTeamId']!)
-        .then((value) => value.memberships.isNotEmpty
-            ? value.memberships
-                .where((e) => e.userEmail == user.email)
-                .isNotEmpty
-            : false)
-        .onError((error, stackTrace) => false);
+    return await _account.updatePrefs(prefs: prefs);
   }
 
   Future<bool> isAuthorized() async {

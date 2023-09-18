@@ -1,4 +1,3 @@
-import 'package:daylist/data/repository/auth_repository.dart';
 import 'package:daylist/domain/state/sheduler/sheduler_state.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -75,8 +74,4 @@ final replacementsProvider =
 
 final isChangeScheduleProvider = StateProvider.autoDispose<bool>((ref) {
   return false;
-});
-
-final isScheduler = FutureProvider.autoDispose<bool>((ref) async {
-  return AuthDataRepository(Dependencies().getIt.get()).isScheduler();
 });

@@ -1,4 +1,6 @@
+import 'package:daylist/data/repository/subject_repository.dart';
 import 'package:daylist/domain/state/settings/settings_state.dart';
+import 'package:daylist/internal/dependencies/dependencies.dart';
 import 'package:daylist/presentation/views/router.dart';
 import 'package:daylist/presentation/views/widgets/list.dart';
 import 'package:daylist/presentation/views/widgets/subject.dart';
@@ -43,15 +45,19 @@ class WeekView extends HookConsumerWidget {
                   ]
                 : null,
             title: Text(isEven ? t.week.isEven[0] : t.week.isEven[1])),
-        body: LoaderWidget(
-            config: subjects,
-            builder: (subjectsList) => CustomListWidget(
-                    children: t.week.days.full.map((e) {
-                  return SectionSubjectsWidget(
-                      weekday: t.week.days.full.indexOf(e) + 1,
-                      isEvenWeek: isEvenWeek,
-                      title: e,
-                      subjects: subjectsList);
-                }).toList())));
+        body: RefreshIndicator(
+            onRefresh: () => SubjectDataRepository(
+                    Dependencies().getIt.get(), Dependencies().getIt.get())
+                .clear(),
+            child: LoaderWidget(
+                config: subjects,
+                builder: (subjectsList) => CustomListWidget(
+                        children: t.week.days.full.map((e) {
+                      return SectionSubjectsWidget(
+                          weekday: t.week.days.full.indexOf(e) + 1,
+                          isEvenWeek: isEvenWeek,
+                          title: e,
+                          subjects: subjectsList);
+                    }).toList()))));
   }
 }

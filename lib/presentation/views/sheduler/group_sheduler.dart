@@ -1,6 +1,5 @@
 import 'package:daylist/domain/model/group.dart';
 import 'package:daylist/domain/state/settings/settings_state.dart';
-import 'package:daylist/domain/state/sheduler/sheduler_state.dart';
 import 'package:daylist/presentation/extensions/theme/context.dart';
 import 'package:daylist/presentation/translations/translations.g.dart';
 import 'package:daylist/presentation/views/router.dart';
@@ -17,7 +16,7 @@ class GroupShedulerView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final Group group = ref.watch(selectedGroup)!;
+    final Group group = ref.watch(groupProvider)!;
     final int undergroup = ref.watch(settingsProvider).undergroup;
     final DateTime today = DateTime.now();
     final bool isEvenWeek = ref.watch(isEvenWeekProvider);
@@ -27,7 +26,7 @@ class GroupShedulerView extends HookConsumerWidget {
         builder: (subjects, replacements) => Scaffold(
             appBar: AppBar(
                 leading: IconButton(
-                    onPressed: () => context.pop(),
+                    onPressed: () => context.goNamed(ViewsNames.home),
                     splashRadius: 20,
                     icon: const Icon(Icons.arrow_back)),
                 title: Text(group.title),

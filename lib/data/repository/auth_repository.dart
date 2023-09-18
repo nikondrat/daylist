@@ -35,7 +35,7 @@ class AuthDataRepository extends AuthRepository {
   }
 
   @override
-  Future<bool> isScheduler() async {
-    return await _apiUtil.isScheduler();
+  Future<List> getLabels() async {
+    return await _apiUtil.getLabels();
   }
 }

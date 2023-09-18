@@ -5,7 +5,6 @@ import 'package:daylist/presentation/views/auth/sign_up.dart';
 import 'package:daylist/presentation/views/sheduler/add_replacement.dart';
 import 'package:daylist/presentation/views/sheduler/add_subject.dart';
 import 'package:daylist/presentation/views/sheduler/group_sheduler.dart';
-import 'package:daylist/presentation/views/sheduler/sheduler.dart';
 import 'package:daylist/presentation/views/sheduler/teachers_view.dart';
 import 'package:daylist/presentation/views/sheduler/times_view.dart';
 import 'package:daylist/presentation/views/sheduler/titles_view.dart';
@@ -82,39 +81,32 @@ final GoRouter router = GoRouter(navigatorKey: navigatorKey, routes: [
             builder: (context, state) => const SettingsView()),
       ]),
   GoRoute(
-      name: ViewsNames.sheduler,
-      path: ViewsPaths.sheduler,
-      builder: (context, state) => const ShedulerView(),
+      name: ViewsNames.groupSheduler,
+      path: ViewsPaths.groupSheduler,
+      builder: (context, state) => const GroupShedulerView(),
       routes: [
         GoRoute(
-            name: ViewsNames.groupSheduler,
-            path: ViewsPaths.groupSheduler,
-            builder: (context, state) => const GroupShedulerView(),
+            name: ViewsNames.shedulerWeek,
+            path: ViewsPaths.shedulerWeek,
+            builder: (context, state) => const WeekView(isAdmin: true),
             routes: [
               GoRoute(
-                  name: ViewsNames.shedulerWeek,
-                  path: ViewsPaths.shedulerWeek,
-                  builder: (context, state) => const WeekView(isAdmin: true),
+                  name: ViewsNames.addSubject,
+                  path: ViewsPaths.addSubject,
+                  builder: (context, state) => const AddSubjectView(),
                   routes: [
                     GoRoute(
-                        name: ViewsNames.addSubject,
-                        path: ViewsPaths.addSubject,
-                        builder: (context, state) => const AddSubjectView(),
-                        routes: [
-                          GoRoute(
-                              name: ViewsNames.subjectTitles,
-                              path: ViewsPaths.subjectTitles,
-                              builder: (context, state) => const TitlesView()),
-                          GoRoute(
-                              name: ViewsNames.subjectTeachers,
-                              path: ViewsPaths.subjectTeachers,
-                              builder: (context, state) =>
-                                  const TeachersView()),
-                          GoRoute(
-                              name: ViewsNames.subjectTimes,
-                              path: ViewsPaths.subjectTimes,
-                              builder: (context, state) => const TimesView())
-                        ])
+                        name: ViewsNames.subjectTitles,
+                        path: ViewsPaths.subjectTitles,
+                        builder: (context, state) => const TitlesView()),
+                    GoRoute(
+                        name: ViewsNames.subjectTeachers,
+                        path: ViewsPaths.subjectTeachers,
+                        builder: (context, state) => const TeachersView()),
+                    GoRoute(
+                        name: ViewsNames.subjectTimes,
+                        path: ViewsPaths.subjectTimes,
+                        builder: (context, state) => const TimesView())
                   ]),
               GoRoute(
                   name: ViewsNames.addReplacement,
@@ -177,9 +169,9 @@ abstract class ViewsPaths {
   static const String week = ViewsNames.week;
   static const String settings = ViewsNames.settings;
 
-  static const String sheduler = '/${ViewsNames.sheduler}';
+  static const String sheduler = ViewsNames.sheduler;
   static const String shedulerWeek = ViewsNames.shedulerWeek;
-  static const String groupSheduler = ViewsNames.groupSheduler;
+  static const String groupSheduler = '/${ViewsNames.groupSheduler}';
 
   static const String addReplacement = ViewsNames.addReplacement;
   static const String replacementTitles = ViewsNames.replacementTitles;
