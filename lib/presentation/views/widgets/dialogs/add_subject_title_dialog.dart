@@ -1,9 +1,9 @@
 import 'package:appwrite/appwrite.dart';
-import 'package:appwrite/models.dart';
 import 'package:daylist/data/api/request/add/add_title_body.dart';
-import 'package:daylist/data/repository/auth_repository.dart';
-import 'package:daylist/data/repository/title_repository.dart';
+import 'package:daylist/data/api/request/add/add_voiting_body.dart';
+import 'package:daylist/data/repository/title_data_repository.dart';
 import 'package:daylist/domain/model/title.dart';
+import 'package:daylist/domain/state/settings/settings_state.dart';
 import 'package:daylist/domain/state/week/week_state.dart';
 import 'package:daylist/internal/dependencies/dependencies.dart';
 import 'package:daylist/presentation/translations/translations.g.dart';
@@ -41,23 +41,27 @@ class _AddSubjectTitleDialogState extends ConsumerState<AddSubjectTitleDialog> {
     super.dispose();
   }
 
-  Future addCity() async {
+  addCity() {
     if (!formKey.currentState!.validate()) return;
 
-    final User user =
-        await AuthDataRepository(Dependencies().getIt.get()).getUser();
+    final String groupId = ref.watch(settingsProvider).group!.id;
 
     try {
-      await TitleDataRepository(
+      final SubjectTitle title = SubjectTitle(
+          id: ID.custom(Generator.generateId()), title: controller.text.trim());
+
+      TitleDataRepository(
               Dependencies().getIt.get(), Dependencies().getIt.get())
           .addTitle(
               body: AddTitleBody(
                   databaseId: dotenv.env['databaseId']!,
                   collectionId: dotenv.env['titlesCollectionId']!,
-                  title: SubjectTitle(
-                      id: ID.custom(Generator.generateId()),
-                      title: controller.text.trim(),
-                      createdBy: user.$id)))
+                  voitingBody: AddVoitingBody(
+                      databaseId: dotenv.env['databaseId']!,
+                      collectionId: dotenv.env['voitingCollectionId']!,
+                      title: title,
+                      groupId: groupId),
+                  title: title))
           .then((value) {
         ref.invalidate(titlesProvider);
         context.pop();

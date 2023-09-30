@@ -17,18 +17,13 @@ const StorageTitleSchema = CollectionSchema(
   name: r'StorageTitle',
   id: 5668069340812898123,
   properties: {
-    r'createdBy': PropertySchema(
-      id: 0,
-      name: r'createdBy',
-      type: IsarType.string,
-    ),
     r'id': PropertySchema(
-      id: 1,
+      id: 0,
       name: r'id',
       type: IsarType.string,
     ),
     r'title': PropertySchema(
-      id: 2,
+      id: 1,
       name: r'title',
       type: IsarType.string,
     )
@@ -53,12 +48,6 @@ int _storageTitleEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
-  {
-    final value = object.createdBy;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
   bytesCount += 3 + object.id.length * 3;
   bytesCount += 3 + object.title.length * 3;
   return bytesCount;
@@ -70,9 +59,8 @@ void _storageTitleSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeString(offsets[0], object.createdBy);
-  writer.writeString(offsets[1], object.id);
-  writer.writeString(offsets[2], object.title);
+  writer.writeString(offsets[0], object.id);
+  writer.writeString(offsets[1], object.title);
 }
 
 StorageTitle _storageTitleDeserialize(
@@ -82,9 +70,8 @@ StorageTitle _storageTitleDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = StorageTitle(
-    createdBy: reader.readStringOrNull(offsets[0]),
-    id: reader.readString(offsets[1]),
-    title: reader.readString(offsets[2]),
+    id: reader.readString(offsets[0]),
+    title: reader.readString(offsets[1]),
   );
   return object;
 }
@@ -97,10 +84,8 @@ P _storageTitleDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readStringOrNull(offset)) as P;
-    case 1:
       return (reader.readString(offset)) as P;
-    case 2:
+    case 1:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -201,160 +186,6 @@ extension StorageTitleQueryWhere
 
 extension StorageTitleQueryFilter
     on QueryBuilder<StorageTitle, StorageTitle, QFilterCondition> {
-  QueryBuilder<StorageTitle, StorageTitle, QAfterFilterCondition>
-      createdByIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'createdBy',
-      ));
-    });
-  }
-
-  QueryBuilder<StorageTitle, StorageTitle, QAfterFilterCondition>
-      createdByIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'createdBy',
-      ));
-    });
-  }
-
-  QueryBuilder<StorageTitle, StorageTitle, QAfterFilterCondition>
-      createdByEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'createdBy',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<StorageTitle, StorageTitle, QAfterFilterCondition>
-      createdByGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'createdBy',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<StorageTitle, StorageTitle, QAfterFilterCondition>
-      createdByLessThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'createdBy',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<StorageTitle, StorageTitle, QAfterFilterCondition>
-      createdByBetween(
-    String? lower,
-    String? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'createdBy',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<StorageTitle, StorageTitle, QAfterFilterCondition>
-      createdByStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'createdBy',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<StorageTitle, StorageTitle, QAfterFilterCondition>
-      createdByEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'createdBy',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<StorageTitle, StorageTitle, QAfterFilterCondition>
-      createdByContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'createdBy',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<StorageTitle, StorageTitle, QAfterFilterCondition>
-      createdByMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'createdBy',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<StorageTitle, StorageTitle, QAfterFilterCondition>
-      createdByIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'createdBy',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<StorageTitle, StorageTitle, QAfterFilterCondition>
-      createdByIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'createdBy',
-        value: '',
-      ));
-    });
-  }
-
   QueryBuilder<StorageTitle, StorageTitle, QAfterFilterCondition> idEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -684,18 +515,6 @@ extension StorageTitleQueryLinks
 
 extension StorageTitleQuerySortBy
     on QueryBuilder<StorageTitle, StorageTitle, QSortBy> {
-  QueryBuilder<StorageTitle, StorageTitle, QAfterSortBy> sortByCreatedBy() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'createdBy', Sort.asc);
-    });
-  }
-
-  QueryBuilder<StorageTitle, StorageTitle, QAfterSortBy> sortByCreatedByDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'createdBy', Sort.desc);
-    });
-  }
-
   QueryBuilder<StorageTitle, StorageTitle, QAfterSortBy> sortById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -723,18 +542,6 @@ extension StorageTitleQuerySortBy
 
 extension StorageTitleQuerySortThenBy
     on QueryBuilder<StorageTitle, StorageTitle, QSortThenBy> {
-  QueryBuilder<StorageTitle, StorageTitle, QAfterSortBy> thenByCreatedBy() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'createdBy', Sort.asc);
-    });
-  }
-
-  QueryBuilder<StorageTitle, StorageTitle, QAfterSortBy> thenByCreatedByDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'createdBy', Sort.desc);
-    });
-  }
-
   QueryBuilder<StorageTitle, StorageTitle, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -774,13 +581,6 @@ extension StorageTitleQuerySortThenBy
 
 extension StorageTitleQueryWhereDistinct
     on QueryBuilder<StorageTitle, StorageTitle, QDistinct> {
-  QueryBuilder<StorageTitle, StorageTitle, QDistinct> distinctByCreatedBy(
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'createdBy', caseSensitive: caseSensitive);
-    });
-  }
-
   QueryBuilder<StorageTitle, StorageTitle, QDistinct> distinctById(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -801,12 +601,6 @@ extension StorageTitleQueryProperty
   QueryBuilder<StorageTitle, int, QQueryOperations> isarIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'isarId');
-    });
-  }
-
-  QueryBuilder<StorageTitle, String?, QQueryOperations> createdByProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'createdBy');
     });
   }
 

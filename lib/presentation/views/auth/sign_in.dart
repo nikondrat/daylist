@@ -1,7 +1,7 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:daylist/data/api/request/auth/sign_in_body.dart';
-import 'package:daylist/data/repository/auth_repository.dart';
-import 'package:daylist/data/repository/user_repository.dart';
+import 'package:daylist/data/repository/auth_data_repository.dart';
+import 'package:daylist/data/repository/user_data_repository.dart';
 import 'package:daylist/domain/state/auth/auth_state.dart';
 import 'package:daylist/domain/state/settings/settings_state.dart';
 import 'package:daylist/internal/dependencies/dependencies.dart';

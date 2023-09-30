@@ -147,7 +147,14 @@ ThemeData theme(
       dropdownMenuTheme:
           DropdownMenuThemeData(menuStyle: MenuStyle(shape: MaterialStatePropertyAll(RoundedRectangleBorder(side: BorderSide(color: colors.primaryColor), borderRadius: BorderRadius.circular(radius))))),
       outlinedButtonTheme: OutlinedButtonThemeData(style: ButtonStyle(elevation: const MaterialStatePropertyAll(0), foregroundColor: MaterialStatePropertyAll(colors.primaryColor), padding: MaterialStatePropertyAll(EdgeInsets.all(values.padding)), textStyle: MaterialStatePropertyAll(textStyles.mediumText), side: MaterialStatePropertyAll(BorderSide(color: colors.primaryColor)), overlayColor: const MaterialStatePropertyAll(Colors.transparent), shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(radius))))),
-      inputDecorationTheme: InputDecorationTheme(filled: true, fillColor: Colors.grey.shade300, labelStyle: textStyles.mediumText.copyWith(color: colors.secondaryColor), floatingLabelStyle: textStyles.mediumText.copyWith(color: colors.primaryColor), disabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: colors.primaryColor)), focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: colors.primaryColor)), enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: colors.primaryColor)), border: UnderlineInputBorder(borderSide: BorderSide(color: colors.primaryColor))),
+      inputDecorationTheme: InputDecorationTheme(
+          // filled: true, fillColor: Colors.grey.shade300,
+          labelStyle: textStyles.mediumText.copyWith(color: colors.secondaryColor),
+          floatingLabelStyle: textStyles.mediumText.copyWith(color: colors.primaryColor),
+          disabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(radius), borderSide: BorderSide(color: colors.primaryColor)),
+          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(radius), borderSide: BorderSide(color: colors.primaryColor)),
+          enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(radius), borderSide: BorderSide(color: colors.primaryColor)),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(radius), borderSide: BorderSide(color: colors.primaryColor))),
       sliderTheme: SliderThemeData(activeTrackColor: colors.primaryColor, thumbColor: colors.primaryColor, inactiveTrackColor: colors.primaryColor.withOpacity(.6), overlayColor: Colors.transparent),
       popupMenuTheme: PopupMenuThemeData(color: colors.backgroundColor, textStyle: textStyles.mediumText, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(radius / 2), side: BorderSide(color: colors.primaryColor))),
       toggleButtonsTheme: ToggleButtonsThemeData(color: colors.primaryColor, textStyle: textStyles.mediumText, fillColor: colors.primaryColor, selectedColor: colors.backgroundColor, borderColor: colors.secondaryColor),

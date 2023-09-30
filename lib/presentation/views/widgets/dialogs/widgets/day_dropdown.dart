@@ -1,4 +1,4 @@
-import 'package:daylist/domain/state/dialogs/subject_dialog_state.dart';
+import 'package:daylist/domain/state/sheduler/subject_state.dart';
 import 'package:daylist/presentation/extensions/theme/context.dart';
 import 'package:daylist/presentation/res/values.dart';
 import 'package:daylist/presentation/translations/translations.g.dart';

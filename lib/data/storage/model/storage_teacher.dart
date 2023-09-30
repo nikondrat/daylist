@@ -1,9 +1,9 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:daylist/presentation/utils/generator.dart';
 import 'package:isar/isar.dart';
 
+import 'package:daylist/data/storage/model/storage_classroom.dart';
 import 'package:daylist/data/storage/model/storage_title.dart';
 import 'package:daylist/domain/model/teacher.dart';
+import 'package:daylist/presentation/utils/generator.dart';
 
 part 'storage_teacher.g.dart';
 
@@ -11,27 +11,31 @@ part 'storage_teacher.g.dart';
 class StorageTeacher {
   Id get isarId => Generator.fastHash(id);
   String id = '';
-  String initials = '';
+
+  String name = '';
+  String surname = '';
+  String patronymic = '';
+
   String institutionId = '';
   IsarLink<StorageTitle> title = IsarLink<StorageTitle>();
-  String classroom = '';
-  String? createdBy;
+  IsarLink<StorageClassroom> classroom = IsarLink<StorageClassroom>();
 
   StorageTeacher({
     required this.id,
-    required this.initials,
+    required this.name,
+    required this.surname,
+    required this.patronymic,
     required this.institutionId,
-    required this.classroom,
-    required this.createdBy,
   });
 
   StorageTeacher.fromApi(Teacher teacher) {
     title.value = StorageTitle.fromApi(teacher.title);
+    classroom.value = StorageClassroom.fromApi(teacher.classroom);
 
     id = teacher.id;
-    initials = teacher.initials;
+    name = teacher.name;
+    surname = teacher.surname;
+    patronymic = teacher.patronymic;
     institutionId = teacher.institutionId;
-    classroom = teacher.classroom;
-    createdBy = teacher.createdBy;
   }
 }

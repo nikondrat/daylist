@@ -5,6 +5,7 @@
     "email": "Email",
     "name": "Name",
     "surname": "Surname",
+    "patronymic": "Patronymic",
     "password": "Password",
     "helpers": {
         "titles": {

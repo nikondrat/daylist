@@ -1,6 +1,7 @@
 import 'package:daylist/data/api/api_util.dart';
 import 'package:daylist/data/api/request/add/add_teacher_body.dart';
 import 'package:daylist/data/api/request/get/get_teachers_body.dart';
+import 'package:daylist/data/repository/voiting_data_repository.dart';
 import 'package:daylist/data/storage/model/storage_teacher.dart';
 import 'package:daylist/data/storage/storage_util.dart';
 import 'package:daylist/domain/model/teacher.dart';
@@ -14,7 +15,7 @@ class TeacherDataRepository extends TeacherRepository {
 
   @override
   Future<List<Teacher>> getTeachers({required GetTeachersBody body}) async {
-    final List<Teacher> teachers = await _storageUtil.getTeachers();
+    final List<Teacher> teachers = await _storageUtil.getTeachers(body.title);
 
     if (teachers.isEmpty) {
       final List<Teacher> result = await _apiUtil.getTeachers(body: body);
@@ -30,8 +31,7 @@ class TeacherDataRepository extends TeacherRepository {
 
   @override
   Future addTeacher({required AddTecherBody body}) async {
-    return await _apiUtil.addTeacher(body: body).then((value) async =>
-        await _storageUtil.addTeacher(
-            teacher: StorageTeacher.fromApi(body.teacher)));
+    return await _apiUtil.addTeacher(body: body).then(
+        (value) => VoitingDataRepository(_apiUtil).add(body: body.voitingBody));
   }
 }

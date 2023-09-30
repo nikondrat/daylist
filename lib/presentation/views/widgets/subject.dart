@@ -1,42 +1,42 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:appwrite/appwrite.dart';
-import 'package:appwrite/models.dart';
-import 'package:daylist/data/api/request/add/add_replacement_body.dart';
-import 'package:daylist/data/api/request/put/put_subject_body.dart';
-import 'package:daylist/data/repository/auth_repository.dart';
-import 'package:daylist/data/repository/replacement_repository.dart';
-import 'package:daylist/data/repository/subject_repository.dart';
+import 'package:daylist/data/api/request/add/add_voiting_body.dart';
+import 'package:daylist/data/api/request/delete/delete_replacement_body.dart';
 import 'package:daylist/domain/model/group.dart';
-import 'package:daylist/domain/state/home/home_state.dart';
-import 'package:daylist/internal/dependencies/dependencies.dart';
-import 'package:daylist/presentation/utils/generator.dart';
-import 'package:daylist/presentation/utils/week_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import 'package:daylist/data/api/request/add/add_replacement_body.dart';
+import 'package:daylist/data/api/request/put/put_subject_body.dart';
+import 'package:daylist/data/repository/replacement_data_repository.dart';
+import 'package:daylist/data/repository/subject_data_repository.dart';
 import 'package:daylist/domain/model/replacement.dart';
 import 'package:daylist/domain/model/subject.dart';
 import 'package:daylist/domain/model/teacher.dart';
 import 'package:daylist/domain/model/time.dart';
+import 'package:daylist/domain/state/home/home_state.dart';
 import 'package:daylist/domain/state/settings/settings_state.dart';
+import 'package:daylist/internal/dependencies/dependencies.dart';
 import 'package:daylist/presentation/extensions/theme/context.dart';
 import 'package:daylist/presentation/res/values.dart';
 import 'package:daylist/presentation/translations/translations.g.dart';
+import 'package:daylist/presentation/utils/generator.dart';
 import 'package:daylist/presentation/views/widgets/section.dart';
 
 class _SubjectWidget extends StatefulWidget {
   final Time time;
   final Teacher teacher;
-  final DateTime? date;
   final bool isShedulerView;
+  final DateTime? dateTime;
   final Replacement? replacement;
 
   const _SubjectWidget(
       {Key? key,
       required this.time,
-      required this.date,
       required this.teacher,
       required this.isShedulerView,
+      this.dateTime,
       this.replacement})
       : super(key: key);
 
@@ -62,8 +62,8 @@ class __SubjectWidgetState extends State<_SubjectWidget> {
   Widget build(BuildContext context) {
     return _Body(
         isShedulerView: widget.isShedulerView,
-        date: widget.date,
         time: widget.time,
+        dateTime: widget.dateTime,
         teacher: widget.teacher,
         replacement: widget.replacement);
   }
@@ -74,14 +74,14 @@ class _Body extends HookConsumerWidget {
   final Teacher teacher;
   final Replacement? replacement;
   final bool isShedulerView;
-  final DateTime? date;
+  final DateTime? dateTime;
 
   const _Body(
       {required this.time,
       required this.teacher,
       required this.replacement,
-      required this.isShedulerView,
-      required this.date});
+      required this.dateTime,
+      required this.isShedulerView});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -90,8 +90,6 @@ class _Body extends HookConsumerWidget {
     final bool isReplacement = replacement != null;
     final bool isCanceled =
         isReplacement && replacement!.mode == ReplacementMode.cancel;
-
-    final bool isScheduler = ref.watch(settingsProvider).isScheduler;
 
     return isCanceled
         ? const SizedBox.shrink()
@@ -115,35 +113,81 @@ class _Body extends HookConsumerWidget {
                   : const SizedBox.shrink()
             ]),
             subtitle: _Subtitle(teacher: teacher),
-            trailing: isScheduler && date != null && isShedulerView
-                ? GestureDetector(
-                    onTap: () async {
-                      final User user =
-                          await AuthDataRepository(Dependencies().getIt.get())
-                              .getUser();
-                      final Group? group = ref.watch(settingsProvider).group;
+            trailing: _CancelSubjectWidget(
+                isShedulerView: isShedulerView,
+                time: time,
+                isReplacement: isReplacement,
+                teacher: teacher,
+                dateTime: dateTime,
+                replacement: replacement));
+  }
+}
 
-                      ReplacementDataRepository(Dependencies().getIt.get())
-                          .addReplacement(
-                              body: AddReplacementBody(
-                                  databaseId: dotenv.env['databaseId']!,
-                                  collectionId:
-                                      dotenv.env['replacementsCollectionId']!,
-                                  replacement: Replacement(
-                                      id: ID.custom(Generator.generateId()),
-                                      time: time,
-                                      teacher: teacher,
-                                      groupId: group!.id,
-                                      date: date!,
-                                      mode: ReplacementMode.cancel,
-                                      undergroup: null,
-                                      createdBy: user.$id)));
-                      ref.invalidate(replacementsProvider);
-                    },
-                    child: const Icon(Icons.close),
-                  )
-                : const SizedBox.shrink(),
-          );
+class _CancelSubjectWidget extends HookConsumerWidget {
+  final bool isShedulerView;
+  final Time time;
+  final Teacher teacher;
+  final bool isReplacement;
+
+  final DateTime? dateTime;
+  final Replacement? replacement;
+
+  const _CancelSubjectWidget({
+    required this.isShedulerView,
+    required this.time,
+    required this.teacher,
+    required this.dateTime,
+    required this.isReplacement,
+    required this.replacement,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final bool isChangeSchedule = ref.watch(isChangeScheduleProvider);
+    final String groupId = ref.watch(settingsProvider).group!.id;
+
+    return isShedulerView && isChangeSchedule
+        ? GestureDetector(
+            onTap: () {
+              final Group? group = ref.watch(settingsProvider).group;
+
+              if (isReplacement) {
+                ReplacementDataRepository(Dependencies().getIt.get())
+                    .deleteReplacement(
+                        body: DeleteReplacementBody(
+                            databaseId: dotenv.env['databaseId']!,
+                            collectionId:
+                                dotenv.env['replacementsCollectionId']!,
+                            id: replacement!.id));
+              } else {
+                final Replacement replacement = Replacement(
+                    id: ID.custom(Generator.generateId()),
+                    time: time,
+                    teacher: teacher,
+                    groupId: group!.id,
+                    date: dateTime!,
+                    mode: ReplacementMode.cancel,
+                    undergroup: null);
+
+                ReplacementDataRepository(Dependencies().getIt.get())
+                    .addReplacement(
+                        body: AddReplacementBody(
+                            databaseId: dotenv.env['databaseId']!,
+                            collectionId:
+                                dotenv.env['replacementsCollectionId']!,
+                            voitingBody: AddVoitingBody(
+                                databaseId: dotenv.env['databaseId']!,
+                                collectionId:
+                                    dotenv.env['voitingCollectionId']!,
+                                replacement: replacement,
+                                groupId: groupId),
+                            replacement: replacement));
+              }
+              ref.invalidate(replacementsProvider);
+            },
+            child: const Icon(Icons.close),
+          )
+        : const SizedBox.shrink();
   }
 }
 
@@ -163,7 +207,7 @@ class _Subtitle extends HookConsumerWidget {
               padding: const EdgeInsets.only(top: 2, bottom: 2),
               child: Text('${teacher.classroom} ${t.subject.classroom}',
                   style: context.text.mediumText)),
-          Text(isShortInitials ? teacher.shortInitials() : teacher.initials,
+          Text(isShortInitials ? teacher.shortInitials() : teacher.initials(),
               style: context.text.mediumText)
         ]);
   }
@@ -279,8 +323,8 @@ class SectionSubjectsWidget extends StatelessWidget {
           if (replacement != null) {
             return _SubjectWidget(
                 isShedulerView: isShedulerView,
-                date: dateTime!,
                 time: time!,
+                dateTime: dateTime,
                 teacher: replacement.teacher,
                 replacement: replacement);
           } else {
@@ -290,17 +334,21 @@ class SectionSubjectsWidget extends StatelessWidget {
                   ? s.weekday == dateTime!.weekday
                   : s.weekday == weekday;
 
-              final bool isEven = s.isEven == null ||
-                  s.isEven == WeekUtil().isEvenWeek(DateTime.now(), isEvenWeek);
+              // TODO
 
-              return isThisDay && time != null && isEven;
+              final bool isShowInThisWeek = false;
+
+              // final bool isEven = s.isEven == null ||
+              //     s.isEven == WeekUtil().isEvenWeek(DateTime.now(), isEvenWeek);
+
+              return isThisDay && time != null && isShowInThisWeek;
             }).firstOrNull;
 
             if (subject != null) {
               return _SubjectWidget(
                   isShedulerView: isShedulerView,
-                  date: dateTime,
                   time: time!,
+                  dateTime: dateTime,
                   teacher: subject.teacher);
             }
           }

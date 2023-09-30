@@ -1,3 +1,4 @@
+import 'package:daylist/data/api/request/add/add_voiting_body.dart';
 import 'package:daylist/domain/model/time.dart';
 
 class AddTimeBody {
@@ -5,8 +6,11 @@ class AddTimeBody {
   final String collectionId;
   final Time time;
 
+  final AddVoitingBody voitingBody;
+
   AddTimeBody(
       {required this.databaseId,
       required this.collectionId,
-      required this.time});
+      required this.time,
+      required this.voitingBody});
 }

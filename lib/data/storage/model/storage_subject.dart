@@ -15,16 +15,14 @@ class StorageSubject {
   IsarLink<StorageTeacher> teacher = IsarLink<StorageTeacher>();
   IsarLink<StorageTime> time = IsarLink<StorageTime>();
   String groupId = '';
-  bool? isEven;
+  List<bool> showInWeek = [];
   int weekday = 1;
-  String? createdBy;
 
   StorageSubject({
     required this.id,
     required this.groupId,
-    required this.isEven,
+    required this.showInWeek,
     required this.weekday,
-    required this.createdBy,
   });
 
   StorageSubject.fromApi(Subject subject) {
@@ -33,8 +31,7 @@ class StorageSubject {
 
     id = subject.id;
     groupId = subject.groupId;
-    isEven = subject.isEven;
+    showInWeek = subject.showInWeek;
     weekday = subject.weekday;
-    createdBy = subject.createdBy;
   }
 }

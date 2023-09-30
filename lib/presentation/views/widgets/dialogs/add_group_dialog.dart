@@ -1,8 +1,6 @@
 import 'package:appwrite/appwrite.dart';
-import 'package:appwrite/models.dart';
 import 'package:daylist/data/api/request/add/add_group_body.dart';
-import 'package:daylist/data/repository/auth_repository.dart';
-import 'package:daylist/data/repository/group_repository.dart';
+import 'package:daylist/data/repository/group_data_repository.dart';
 import 'package:daylist/domain/model/group.dart';
 import 'package:daylist/domain/state/home/home_state.dart';
 import 'package:daylist/domain/state/settings/settings_state.dart';
@@ -44,9 +42,6 @@ class __AddGroupDialogState extends ConsumerState<AddGroupDialog> {
   Future addGroup() async {
     if (!formKey.currentState!.validate()) return;
 
-    final User user =
-        await AuthDataRepository(Dependencies().getIt.get()).getUser();
-
     try {
       await GroupDataRepository(Dependencies().getIt.get())
           .addGroup(
@@ -56,7 +51,6 @@ class __AddGroupDialogState extends ConsumerState<AddGroupDialog> {
                   group: Group(
                       id: ID.custom(Generator.generateId()),
                       title: controller.text.trim(),
-                      createdBy: user.$id,
                       institutionId:
                           ref.watch(settingsProvider).institution!.id)))
           .then((value) {

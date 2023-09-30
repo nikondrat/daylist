@@ -1,6 +1,7 @@
 import 'package:daylist/domain/model/title.dart';
-import 'package:daylist/domain/state/dialogs/subject_dialog_state.dart';
+import 'package:daylist/domain/state/sheduler/subject_state.dart';
 import 'package:daylist/domain/state/week/week_state.dart';
+import 'package:daylist/presentation/translations/translations.g.dart';
 import 'package:daylist/presentation/views/widgets/dialogs/add_subject_title_dialog.dart';
 import 'package:daylist/presentation/views/widgets/list.dart';
 import 'package:daylist/presentation/views/widgets/loader.dart';
@@ -20,6 +21,7 @@ class TitlesView extends HookConsumerWidget {
                 onPressed: () => context.pop(),
                 splashRadius: 20,
                 icon: const Icon(Icons.arrow_back)),
+            title: Text(t.subject.title),
             actions: [
               Padding(
                   padding: const EdgeInsets.all(8.0),

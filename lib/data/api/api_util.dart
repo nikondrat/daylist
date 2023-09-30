@@ -1,4 +1,5 @@
 import 'package:daylist/data/api/model/api_city.dart';
+import 'package:daylist/data/api/model/api_classroom.dart';
 import 'package:daylist/data/api/model/api_group.dart';
 import 'package:daylist/data/api/model/api_institution.dart';
 import 'package:daylist/data/api/model/api_replacement.dart';
@@ -6,7 +7,9 @@ import 'package:daylist/data/api/model/api_subject.dart';
 import 'package:daylist/data/api/model/api_teacher.dart';
 import 'package:daylist/data/api/model/api_time.dart';
 import 'package:daylist/data/api/model/api_title.dart';
+import 'package:daylist/data/api/model/api_voiting.dart';
 import 'package:daylist/data/api/request/add/add_city_body.dart';
+import 'package:daylist/data/api/request/add/add_classroom_body.dart';
 import 'package:daylist/data/api/request/add/add_group_body.dart';
 import 'package:daylist/data/api/request/add/add_institution_body.dart';
 import 'package:daylist/data/api/request/add/add_replacement_body.dart';
@@ -14,10 +17,12 @@ import 'package:daylist/data/api/request/add/add_subject_body.dart';
 import 'package:daylist/data/api/request/add/add_teacher_body.dart';
 import 'package:daylist/data/api/request/add/add_time_body.dart';
 import 'package:daylist/data/api/request/add/add_title_body.dart';
+import 'package:daylist/data/api/request/add/add_voiting_body.dart';
 import 'package:daylist/data/api/request/auth/sign_in_body.dart';
 import 'package:daylist/data/api/request/auth/sign_up_body.dart';
 import 'package:daylist/data/api/request/delete/delete_replacement_body.dart';
 import 'package:daylist/data/api/request/get/get_cities_body.dart';
+import 'package:daylist/data/api/request/get/get_classroom_body.dart';
 import 'package:daylist/data/api/request/get/get_groups_body.dart';
 import 'package:daylist/data/api/request/get/get_institutions_body.dart';
 import 'package:daylist/data/api/request/get/get_replacements_body.dart';
@@ -25,8 +30,11 @@ import 'package:daylist/data/api/request/get/get_subjects_body.dart';
 import 'package:daylist/data/api/request/get/get_teachers_body.dart';
 import 'package:daylist/data/api/request/get/get_times_body.dart';
 import 'package:daylist/data/api/request/get/get_titles_body.dart';
+import 'package:daylist/data/api/request/get/get_voitings_body.dart';
+import 'package:daylist/data/api/request/put/put_vote_body.dart';
 import 'package:daylist/data/api/service/appwrite_service.dart';
 import 'package:daylist/data/mapper/city_mapper.dart';
+import 'package:daylist/data/mapper/classroom_mapper.dart';
 import 'package:daylist/data/mapper/group_mapper.dart';
 import 'package:daylist/data/mapper/institution_mapper.dart';
 import 'package:daylist/data/mapper/replacement_mapper.dart';
@@ -34,7 +42,9 @@ import 'package:daylist/data/mapper/subject_mapper.dart';
 import 'package:daylist/data/mapper/teacher_mapper.dart';
 import 'package:daylist/data/mapper/time_mapper.dart';
 import 'package:daylist/data/mapper/title_mapper.dart';
+import 'package:daylist/data/mapper/voiting_mapper.dart';
 import 'package:daylist/domain/model/city.dart';
+import 'package:daylist/domain/model/classroom.dart';
 import 'package:daylist/domain/model/group.dart';
 import 'package:daylist/domain/model/institution.dart';
 import 'package:daylist/domain/model/replacement.dart';
@@ -42,6 +52,7 @@ import 'package:daylist/domain/model/subject.dart';
 import 'package:daylist/domain/model/teacher.dart';
 import 'package:daylist/domain/model/time.dart';
 import 'package:daylist/domain/model/title.dart';
+import 'package:daylist/domain/model/voiting.dart';
 
 class ApiUtil {
   late final AppwriteService _appwriteService = AppwriteService();
@@ -152,6 +163,37 @@ class ApiUtil {
 
   Future deleteReplacement({required DeleteReplacementBody body}) async {
     return _appwriteService.deleteReplacement(body: body);
+  }
+
+  Future<List<Classroom>> getClassrooms(
+      {required GetClassroomsBody body}) async {
+    final List<ApiClassroom> result =
+        await _appwriteService.getClassrooms(body: body);
+    final List<Classroom> convertedList =
+        result.map((e) => ClassroomMapper.fromApi(e)).toList();
+
+    return convertedList;
+  }
+
+  Future addClassroom({required AddClassroomBody body}) async {
+    return _appwriteService.addClasroom(body: body);
+  }
+
+  Future addVoiting({required AddVoitingBody body}) async {
+    return _appwriteService.addVoiting(body: body);
+  }
+
+  Future<List<Voiting>> getVoitings({required GetVoitingsBody body}) async {
+    final List<ApiVoiting> result =
+        await _appwriteService.getVoitings(body: body);
+    final List<Voiting> convertedList =
+        result.map((e) => VoitingMapper.fromApi(e)).toList();
+
+    return convertedList;
+  }
+
+  Future changeVote({required PutVoteBody body}) async {
+    return _appwriteService.changeVote(body: body);
   }
 
   Future signUp({required SignUpBody body}) async {

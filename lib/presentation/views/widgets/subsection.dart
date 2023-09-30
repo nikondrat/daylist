@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:daylist/presentation/extensions/theme/context.dart';
 
 class Subsection {
@@ -7,8 +6,10 @@ class Subsection {
   final Icon? icon;
   final String title;
   final List<Widget>? trailing;
+  ShapeBorder? shape;
 
-  Subsection({this.onTap, this.icon, required this.title, this.trailing});
+  Subsection(
+      {this.onTap, this.icon, required this.title, this.trailing, this.shape});
 }
 
 class SubsectionWidget extends StatelessWidget {
@@ -25,7 +26,7 @@ class SubsectionWidget extends StatelessWidget {
   }
 }
 
-class _Body extends HookConsumerWidget {
+class _Body extends StatelessWidget {
   final Subsection subsection;
 
   const _Body({
@@ -34,9 +35,10 @@ class _Body extends HookConsumerWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return ListTile(
         onTap: subsection.onTap,
+        shape: subsection.shape,
         leading: subsection.icon,
         title: Text(subsection.title),
         minLeadingWidth: 0,

@@ -7,7 +7,6 @@ class InstitutionMapper {
         id: institution.id,
         title: institution.title,
         shortTitle: institution.shortTitle,
-        createdBy: institution.createdBy,
         cityId: institution.cityId);
   }
 

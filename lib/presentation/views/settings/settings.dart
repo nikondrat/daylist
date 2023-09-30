@@ -3,14 +3,12 @@ import 'package:daylist/domain/model/group.dart';
 import 'package:daylist/domain/model/institution.dart';
 import 'package:daylist/domain/state/settings/settings_state.dart';
 import 'package:daylist/presentation/extensions/theme/context.dart';
-import 'package:daylist/presentation/res/colors.dart';
 import 'package:daylist/presentation/res/values.dart';
 import 'package:daylist/presentation/translations/translations.g.dart';
 import 'package:daylist/presentation/views/router.dart';
 import 'package:daylist/presentation/views/widgets/list.dart';
 import 'package:daylist/presentation/views/widgets/section.dart';
 import 'package:daylist/presentation/views/widgets/subsection.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
@@ -32,7 +30,7 @@ class SettingsView extends HookConsumerWidget {
                 icon: const Icon(Icons.arrow_back)),
             title: Text(t.settings.title)),
         body: const CustomListWidget(children: [
-          _UserSectionWidget(),
+          // _UserSectionWidget(),
           _GeneralSectionWidget(),
           _ThemeSectionWidget(),
           _OptionalSectionWidget(),
@@ -42,78 +40,66 @@ class SettingsView extends HookConsumerWidget {
   }
 }
 
-class _UserSectionWidget extends HookConsumerWidget {
-  const _UserSectionWidget();
+// class _UserSectionWidget extends HookConsumerWidget {
+//   const _UserSectionWidget();
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final Color? primaryColor = ref.watch(primaryColorProvider);
-    final Color? backgroundColor = ref.watch(backgroundColorProvider);
-    final double radius = ref.watch(radiusProvider);
-    final List<String> initials = ref.watch(settingsProvider).name.split(' ');
-    final String email = ref.watch(settingsProvider).email;
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     // final Color? primaryColor = ref.watch(primaryColorProvider);
+//     // final Color? backgroundColor = ref.watch(backgroundColorProvider);
+//     // final double radius = ref.watch(radiusProvider);
+//     // final List<String> initials = ref.watch(settingsProvider).name.split(' ');
+//     final String email = ref.watch(settingsProvider).email;
 
-    const double size = 70;
+//     // const double size = 70;
 
-    return SectionWidget(
-      margin: const EdgeInsets.only(bottom: Insets.small),
-      children: [
-        // Container(
-        //     height: 120,
-        //     decoration: BoxDecoration(
-        //         image: DecorationImage(
-        //             fit: BoxFit.cover,
-        //             image: NetworkImage(
-        //                 'https://w.forfun.com/fetch/da/daf8eb568fea522f6701fb9c66378cdc.jpeg')),
-        //         borderRadius: BorderRadius.circular(radius),
-        //         color: Colors.amber),
-        //     child: Center(
-        //         child: Container(
-        //       width: size,
-        //       height: size,
-        //       decoration: BoxDecoration(
-        //           color: backgroundColor,
-        //           image: DecorationImage(
-        //               image: NetworkImage(
-        //                   'https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/EA-Logo.svg/1600px-EA-Logo.svg.png?20180424054826'))),
-        //     ))),
-        SubsectionWidget(
-            subsection:
-                Subsection(title: t.auth.name, trailing: [Text('name')])),
-        SubsectionWidget(
-            subsection:
-                Subsection(title: t.auth.surname, trailing: [Text('name')])),
-        SubsectionWidget(
-            subsection:
-                Subsection(title: t.auth.email, trailing: [Text(email)]))
-      ],
-    );
-  }
-}
+//     return SectionWidget(
+//       margin: const EdgeInsets.only(bottom: Insets.small),
+//       children: [
+//         // Container(
+//         //     height: 120,
+//         //     decoration: BoxDecoration(
+//         //         image: DecorationImage(
+//         //             fit: BoxFit.cover,
+//         //             image: NetworkImage(
+//         //                 'https://w.forfun.com/fetch/da/daf8eb568fea522f6701fb9c66378cdc.jpeg')),
+//         //         borderRadius: BorderRadius.circular(radius),
+//         //         color: Colors.amber),
+//         //     child: Center(
+//         //         child: Container(
+//         //       width: size,
+//         //       height: size,
+//         //       decoration: BoxDecoration(
+//         //           color: backgroundColor,
+//         //           image: DecorationImage(
+//         //               image: NetworkImage(
+//         //                   'https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/EA-Logo.svg/1600px-EA-Logo.svg.png?20180424054826'))),
+//         //     ))),
+//         SubsectionWidget(
+//             subsection:
+//                 Subsection(title: t.auth.name, trailing: [Text('name')])),
+//         SubsectionWidget(
+//             subsection:
+//                 Subsection(title: t.auth.surname, trailing: [Text('name')])),
+//         SubsectionWidget(
+//             subsection:
+//                 Subsection(title: t.auth.email, trailing: [Text(email)]))
+//       ],
+//     );
+//   }
+// }
 
 class _GeneralSectionWidget extends HookConsumerWidget {
   const _GeneralSectionWidget();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bool isScheduler = ref.watch(settingsProvider).isScheduler;
-    final bool isAdmin = ref.watch(settingsProvider).isAdmin;
     final City? city = ref.watch(cityProvider);
     final Institution? institution = ref.watch(institutionProvider);
     final Group? group = ref.watch(groupProvider);
     final int undergroup = ref.watch(undergroupProvider);
 
     return SectionWidget(title: t.settings.general, children: [
-      isScheduler || isAdmin || kDebugMode
-          ? SubsectionWidget(
-              subsection: Subsection(
-                  icon: const Icon(UniconsLine.constructor),
-                  onTap: () {
-                    context.goNamed(ViewsNames.groupSheduler);
-                  },
-                  trailing: [const Icon(Icons.arrow_forward)],
-                  title: t.settings.scheduler))
-          : const SizedBox.shrink(),
       SubsectionWidget(
           subsection: Subsection(
               icon: const Icon(UniconsLine.building),

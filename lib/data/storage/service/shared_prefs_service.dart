@@ -7,6 +7,7 @@ class SharedPrefsService {
   late final Future<SharedPreferences> _prefs;
   static const String _settingsKey = 'settings';
   static const String _authKey = 'isAuthorized';
+  static const String _databaseVersion = 'databaseVersion';
 
   SharedPrefsService() {
     _prefs = SharedPreferences.getInstance();
@@ -44,5 +45,22 @@ class SharedPrefsService {
     final SharedPreferences prefs = await _prefs;
 
     prefs.setString(_settingsKey, jsonEncode(settings.toMap()));
+  }
+
+  Future<int?> getDatabaseVersion() async {
+    final SharedPreferences prefs = await _prefs;
+
+    if (prefs.containsKey(_databaseVersion)) {
+      final int? data = prefs.getInt(_databaseVersion);
+      if (data != null) return data;
+    }
+
+    return null;
+  }
+
+  Future updateDatabaseVersion(int version) async {
+    final SharedPreferences prefs = await _prefs;
+
+    prefs.setInt(_databaseVersion, version);
   }
 }

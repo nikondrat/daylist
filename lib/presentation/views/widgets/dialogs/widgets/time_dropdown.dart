@@ -1,6 +1,6 @@
 import 'package:daylist/domain/model/time.dart';
-import 'package:daylist/domain/state/dialogs/subject_dialog_state.dart';
-import 'package:daylist/domain/state/dialogs/time_dialog_state.dart';
+import 'package:daylist/domain/state/sheduler/subject_state.dart';
+import 'package:daylist/domain/state/sheduler/time_state.dart';
 import 'package:daylist/domain/state/settings/settings_state.dart';
 import 'package:daylist/domain/state/week/week_state.dart';
 import 'package:daylist/presentation/extensions/theme/context.dart';

@@ -1,14 +1,17 @@
+import 'package:daylist/data/mapper/classroom_mapper.dart';
 import 'package:daylist/data/mapper/subject_mapper.dart';
 import 'package:daylist/data/mapper/teacher_mapper.dart';
 import 'package:daylist/data/mapper/time_mapper.dart';
 import 'package:daylist/data/mapper/title_mapper.dart';
 import 'package:daylist/data/storage/model/settings.dart';
+import 'package:daylist/data/storage/model/storage_classroom.dart';
 import 'package:daylist/data/storage/model/storage_subject.dart';
 import 'package:daylist/data/storage/model/storage_teacher.dart';
 import 'package:daylist/data/storage/model/storage_time.dart';
 import 'package:daylist/data/storage/model/storage_title.dart';
 import 'package:daylist/data/storage/service/isar_service.dart';
 import 'package:daylist/data/storage/service/shared_prefs_service.dart';
+import 'package:daylist/domain/model/classroom.dart';
 import 'package:daylist/domain/model/subject.dart';
 import 'package:daylist/domain/model/teacher.dart';
 import 'package:daylist/domain/model/time.dart';
@@ -18,6 +21,14 @@ import 'package:isar/isar.dart';
 class StorageUtil {
   late final IsarService _db = IsarService();
   late final SharedPrefsService _prefs = SharedPrefsService();
+
+  Future<int?> getDatabaseVersion() async {
+    return await _prefs.getDatabaseVersion();
+  }
+
+  Future updateDatabaseVersion(int version) async {
+    return await _prefs.updateDatabaseVersion(version);
+  }
 
   Future<bool> isAuthorized() async {
     return await _prefs.isAuthorized();
@@ -132,8 +143,11 @@ class StorageUtil {
     return await _db.clearSubjects();
   }
 
-  Future<List<Teacher>> getTeachers() async {
-    final List<StorageTeacher> result = await _db.getTeachers();
+  Future<List<Teacher>> getTeachers(SubjectTitle? title) async {
+    final StorageTitle? storageTitle =
+        title != null ? StorageTitle.fromApi(title) : null;
+
+    final List<StorageTeacher> result = await _db.getTeachers(storageTitle);
     final List<Teacher> convertedList =
         result.map((e) => TeacherMapper.fromStorage(e)).toList();
 
@@ -178,5 +192,17 @@ class StorageUtil {
 
   Future addTitle({required StorageTitle title}) async {
     return await _db.addTitle(title: title);
+  }
+
+  Future<List<Classroom>> getClassrooms() async {
+    final List<StorageClassroom> result = await _db.getClassrooms();
+    final List<Classroom> convertedList =
+        result.map((e) => ClassroomMapper.fromStorage(e)).toList();
+
+    return convertedList;
+  }
+
+  Future putClassrooms({required List<StorageClassroom> classrooms}) async {
+    await _db.putClassrooms(classrooms: classrooms);
   }
 }

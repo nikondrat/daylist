@@ -1,5 +1,5 @@
 import 'package:appwrite/appwrite.dart';
-import 'package:daylist/data/repository/user_repository.dart';
+import 'package:daylist/data/repository/user_data_repository.dart';
 import 'package:daylist/domain/state/settings/settings_state.dart';
 import 'package:daylist/presentation/extensions/theme/context.dart';
 import 'package:flutter/gestures.dart';
@@ -9,7 +9,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:unicons/unicons.dart';
 
 import 'package:daylist/data/api/request/auth/sign_up_body.dart';
-import 'package:daylist/data/repository/auth_repository.dart';
+import 'package:daylist/data/repository/auth_data_repository.dart';
 import 'package:daylist/domain/state/auth/auth_state.dart';
 import 'package:daylist/internal/dependencies/dependencies.dart';
 import 'package:daylist/presentation/res/values.dart';

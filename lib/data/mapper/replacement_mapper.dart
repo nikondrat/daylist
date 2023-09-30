@@ -12,7 +12,6 @@ class ReplacementMapper {
         time: TimeMapper.fromApi(replacement.time),
         date: replacement.date,
         undergroup: replacement.undergroup,
-        createdBy: replacement.createdBy,
         mode: ReplacementMode.values
             .firstWhere((e) => e.name == replacement.mode));
   }

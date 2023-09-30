@@ -1,7 +1,9 @@
+import 'package:daylist/domain/state/home/home_state.dart';
 import 'package:daylist/domain/state/settings/settings_state.dart';
 import 'package:daylist/presentation/views/widgets/list.dart';
 import 'package:daylist/presentation/views/widgets/subject.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:daylist/presentation/extensions/theme/context.dart';
@@ -42,6 +44,8 @@ class _Body extends HookConsumerWidget {
     final int undergroup = ref.watch(settingsProvider).undergroup;
     final bool isEvenWeek = ref.watch(isEvenWeekProvider);
 
+    final bool isChangeSchedule = ref.watch(isChangeScheduleProvider);
+
     return Scaffold(
         appBar: AppBar(
             leading: IconButton(
@@ -50,6 +54,23 @@ class _Body extends HookConsumerWidget {
                 icon: const Icon(UniconsLine.setting)),
             title: Text(t.settings.app_name),
             actions: [
+              Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: IconButton(
+                      onPressed: () => ref
+                          .read(isChangeScheduleProvider.notifier)
+                          .update((state) => !state),
+                      color: context.color.primaryColor,
+                      splashRadius: 20,
+                      icon: const Icon(UniconsLine.edit))),
+              Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: IconButton(
+                      onPressed: () => context.goNamed(ViewsNames.voitings),
+                      color: context.color.primaryColor,
+                      splashRadius: 20,
+                      icon: const FaIcon(FontAwesomeIcons.wandMagicSparkles,
+                          size: 16))),
               Padding(
                   padding: const EdgeInsets.all(8),
                   child: IconButton(
@@ -64,6 +85,7 @@ class _Body extends HookConsumerWidget {
                   '${t.home.today}, ${now.day} ${t.week.days.short[now.weekday - 1]}',
               dateTime: now,
               subjects: subjects,
+              isShedulerView: true,
               isEvenWeek: isEvenWeek,
               undergroup: undergroup,
               replacements: replacements),
@@ -72,9 +94,15 @@ class _Body extends HookConsumerWidget {
                   '${t.home.tomorrow}, ${tomorrow.day} ${t.week.days.short[tomorrow.weekday - 1]}',
               dateTime: tomorrow,
               subjects: subjects,
+              isShedulerView: true,
               isEvenWeek: isEvenWeek,
               undergroup: undergroup,
-              replacements: replacements)
-        ]));
+              replacements: replacements),
+        ]),
+        floatingActionButton: isChangeSchedule
+            ? FloatingActionButton(
+                onPressed: () => context.goNamed(ViewsNames.sheduler),
+                child: const Icon(Icons.add))
+            : null);
   }
 }

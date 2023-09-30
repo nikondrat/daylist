@@ -1,8 +1,9 @@
 import 'package:daylist/domain/model/time.dart';
-import 'package:daylist/domain/state/dialogs/subject_dialog_state.dart';
+import 'package:daylist/domain/state/sheduler/subject_state.dart';
 import 'package:daylist/domain/state/settings/settings_state.dart';
 import 'package:daylist/domain/state/week/week_state.dart';
 import 'package:daylist/presentation/extensions/theme/context.dart';
+import 'package:daylist/presentation/translations/translations.g.dart';
 import 'package:daylist/presentation/views/widgets/dialogs/add_time_dialog.dart';
 import 'package:daylist/presentation/views/widgets/list.dart';
 import 'package:daylist/presentation/views/widgets/loader.dart';
@@ -25,6 +26,7 @@ class TimesView extends HookConsumerWidget {
                 onPressed: () => context.pop(),
                 splashRadius: 20,
                 icon: const Icon(Icons.arrow_back)),
+            title: Text(t.selection.time),
             actions: [
               Padding(
                   padding: const EdgeInsets.all(8.0),

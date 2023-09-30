@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 182 (91 per locale)
+/// Strings: 188 (94 per locale)
 ///
-/// Built on 2023-09-15 at 17:19 UTC
+/// Built on 2023-09-30 at 20:13 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -164,6 +164,7 @@ class _TranslationsEn implements BaseTranslations<AppLocale, _TranslationsEn> {
 	late final _TranslationsHomeEn home = _TranslationsHomeEn._(_root);
 	late final _TranslationsSelectionEn selection = _TranslationsSelectionEn._(_root);
 	late final _TranslationsSettingsEn settings = _TranslationsSettingsEn._(_root);
+	late final _TranslationsVoitingsEn voitings = _TranslationsVoitingsEn._(_root);
 	late final _TranslationsWeekEn week = _TranslationsWeekEn._(_root);
 	late final _TranslationsSubjectEn subject = _TranslationsSubjectEn._(_root);
 }
@@ -219,6 +220,7 @@ class _TranslationsAuthEn {
 	String get email => 'Email';
 	String get name => 'Name';
 	String get surname => 'Surname';
+	String get patronymic => 'Patronymic';
 	String get password => 'Password';
 	late final _TranslationsAuthHelpersEn helpers = _TranslationsAuthHelpersEn._(_root);
 }
@@ -294,6 +296,16 @@ class _TranslationsSettingsEn {
 	late final _TranslationsSettingsSupportEn support = _TranslationsSettingsSupportEn._(_root);
 }
 
+// Path: voitings
+class _TranslationsVoitingsEn {
+	_TranslationsVoitingsEn._(this._root);
+
+	final _TranslationsEn _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Voiting';
+}
+
 // Path: week
 class _TranslationsWeekEn {
 	_TranslationsWeekEn._(this._root);
@@ -319,6 +331,7 @@ class _TranslationsSubjectEn {
 	// Translations
 	String get title => 'Subject';
 	String get classroom => 'classroom';
+	String get replacement => 'Replacement';
 }
 
 // Path: auth.helpers
@@ -459,6 +472,7 @@ class _TranslationsRu implements _TranslationsEn {
 	@override late final _TranslationsHomeRu home = _TranslationsHomeRu._(_root);
 	@override late final _TranslationsSelectionRu selection = _TranslationsSelectionRu._(_root);
 	@override late final _TranslationsSettingsRu settings = _TranslationsSettingsRu._(_root);
+	@override late final _TranslationsVoitingsRu voitings = _TranslationsVoitingsRu._(_root);
 	@override late final _TranslationsWeekRu week = _TranslationsWeekRu._(_root);
 	@override late final _TranslationsSubjectRu subject = _TranslationsSubjectRu._(_root);
 }
@@ -514,6 +528,7 @@ class _TranslationsAuthRu implements _TranslationsAuthEn {
 	@override String get email => 'Почта';
 	@override String get name => 'Имя';
 	@override String get surname => 'Фамилия';
+	@override String get patronymic => 'Отчество';
 	@override String get password => 'Пароль';
 	@override late final _TranslationsAuthHelpersRu helpers = _TranslationsAuthHelpersRu._(_root);
 }
@@ -589,6 +604,16 @@ class _TranslationsSettingsRu implements _TranslationsSettingsEn {
 	@override late final _TranslationsSettingsSupportRu support = _TranslationsSettingsSupportRu._(_root);
 }
 
+// Path: voitings
+class _TranslationsVoitingsRu implements _TranslationsVoitingsEn {
+	_TranslationsVoitingsRu._(this._root);
+
+	@override final _TranslationsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Голосование';
+}
+
 // Path: week
 class _TranslationsWeekRu implements _TranslationsWeekEn {
 	_TranslationsWeekRu._(this._root);
@@ -614,6 +639,7 @@ class _TranslationsSubjectRu implements _TranslationsSubjectEn {
 	// Translations
 	@override String get title => 'Предмет';
 	@override String get classroom => 'кабинет';
+	@override String get replacement => 'Замена';
 }
 
 // Path: auth.helpers
@@ -753,6 +779,7 @@ extension on _TranslationsEn {
 			case 'auth.email': return 'Email';
 			case 'auth.name': return 'Name';
 			case 'auth.surname': return 'Surname';
+			case 'auth.patronymic': return 'Patronymic';
 			case 'auth.password': return 'Password';
 			case 'auth.helpers.titles.signIn': return 'Sign in to your account';
 			case 'auth.helpers.titles.signUp': return 'Create your account';
@@ -819,6 +846,7 @@ extension on _TranslationsEn {
 			case 'settings.support.tag': return 'studbin';
 			case 'settings.support.money.title': return 'Support the author for project development and server payment';
 			case 'settings.support.money.url': return 'https://yoomoney.ru/to/4100117575409230';
+			case 'voitings.title': return 'Voiting';
 			case 'week.title': return 'week';
 			case 'week.isEven.0': return 'Even ${_root.week.title}';
 			case 'week.isEven.1': return 'Odd ${_root.week.title}';
@@ -839,6 +867,7 @@ extension on _TranslationsEn {
 			case 'week.days.full.6': return 'Sunday';
 			case 'subject.title': return 'Subject';
 			case 'subject.classroom': return 'classroom';
+			case 'subject.replacement': return 'Replacement';
 			default: return null;
 		}
 	}
@@ -871,6 +900,7 @@ extension on _TranslationsRu {
 			case 'auth.email': return 'Почта';
 			case 'auth.name': return 'Имя';
 			case 'auth.surname': return 'Фамилия';
+			case 'auth.patronymic': return 'Отчество';
 			case 'auth.password': return 'Пароль';
 			case 'auth.helpers.titles.signIn': return 'Вход в аккаунт';
 			case 'auth.helpers.titles.signUp': return 'Создай новый аккаунт';
@@ -937,6 +967,7 @@ extension on _TranslationsRu {
 			case 'settings.support.tag': return 'studbin';
 			case 'settings.support.money.title': return 'Поддержать автора на развитие проекта и оплату серверов';
 			case 'settings.support.money.url': return 'https://yoomoney.ru/to/4100117575409230';
+			case 'voitings.title': return 'Голосование';
 			case 'week.title': return 'неделя';
 			case 'week.isEven.0': return 'Чётная ${_root.week.title}';
 			case 'week.isEven.1': return 'Нечётная ${_root.week.title}';
@@ -957,6 +988,7 @@ extension on _TranslationsRu {
 			case 'week.days.full.6': return 'Воскресенье';
 			case 'subject.title': return 'Предмет';
 			case 'subject.classroom': return 'кабинет';
+			case 'subject.replacement': return 'Замена';
 			default: return null;
 		}
 	}

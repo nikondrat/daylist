@@ -1,3 +1,4 @@
+import 'package:daylist/domain/model/classroom.dart';
 import 'package:daylist/domain/model/replacement.dart';
 import 'package:daylist/domain/model/teacher.dart';
 import 'package:daylist/domain/model/time.dart';
@@ -9,6 +10,10 @@ final selectedTeacherProvider = StateProvider<Teacher?>((ref) {
 });
 
 final selectedSubjectTitleProvider = StateProvider<SubjectTitle?>((ref) {
+  return null;
+});
+
+final selectedClassroomProvider = StateProvider<Classroom?>((ref) {
   return null;
 });
 

@@ -1,17 +1,21 @@
+import 'package:daylist/data/api/request/get/get_classroom_body.dart';
 import 'package:daylist/data/api/request/get/get_subjects_body.dart';
 import 'package:daylist/data/api/request/get/get_teachers_body.dart';
 import 'package:daylist/data/api/request/get/get_times_body.dart';
 import 'package:daylist/data/api/request/get/get_titles_body.dart';
-import 'package:daylist/data/repository/subject_repository.dart';
-import 'package:daylist/data/repository/teacher_repository.dart';
-import 'package:daylist/data/repository/time_repository.dart';
-import 'package:daylist/data/repository/title_repository.dart';
+import 'package:daylist/data/repository/classroom_data_repository.dart';
+import 'package:daylist/data/repository/subject_data_repository.dart';
+import 'package:daylist/data/repository/teacher_data_repository.dart';
+import 'package:daylist/data/repository/time_data_repository.dart';
+import 'package:daylist/data/repository/title_data_repository.dart';
+import 'package:daylist/domain/model/classroom.dart';
 import 'package:daylist/domain/model/subject.dart';
 import 'package:daylist/domain/model/teacher.dart';
 import 'package:daylist/domain/model/time.dart';
 import 'package:daylist/domain/model/title.dart';
 import 'package:daylist/domain/state/settings/settings_state.dart';
 import 'package:daylist/domain/state/sheduler/sheduler_state.dart';
+import 'package:daylist/domain/state/sheduler/subject_state.dart';
 import 'package:daylist/internal/dependencies/dependencies.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -56,8 +60,22 @@ final titlesProvider =
   return titles;
 });
 
+final classroomsProvider =
+    FutureProvider.autoDispose<List<Classroom>>((ref) async {
+  final List<Classroom> classrooms = await ClassroomDataRepository(
+          Dependencies().getIt.get(), Dependencies().getIt.get())
+      .getClassrooms(
+          body: GetClassroomsBody(
+              databaseId: dotenv.env['databaseId']!,
+              collectionId: dotenv.env['classroomsCollectionId']!));
+
+  return classrooms;
+});
+
 final teachersProvider = FutureProvider.autoDispose<List<Teacher>>((ref) async {
   final String institutionId = ref.watch(settingsProvider).institution!.id;
+
+  final SubjectTitle? title = ref.watch(selectedSubjectTitleProvider);
 
   final List<Teacher> teachers = await TeacherDataRepository(
           Dependencies().getIt.get(), Dependencies().getIt.get())
@@ -65,6 +83,7 @@ final teachersProvider = FutureProvider.autoDispose<List<Teacher>>((ref) async {
           body: GetTeachersBody(
               databaseId: dotenv.env['databaseId']!,
               collectionId: dotenv.env['teachersCollectionId']!,
+              title: title,
               institutionId: institutionId));
 
   return teachers;

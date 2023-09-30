@@ -1,3 +1,4 @@
+import 'package:daylist/presentation/views/widgets/dialogs/add_city_dialog.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -44,11 +45,7 @@ class SelectionInstitutionView extends HookConsumerWidget {
         itemBuilder: (v) => ListTile(
               onTap: () {
                 ref.read(settingsProvider).institution = v;
-                if (ref.watch(settingsProvider).isScheduler) {
-                  context.goNamed(ViewsNames.sheduler);
-                } else {
-                  context.goNamed(ViewsNames.selectionGroup);
-                }
+                context.goNamed(ViewsNames.selectionGroup);
               },
               title: Text(v.title),
             ));
@@ -204,7 +201,17 @@ class _Mobile<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text(title)),
+        appBar: AppBar(
+          title: Text(title),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  showDialog(
+                      context: context, builder: (context) => AddCityDialog());
+                },
+                icon: Icon(Icons.add))
+          ],
+        ),
         body: _List(type: type, data: data, itemBuilder: itemBuilder));
   }
 }

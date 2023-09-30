@@ -1,7 +1,5 @@
 import 'package:appwrite/appwrite.dart';
-import 'package:appwrite/models.dart';
 import 'package:daylist/data/api/request/add/add_city_body.dart';
-import 'package:daylist/data/repository/auth_repository.dart';
 import 'package:daylist/data/repository/city_data_repository.dart';
 import 'package:daylist/domain/model/city.dart';
 import 'package:daylist/domain/state/home/home_state.dart';
@@ -43,9 +41,6 @@ class _AddCityDialogState extends ConsumerState<AddCityDialog> {
   Future addCity() async {
     if (!formKey.currentState!.validate()) return;
 
-    final User user =
-        await AuthDataRepository(Dependencies().getIt.get()).getUser();
-
     try {
       await CityDataRepository(Dependencies().getIt.get())
           .addCity(
@@ -54,7 +49,6 @@ class _AddCityDialogState extends ConsumerState<AddCityDialog> {
                   collectionId: dotenv.env['citiesCollectionId']!,
                   city: City(
                       id: ID.custom(Generator.generateId()),
-                      createdBy: user.$id,
                       title: controller.text)))
           .then((value) {
         ref.invalidate(citiesProvider);

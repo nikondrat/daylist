@@ -1,8 +1,6 @@
 import 'package:appwrite/appwrite.dart';
-import 'package:appwrite/models.dart';
 import 'package:daylist/data/api/request/add/add_institution_body.dart';
-import 'package:daylist/data/repository/auth_repository.dart';
-import 'package:daylist/data/repository/institution_repository.dart';
+import 'package:daylist/data/repository/institution_data_repository.dart';
 import 'package:daylist/domain/model/institution.dart';
 import 'package:daylist/domain/state/home/home_state.dart';
 import 'package:daylist/domain/state/settings/settings_state.dart';
@@ -50,15 +48,12 @@ class __AddInstitutionState extends ConsumerState<AddInstitutionDialog> {
     super.dispose();
   }
 
-  Future addInstitution() async {
+  addInstitution() {
     if (!titleState.currentState!.validate() ||
         !shortTitleState.currentState!.validate()) return;
 
-    final User user =
-        await AuthDataRepository(Dependencies().getIt.get()).getUser();
-
     try {
-      await InstitutionDataRepository(Dependencies().getIt.get())
+      InstitutionDataRepository(Dependencies().getIt.get())
           .addInstitution(
               body: AddInstitutionBody(
                   databaseId: dotenv.env['databaseId']!,
@@ -67,7 +62,6 @@ class __AddInstitutionState extends ConsumerState<AddInstitutionDialog> {
                       id: ID.custom(Generator.generateId()),
                       title: title.text.trim(),
                       shortTitle: shortTitle.text.trim(),
-                      createdBy: user.$id,
                       cityId: ref.watch(settingsProvider).city!.id)))
           .then((value) {
         ref.invalidate(institutionsProvider);

@@ -1,12 +1,11 @@
-import 'package:appwrite/models.dart';
 import 'package:daylist/data/api/request/add/add_subject_body.dart';
-import 'package:daylist/data/repository/auth_repository.dart';
-import 'package:daylist/data/repository/subject_repository.dart';
+import 'package:daylist/data/api/request/add/add_voiting_body.dart';
+import 'package:daylist/data/repository/subject_data_repository.dart';
 import 'package:daylist/domain/model/subject.dart';
 import 'package:daylist/domain/model/teacher.dart';
 import 'package:daylist/domain/model/time.dart';
 import 'package:daylist/domain/model/title.dart';
-import 'package:daylist/domain/state/dialogs/subject_dialog_state.dart';
+import 'package:daylist/domain/state/sheduler/subject_state.dart';
 import 'package:daylist/domain/state/settings/settings_state.dart';
 import 'package:daylist/domain/state/week/week_state.dart';
 import 'package:daylist/internal/dependencies/dependencies.dart';
@@ -14,7 +13,6 @@ import 'package:daylist/presentation/extensions/theme/context.dart';
 import 'package:daylist/presentation/res/values.dart';
 import 'package:daylist/presentation/translations/translations.g.dart';
 import 'package:daylist/presentation/utils/generator.dart';
-import 'package:daylist/presentation/views/router.dart';
 import 'package:daylist/presentation/views/widgets/dialogs/widgets/day_dropdown.dart';
 import 'package:daylist/presentation/views/widgets/list.dart';
 import 'package:flutter/material.dart';
@@ -32,10 +30,8 @@ class AddSubjectView extends StatefulHookConsumerWidget {
 class _AddSubjectViewState extends ConsumerState<AddSubjectView> {
   bool? isEven;
 
-  Future addSubject() async {
-    final User user =
-        await AuthDataRepository(Dependencies().getIt.get()).getUser();
-    final String? groupId = ref.watch(settingsProvider).group?.id;
+  addSubject() {
+    final String groupId = ref.watch(settingsProvider).group!.id;
 
     final Teacher? teacher = ref.watch(selectedTeacherProvider);
     final SubjectTitle? titleId = ref.watch(selectedSubjectTitleProvider);
@@ -43,6 +39,15 @@ class _AddSubjectViewState extends ConsumerState<AddSubjectView> {
     final int weekday = ref.watch(selectedWeekdayProvider);
 
     if (titleId != null && teacher != null && context.mounted) {
+      final Subject subject = Subject(
+          id: Generator.generateId(),
+          teacher: teacher,
+          time: time!,
+          groupId: groupId,
+          // TODO
+          showInWeek: [],
+          weekday: weekday);
+
       try {
         SubjectDataRepository(
                 Dependencies().getIt.get(), Dependencies().getIt.get())
@@ -50,14 +55,12 @@ class _AddSubjectViewState extends ConsumerState<AddSubjectView> {
                 body: AddSubjectBody(
                     databaseId: dotenv.env['databaseId']!,
                     collectionId: dotenv.env['subjectsCollectionId']!,
-                    subject: Subject(
-                        id: Generator.generateId(),
-                        teacher: teacher,
-                        time: time!,
-                        groupId: groupId!,
-                        isEven: isEven,
-                        weekday: weekday,
-                        createdBy: user.$id)))
+                    voitingBody: AddVoitingBody(
+                        databaseId: dotenv.env['databaseId']!,
+                        collectionId: dotenv.env['voitingCollectionId']!,
+                        subject: subject,
+                        groupId: groupId),
+                    subject: subject))
             .then((value) {
           ref.invalidate(subjectsProvider);
           context.pop();
@@ -100,17 +103,20 @@ class _AddSubjectViewState extends ConsumerState<AddSubjectView> {
             padding: const EdgeInsets.only(bottom: Insets.small),
             child: TextButton(
                 style: buttonStyle,
-                onPressed: () => context.goNamed(ViewsNames.subjectTitles),
+                onPressed: () {},
+                // onPressed: () => context.goNamed(ViewsNames.subjectTitles),
                 child: Text(title?.title ?? t.subject.title))),
         Padding(
             padding: const EdgeInsets.only(bottom: Insets.small),
             child: TextButton(
                 style: buttonStyle,
-                onPressed: () => context.goNamed(ViewsNames.subjectTeachers),
-                child: Text(teacher?.initials ?? t.selection.teacher))),
+                onPressed: () {},
+                // onPressed: () => context.goNamed(ViewsNames.subjectTeachers),
+                child: Text(teacher?.shortInitials() ?? t.selection.teacher))),
         TextButton(
             style: buttonStyle,
-            onPressed: () => context.goNamed(ViewsNames.subjectTimes),
+            onPressed: () {},
+            // onPressed: () => context.goNamed(ViewsNames.subjectTimes),
             child: Text(time != null
                 ? '${time.start} - ${time.end}'
                 : t.selection.time)),

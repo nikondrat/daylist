@@ -1,7 +1,9 @@
+import 'package:daylist/data/storage/model/storage_classroom.dart';
 import 'package:daylist/data/storage/model/storage_subject.dart';
 import 'package:daylist/data/storage/model/storage_teacher.dart';
 import 'package:daylist/data/storage/model/storage_time.dart';
 import 'package:daylist/data/storage/model/storage_title.dart';
+import 'package:daylist/data/storage/storage_util.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -116,10 +118,12 @@ class IsarService {
       await db.storageSubjects.put(subject);
       await db.storageTeachers.put(subject.teacher.value!);
       await db.storageTitles.put(subject.teacher.value!.title.value!);
+      await db.storageClassrooms.put(subject.teacher.value!.classroom.value!);
       await db.storageTimes.put(subject.time.value!);
       await subject.teacher.save();
       await subject.time.save();
       await subject.teacher.value!.title.save();
+      await subject.teacher.value!.classroom.save();
     });
   }
 
@@ -129,9 +133,18 @@ class IsarService {
     db.writeTxnSync(() => db.storageSubjects.clearSync());
   }
 
-  Future<List<StorageTeacher>> getTeachers() async {
+  Future<List<StorageTeacher>> getTeachers(StorageTitle? title) async {
     final Isar db = await _db;
-    return db.storageTeachers.where().findAllSync();
+    return db.storageTeachers
+        .filter()
+        .title((q) {
+          if (title != null) {
+            return q.idEqualTo(title.id);
+          }
+          return q.titleIsNotEmpty();
+        })
+        .sortBySurname()
+        .findAllSync();
   }
 
   Future putTeachers({required List<StorageTeacher> teachers}) async {
@@ -146,7 +159,7 @@ class IsarService {
 
   Future<List<StorageTime>> getTimes() async {
     final Isar db = await _db;
-    return db.storageTimes.where().findAllSync();
+    return db.storageTimes.where().sortByNumber().findAllSync();
   }
 
   Future putTimes({required List<StorageTime> times}) async {
@@ -161,7 +174,7 @@ class IsarService {
 
   Future<List<StorageTitle>> getTitles() async {
     final Isar db = await _db;
-    return db.storageTitles.where().findAllSync();
+    return db.storageTitles.where().sortByTitle().findAllSync();
   }
 
   Future putTitles({required List<StorageTitle> titles}) async {
@@ -174,11 +187,41 @@ class IsarService {
     db.writeTxnSync(() => db.storageTitles.putSync(title));
   }
 
+  Future<List<StorageClassroom>> getClassrooms() async {
+    final Isar db = await _db;
+    return db.storageClassrooms.where().sortByTitle().findAllSync();
+  }
+
+  Future putClassrooms({required List<StorageClassroom> classrooms}) async {
+    final Isar db = await _db;
+    db.writeTxnSync(() => db.storageClassrooms.putAllSync(classrooms));
+  }
+
+  Future<void> performMigrationIfNeeded(Isar isar) async {
+    final currentVersion = await StorageUtil().getDatabaseVersion() ?? 1;
+
+    switch (currentVersion) {
+      case 1:
+        await migrateV1ToV2(isar);
+        break;
+      case 2:
+        // If the version is not set (new installation) or already 2, we do not need to migrate
+        return;
+      default:
+        throw Exception('Unknown version: $currentVersion');
+    }
+    await StorageUtil().updateDatabaseVersion(2);
+  }
+
+  Future<void> migrateV1ToV2(Isar isar) async {
+    clear();
+  }
+
   Future<Isar> _openDB() async {
     final dir = await getApplicationCacheDirectory();
 
     if (Isar.instanceNames.isEmpty) {
-      return await Isar.open([
+      final Isar db = await Isar.open([
         // StorageCitySchema,
         // StorageInstitutionSchema,
         // StorageGroupSchema,
@@ -186,8 +229,13 @@ class IsarService {
         // StorageReplacementSchema,
         StorageSubjectSchema,
         StorageTeacherSchema,
-        StorageTimeSchema
+        StorageTimeSchema,
+        StorageClassroomSchema
       ], directory: dir.path, inspector: true);
+
+      await performMigrationIfNeeded(db);
+
+      return db;
     } else {
       return Isar.getInstance()!;
     }

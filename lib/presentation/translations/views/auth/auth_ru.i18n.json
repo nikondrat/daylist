@@ -5,6 +5,7 @@
     "email": "Почта",
     "name": "Имя",
     "surname": "Фамилия",
+    "patronymic": "Отчество",
     "password": "Пароль",
     "helpers": {
         "titles": {

@@ -4,12 +4,10 @@ import 'package:daylist/domain/model/title.dart';
 
 class TitleMapper {
   static SubjectTitle fromApi(ApiTitle title) {
-    return SubjectTitle(
-        id: title.id, title: title.title, createdBy: title.createdBy);
+    return SubjectTitle(id: title.id, title: title.title);
   }
 
   static SubjectTitle fromStorage(StorageTitle title) {
-    return SubjectTitle(
-        id: title.id, title: title.title, createdBy: title.createdBy);
+    return SubjectTitle(id: title.id, title: title.title);
   }
 }

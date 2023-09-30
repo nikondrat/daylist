@@ -1,10 +1,10 @@
 import 'package:appwrite/appwrite.dart';
-import 'package:appwrite/models.dart';
 import 'package:daylist/data/api/request/add/add_time_body.dart';
-import 'package:daylist/data/repository/auth_repository.dart';
-import 'package:daylist/data/repository/time_repository.dart';
+import 'package:daylist/data/api/request/add/add_voiting_body.dart';
+import 'package:daylist/data/repository/time_data_repository.dart';
 import 'package:daylist/domain/model/time.dart';
-import 'package:daylist/domain/state/dialogs/time_dialog_state.dart';
+import 'package:daylist/domain/state/settings/settings_state.dart';
+import 'package:daylist/domain/state/sheduler/time_state.dart';
 import 'package:daylist/domain/state/week/week_state.dart';
 import 'package:daylist/internal/dependencies/dependencies.dart';
 import 'package:daylist/presentation/extensions/theme/context.dart';
@@ -27,15 +27,20 @@ class AddTimeDialog extends StatefulHookConsumerWidget {
 class _AddTimeDialogState extends ConsumerState<AddTimeDialog> {
   int number = 1;
 
-  Future addTime(TimeOfDay? start, TimeOfDay? end) async {
-    final User user =
-        await AuthDataRepository(Dependencies().getIt.get()).getUser();
-
+  addTime(TimeOfDay? start, TimeOfDay? end) {
     if (start != null && end != null) {
+      final String groupId = ref.watch(settingsProvider).group!.id;
+
       final String startString =
           '${'${start.hour}'.padLeft(2, '0')}:${'${start.minute}'.padLeft(2, '0')}';
       final String endString =
           '${'${end.hour}'.padLeft(2, '0')}:${'${end.minute}'.padLeft(2, '0')}';
+
+      final Time time = Time(
+          id: ID.custom(Generator.generateId()),
+          start: startString,
+          end: endString,
+          number: number);
 
       try {
         TimeDataRepository(
@@ -44,12 +49,12 @@ class _AddTimeDialogState extends ConsumerState<AddTimeDialog> {
                 body: AddTimeBody(
                     databaseId: dotenv.env['databaseId']!,
                     collectionId: dotenv.env['timesCollectionId']!,
-                    time: Time(
-                        id: ID.custom(Generator.generateId()),
-                        start: startString,
-                        end: endString,
-                        number: number,
-                        createdBy: user.$id)))
+                    voitingBody: AddVoitingBody(
+                        databaseId: dotenv.env['databaseId']!,
+                        collectionId: dotenv.env['voitingCollectionId']!,
+                        time: time,
+                        groupId: groupId),
+                    time: time))
             .then((value) {
           ref.invalidate(timesProvider);
           context.pop();

@@ -1,6 +1,6 @@
 import 'package:appwrite/models.dart';
-import 'package:daylist/data/repository/auth_repository.dart';
-import 'package:daylist/data/repository/user_repository.dart';
+import 'package:daylist/data/repository/auth_data_repository.dart';
+import 'package:daylist/data/repository/user_data_repository.dart';
 import 'package:daylist/data/storage/model/settings.dart';
 import 'package:daylist/domain/model/city.dart';
 import 'package:daylist/domain/model/group.dart';
@@ -48,7 +48,6 @@ class SettingsNotifier {
     settings =
         await UserDataRepository(Dependencies().getIt.get()).getSettings() ??
             Settings(city: null, institution: null, group: null);
-
     _user = await AuthDataRepository(Dependencies().getIt.get()).getUser();
   }
 
@@ -59,14 +58,7 @@ class SettingsNotifier {
   final Ref ref;
 
   User? _user;
-
-  late final List _labels = _user?.labels ?? [];
-
-  bool get isScheduler => _labels.where((e) => e == 'scheduler').isNotEmpty;
-  bool get isAdmin => _labels.where((e) => e == 'admin').isNotEmpty;
-
-  String get name => _user?.name ?? '';
-  String get email => _user?.email ?? '';
+  String get userId => _user?.$id ?? '';
 
   City? get city => _settings?.city;
   set city(City? city) {

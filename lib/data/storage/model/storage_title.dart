@@ -9,16 +9,13 @@ class StorageTitle {
   Id get isarId => Generator.fastHash(id);
   final String id;
   final String title;
-  final String? createdBy;
 
   StorageTitle({
     required this.id,
     required this.title,
-    required this.createdBy,
   });
 
   StorageTitle.fromApi(SubjectTitle title)
       : id = title.id,
-        title = title.title,
-        createdBy = title.createdBy;
+        title = title.title;
 }

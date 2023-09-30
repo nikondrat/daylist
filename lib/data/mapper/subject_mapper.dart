@@ -10,10 +10,9 @@ class SubjectMapper {
         id: subject.id,
         teacher: TeacherMapper.fromApi(subject.teacher),
         time: TimeMapper.fromApi(subject.time),
-        isEven: subject.isEven,
+        showInWeek: subject.showInWeek,
         groupId: subject.groupId,
-        weekday: subject.weekday,
-        createdBy: subject.createdBy);
+        weekday: subject.weekday);
   }
 
   static Subject fromStorage(StorageSubject subject) {
@@ -21,9 +20,8 @@ class SubjectMapper {
         id: subject.id,
         teacher: TeacherMapper.fromStorage(subject.teacher.value!),
         time: TimeMapper.fromStorage(subject.time.value!),
-        isEven: subject.isEven,
+        showInWeek: subject.showInWeek,
         groupId: subject.groupId,
-        weekday: subject.weekday,
-        createdBy: subject.createdBy);
+        weekday: subject.weekday);
   }
 }

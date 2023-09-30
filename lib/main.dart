@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:daylist/domain/state/settings/settings_state.dart';
 import 'package:daylist/internal/dependencies/dependencies.dart';
 import 'package:daylist/presentation/res/theme.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 import 'presentation/translations/translations.g.dart';
 import 'presentation/views/router.dart';
 
@@ -14,11 +15,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   LocaleSettings.useDeviceLocale();
 
-  // if (kDebugMode) {
-  //   dotenv.testLoad(fileInput: File('.env').readAsStringSync());
-  // } else {
+// TODO
   await dotenv.load(mergeWith: Platform.environment);
-  // }
+  // dotenv.testLoad(fileInput: File('test.env').readAsStringSync());
+
   await SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
@@ -42,18 +42,23 @@ class MyApp extends HookConsumerWidget {
     final Color? primaryColor = ref.watch(primaryColorProvider);
     final Color? backgroundColor = ref.watch(backgroundColorProvider);
 
-    return MaterialApp.router(
-        routerConfig: router,
-        theme: theme(
-            isDark: isDark,
-            radius: radius,
-            customPrimaryColor: primaryColor,
-            customBackgroundColor: backgroundColor),
-        debugShowCheckedModeBanner: false,
+    return ReactiveFormConfig(
+      validationMessages: {
+        ValidationMessage.required: (error) => t.errors.empty,
+      },
+      child: MaterialApp.router(
+          routerConfig: router,
+          theme: theme(
+              isDark: isDark,
+              radius: radius,
+              customPrimaryColor: primaryColor,
+              customBackgroundColor: backgroundColor),
+          debugShowCheckedModeBanner: false,
 
-        // localization
-        supportedLocales: AppLocaleUtils.supportedLocales,
-        locale: TranslationProvider.of(context).flutterLocale,
-        localizationsDelegates: GlobalMaterialLocalizations.delegates);
+          // localization
+          supportedLocales: AppLocaleUtils.supportedLocales,
+          locale: TranslationProvider.of(context).flutterLocale,
+          localizationsDelegates: GlobalMaterialLocalizations.delegates),
+    );
   }
 }
