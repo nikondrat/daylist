@@ -3,6 +3,7 @@ import 'package:daylist/data/storage/model/settings.dart';
 import 'package:daylist/presentation/views/auth/sign_in.dart';
 import 'package:daylist/presentation/views/auth/sign_up.dart';
 import 'package:daylist/presentation/views/sheduler/add/add_replacement.dart';
+import 'package:daylist/presentation/views/sheduler/add/add_subject.dart';
 import 'package:daylist/presentation/views/sheduler/add/add_teacher.dart';
 import 'package:daylist/presentation/views/sheduler/classrom_view.dart';
 import 'package:daylist/presentation/views/sheduler/mode_view.dart';
@@ -38,9 +39,6 @@ final GoRouter router = GoRouter(navigatorKey: navigatorKey, routes: [
         } else {
           router.goNamed(ViewsNames.home);
         }
-
-// TODO
-        // router.goNamed(ViewsNames.selectionCity);
 
         return null;
       },
@@ -93,10 +91,8 @@ final GoRouter router = GoRouter(navigatorKey: navigatorKey, routes: [
                         path: ViewsPaths.addReplacementTeacher,
                         routes: [
                           GoRoute(
-                              name: ViewsNames
-                                  .addReplacementTeacherTitleClassroom,
-                              path: ViewsPaths
-                                  .addReplacementTeacherTitleClassroom,
+                              name: ViewsNames.addReplacementTeacherClassroom,
+                              path: ViewsPaths.addReplacementTeacherClassroom,
                               builder: (context, state) =>
                                   const ClassroomView()),
                           GoRoute(
@@ -120,6 +116,49 @@ final GoRouter router = GoRouter(navigatorKey: navigatorKey, routes: [
         GoRoute(
             name: ViewsNames.week,
             path: ViewsPaths.week,
+            routes: [
+              GoRoute(
+                name: ViewsNames.addSubject,
+                path: ViewsPaths.addSubject,
+                routes: [
+                  GoRoute(
+                      name: ViewsNames.subjectTitles,
+                      path: ViewsPaths.subjectTitles,
+                      builder: (context, state) => const TitlesView()),
+                  GoRoute(
+                      name: ViewsNames.subjectTeachers,
+                      path: ViewsPaths.subjectTeachers,
+                      routes: [
+                        GoRoute(
+                            name: ViewsNames.addSubjectTeacher,
+                            path: ViewsPaths.addSubjectTeacher,
+                            routes: [
+                              GoRoute(
+                                  name: ViewsNames.addSubjectTeacherClassroom,
+                                  path: ViewsPaths.addSubjectTeacherClassroom,
+                                  builder: (context, state) =>
+                                      const ClassroomView()),
+                              GoRoute(
+                                  name: ViewsNames.addSubjectTeacherTitle,
+                                  path: ViewsPaths.addSubjectTeacherTitle,
+                                  builder: (context, state) =>
+                                      const TitlesView())
+                            ],
+                            builder: (context, state) => const AddTeacherView())
+                      ],
+                      builder: (context, state) => const TeachersView()),
+                  GoRoute(
+                      name: ViewsNames.subjectTimes,
+                      path: ViewsPaths.subjectTimes,
+                      builder: (context, state) => const TimesView()),
+                  GoRoute(
+                      name: ViewsNames.subjectMode,
+                      path: ViewsPaths.subjectMode,
+                      builder: (context, state) => const ModeView()),
+                ],
+                builder: (context, state) => AddSubjectView(),
+              )
+            ],
             builder: (context, state) => const WeekView()),
         GoRoute(
             name: ViewsNames.voitings,
@@ -128,56 +167,8 @@ final GoRouter router = GoRouter(navigatorKey: navigatorKey, routes: [
         GoRoute(
             name: ViewsNames.settings,
             path: ViewsPaths.settings,
-            builder: (context, state) => const SettingsView()),
-      ]),
-  // GoRoute(
-  //     name: ViewsNames.groupSheduler,
-  //     path: ViewsPaths.groupSheduler,
-  //     builder: (context, state) => const GroupShedulerView(),
-  //     routes: [
-  //       GoRoute(
-  //           name: ViewsNames.shedulerWeek,
-  //           path: ViewsPaths.shedulerWeek,
-  //           builder: (context, state) => const WeekView(isAdmin: true),
-  //           routes: [
-  //             GoRoute(
-  //                 name: ViewsNames.addSubject,
-  //                 path: ViewsPaths.addSubject,
-  //                 builder: (context, state) => const AddSubjectView(),
-  //                 routes: [
-  //                   GoRoute(
-  //                       name: ViewsNames.subjectTitles,
-  //                       path: ViewsPaths.subjectTitles,
-  //                       builder: (context, state) => const TitlesView()),
-  //                   GoRoute(
-  //                       name: ViewsNames.subjectTeachers,
-  //                       path: ViewsPaths.subjectTeachers,
-  //                       builder: (context, state) => const TeachersView()),
-  //                   GoRoute(
-  //                       name: ViewsNames.subjectTimes,
-  //                       path: ViewsPaths.subjectTimes,
-  //                       builder: (context, state) => const TimesView())
-  //                 ]),
-  //             GoRoute(
-  //                 name: ViewsNames.addReplacement,
-  //                 path: ViewsPaths.addReplacement,
-  //                 builder: (context, state) => const AddReplacementView(),
-  //                 routes: [
-  //                   GoRoute(
-  //                       name: ViewsNames.replacementTitles,
-  //                       path: ViewsPaths.replacementTitles,
-  //                       builder: (context, state) => const TitlesView()),
-  //                   GoRoute(
-  //                       name: ViewsNames.replacementTeachers,
-  //                       path: ViewsPaths.replacementTeachers,
-  //                       builder: (context, state) => const TeachersView()),
-  //                   GoRoute(
-  //                       name: ViewsNames.replacementTimes,
-  //                       path: ViewsPaths.replacementTimes,
-  //                       builder: (context, state) => const TimesView()),
-  //                 ])
-  //           ])
-  //     ])
+            builder: (context, state) => const SettingsView())
+      ])
 ]);
 
 abstract class ViewsNames {
@@ -194,18 +185,23 @@ abstract class ViewsNames {
   static const String settings = 'settings';
 
   static const String sheduler = 'sheduler';
+  static const String addSubject = 'addSubject';
   // static const String shedulerWeek = 'shedulerWeek';
   // static const String groupSheduler = 'groupSheduler';
 
-  // static const String addSubject = 'addSubject';
-  // static const String subjectTitles = 'subjectTitles';
-  // static const String subjectTeachers = 'subjectTeachers';
-  // static const String subjectTimes = 'subjectTimes';
+  static const String addSubjectTeacher = 'addSubjectTeacher';
+  static const String addSubjectTeacherTitle = 'addSubjectTeacherTitle';
+  static const String addSubjectTeacherClassroom = 'addSubjectTeacherClassroom';
+
+  static const String subjectTitles = 'subjectTitles';
+  static const String subjectTeachers = 'subjectTeachers';
+  static const String subjectTimes = 'subjectTimes';
+  static const String subjectMode = 'subjectMode';
 
   // static const String addReplacement = 'addReplacement';
   static const String addReplacementTeacher = 'addReplacementTeacher';
   static const String addReplacementTeacherTitle = 'addReplacementTeacherTitle';
-  static const String addReplacementTeacherTitleClassroom =
+  static const String addReplacementTeacherClassroom =
       'addReplacementTeacherClassroom';
 
   static const String replacementTitles = 'replacementTitles';
@@ -228,24 +224,30 @@ abstract class ViewsPaths {
   static const String settings = ViewsNames.settings;
 
   static const String sheduler = ViewsNames.sheduler;
+  static const String addSubject = ViewsNames.addSubject;
+
+  static const String subjectTitles = ViewsNames.subjectTitles;
+  static const String subjectTeachers = ViewsNames.subjectTeachers;
+  static const String subjectTimes = ViewsNames.subjectTimes;
+  static const String subjectMode = ViewsNames.subjectMode;
+
+  static const String addSubjectTeacher = ViewsNames.addSubjectTeacher;
+  static const String addSubjectTeacherClassroom =
+      ViewsNames.addSubjectTeacherClassroom;
+  static const String addSubjectTeacherTitle =
+      ViewsNames.addSubjectTeacherTitle;
   // static const String shedulerWeek = ViewsNames.shedulerWeek;
   // static const String groupSheduler = '/${ViewsNames.groupSheduler}';
 
-  // static const String addReplacement = ViewsNames.addReplacement;
   static const String addReplacementTeacher = ViewsNames.addReplacementTeacher;
   static const String addReplacementTeacherTitle =
       ViewsNames.addReplacementTeacherTitle;
 
-  static const String addReplacementTeacherTitleClassroom =
-      ViewsNames.addReplacementTeacherTitleClassroom;
+  static const String addReplacementTeacherClassroom =
+      ViewsNames.addReplacementTeacherClassroom;
 
   static const String replacementTitles = ViewsNames.replacementTitles;
   static const String replacementTeachers = ViewsNames.replacementTeachers;
   static const String replacementTimes = ViewsNames.replacementTimes;
   static const String replacementMode = ViewsNames.replacementMode;
-
-  // static const String addSubject = ViewsNames.addSubject;
-  // static const String subjectTitles = ViewsNames.subjectTitles;
-  // static const String subjectTeachers = ViewsNames.subjectTeachers;
-  // static const String subjectTimes = ViewsNames.subjectTimes;
 }

@@ -1,7 +1,6 @@
 import 'package:daylist/data/api/api_util.dart';
 import 'package:daylist/data/api/request/add/add_time_body.dart';
 import 'package:daylist/data/api/request/get/get_times_body.dart';
-import 'package:daylist/data/repository/voiting_data_repository.dart';
 import 'package:daylist/data/storage/model/storage_time.dart';
 import 'package:daylist/data/storage/storage_util.dart';
 import 'package:daylist/domain/model/time.dart';
@@ -17,7 +16,7 @@ class TimeDataRepository extends TimeRepository {
   Future<List<Time>> getTimes({required GetTimesBody body}) async {
     final List<Time> times = await _storageUtil.getTimes();
 
-    if (times.isEmpty) {
+    if (body.isDataFromStorage && times.isEmpty) {
       final List<Time> result = await _apiUtil.getTimes(body: body);
       final List<StorageTime> convertedList =
           result.map((e) => StorageTime.fromApi(e)).toList();
@@ -31,7 +30,8 @@ class TimeDataRepository extends TimeRepository {
 
   @override
   Future addTime({required AddTimeBody body}) async {
-    return await _apiUtil.addTime(body: body).then(
-        (value) => VoitingDataRepository(_apiUtil).add(body: body.voitingBody));
+    return await _apiUtil.addTime(body: body);
+    // .then(
+    //     (value) => VoitingDataRepository(_apiUtil).add(body: body.voitingBody));
   }
 }

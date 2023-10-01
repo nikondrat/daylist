@@ -13,8 +13,10 @@ import 'package:daylist/presentation/extensions/theme/context.dart';
 import 'package:daylist/presentation/res/values.dart';
 import 'package:daylist/presentation/translations/translations.g.dart';
 import 'package:daylist/presentation/utils/generator.dart';
+import 'package:daylist/presentation/views/router.dart';
 import 'package:daylist/presentation/views/widgets/dialogs/widgets/day_dropdown.dart';
 import 'package:daylist/presentation/views/widgets/list.dart';
+import 'package:daylist/presentation/views/widgets/subsection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
@@ -45,7 +47,7 @@ class _AddSubjectViewState extends ConsumerState<AddSubjectView> {
           time: time!,
           groupId: groupId,
           // TODO
-          showInWeek: [],
+          showInWeek: [true, true],
           weekday: weekday);
 
       try {
@@ -74,10 +76,12 @@ class _AddSubjectViewState extends ConsumerState<AddSubjectView> {
 
   @override
   Widget build(BuildContext context) {
-    const ButtonStyle buttonStyle = ButtonStyle(
-        alignment: Alignment.centerLeft,
-        padding: MaterialStatePropertyAll(EdgeInsets.only(left: Insets.small)),
-        minimumSize: MaterialStatePropertyAll(Size(double.infinity, 60)));
+    final Color? primaryColor = ref.watch(primaryColorProvider);
+    final double radius = ref.watch(radiusProvider);
+
+    final RoundedRectangleBorder shapeBorder = RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(radius),
+        side: BorderSide(color: primaryColor ?? context.color.primaryColor));
 
     final SubjectTitle? title = ref.watch(selectedSubjectTitleProvider);
     final Teacher? teacher = ref.watch(selectedTeacherProvider);
@@ -101,45 +105,73 @@ class _AddSubjectViewState extends ConsumerState<AddSubjectView> {
       body: CustomListWidget(children: [
         Padding(
             padding: const EdgeInsets.only(bottom: Insets.small),
-            child: TextButton(
-                style: buttonStyle,
-                onPressed: () {},
-                // onPressed: () => context.goNamed(ViewsNames.subjectTitles),
-                child: Text(title?.title ?? t.subject.title))),
+            child: SubsectionWidget(
+                subsection: Subsection(
+                    onTap: () => context.goNamed(ViewsNames.replacementTitles),
+                    title: title?.title ?? t.subject.title,
+                    shape: shapeBorder,
+                    trailing: [
+                  title != null
+                      ? GestureDetector(
+                          onTap: () => ref
+                              .read(selectedSubjectTitleProvider.notifier)
+                              .update((state) => null),
+                          child: const Icon(Icons.close))
+                      : const Icon(Icons.arrow_forward)
+                ]))),
         Padding(
             padding: const EdgeInsets.only(bottom: Insets.small),
-            child: TextButton(
-                style: buttonStyle,
-                onPressed: () {},
-                // onPressed: () => context.goNamed(ViewsNames.subjectTeachers),
-                child: Text(teacher?.shortInitials() ?? t.selection.teacher))),
-        TextButton(
-            style: buttonStyle,
-            onPressed: () {},
-            // onPressed: () => context.goNamed(ViewsNames.subjectTimes),
-            child: Text(time != null
-                ? '${time.start} - ${time.end}'
-                : t.selection.time)),
+            child: SubsectionWidget(
+                subsection: Subsection(
+                    onTap: () =>
+                        context.goNamed(ViewsNames.replacementTeachers),
+                    title: teacher?.shortInitials() ?? t.selection.teacher,
+                    shape: shapeBorder,
+                    trailing: [
+                  teacher != null
+                      ? GestureDetector(
+                          onTap: () => ref
+                              .read(selectedTeacherProvider.notifier)
+                              .update((state) => null),
+                          child: const Icon(Icons.close))
+                      : const Icon(Icons.arrow_forward)
+                ]))),
         Padding(
-            padding: const EdgeInsets.only(top: Insets.small),
-            child: DropdownButtonFormField(
-                iconEnabledColor: context.color.primaryColor,
-                iconDisabledColor: context.color.primaryColor,
-                hint: Text(t.selection.day, style: context.text.mediumText),
-                items: t.week.isEven.reversed.map((e) {
-                  final int i = t.week.isEven.indexOf(e);
+            padding: const EdgeInsets.only(bottom: Insets.small),
+            child: SubsectionWidget(
+                subsection: Subsection(
+                    onTap: () => context.goNamed(ViewsNames.replacementTimes),
+                    title: time != null
+                        ? '${time.start} - ${time.end}'
+                        : t.selection.time,
+                    shape: shapeBorder,
+                    trailing: [
+                  time != null
+                      ? GestureDetector(
+                          onTap: () => ref
+                              .read(selectedTimeProvider.notifier)
+                              .update((state) => null),
+                          child: const Icon(Icons.close))
+                      : const Icon(Icons.arrow_forward)
+                ]))),
+        DropdownButtonFormField(
+            iconEnabledColor: context.color.primaryColor,
+            iconDisabledColor: context.color.primaryColor,
+            hint: Text(t.selection.day, style: context.text.mediumText),
+            items: t.week.isEven.reversed.map((e) {
+              final int i = t.week.isEven.indexOf(e);
 
-                  final bool? isEven = i == 0
-                      ? true
-                      : i == 1
-                          ? false
-                          : null;
+              final bool? isEven = i == 0
+                  ? true
+                  : i == 1
+                      ? false
+                      : null;
 
-                  return DropdownMenuItem(value: isEven, child: Text(e));
-                }).toList(),
-                onChanged: (v) {
-                  isEven = v;
-                })),
+              return DropdownMenuItem(value: isEven, child: Text(e));
+            }).toList(),
+            onChanged: (v) {
+              isEven = v;
+            }),
         const DayDropdownWidget()
       ]),
     );

@@ -1,7 +1,6 @@
 import 'package:daylist/data/api/api_util.dart';
 import 'package:daylist/data/api/request/add/add_classroom_body.dart';
 import 'package:daylist/data/api/request/get/get_classroom_body.dart';
-import 'package:daylist/data/repository/voiting_data_repository.dart';
 import 'package:daylist/data/storage/model/storage_classroom.dart';
 import 'package:daylist/data/storage/storage_util.dart';
 import 'package:daylist/domain/model/classroom.dart';
@@ -32,7 +31,8 @@ class ClassroomDataRepository extends ClassroomRepository {
 
   @override
   Future addClassroom({required AddClassroomBody body}) async {
-    return await _apiUtil.addClassroom(body: body).then(
-        (value) => VoitingDataRepository(_apiUtil).add(body: body.voitingBody));
+    return await _apiUtil.addClassroom(body: body);
+    // .then(
+    //     (value) => VoitingDataRepository(_apiUtil).add(body: body.voitingBody));
   }
 }

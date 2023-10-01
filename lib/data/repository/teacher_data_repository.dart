@@ -1,7 +1,6 @@
 import 'package:daylist/data/api/api_util.dart';
 import 'package:daylist/data/api/request/add/add_teacher_body.dart';
 import 'package:daylist/data/api/request/get/get_teachers_body.dart';
-import 'package:daylist/data/repository/voiting_data_repository.dart';
 import 'package:daylist/data/storage/model/storage_teacher.dart';
 import 'package:daylist/data/storage/storage_util.dart';
 import 'package:daylist/domain/model/teacher.dart';
@@ -31,7 +30,8 @@ class TeacherDataRepository extends TeacherRepository {
 
   @override
   Future addTeacher({required AddTecherBody body}) async {
-    return await _apiUtil.addTeacher(body: body).then(
-        (value) => VoitingDataRepository(_apiUtil).add(body: body.voitingBody));
+    return await _apiUtil.addTeacher(body: body);
+    // .then(
+    //     (value) => VoitingDataRepository(_apiUtil).add(body: body.voitingBody));
   }
 }

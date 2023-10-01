@@ -15,9 +15,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   LocaleSettings.useDeviceLocale();
 
-// TODO
   await dotenv.load(mergeWith: Platform.environment);
-  // dotenv.testLoad(fileInput: File('test.env').readAsStringSync());
 
   await SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);

@@ -2,7 +2,6 @@ import 'package:daylist/data/api/api_util.dart';
 import 'package:daylist/data/api/request/add/add_subject_body.dart';
 import 'package:daylist/data/api/request/get/get_subjects_body.dart';
 import 'package:daylist/data/api/request/put/put_subject_body.dart';
-import 'package:daylist/data/repository/voiting_data_repository.dart';
 import 'package:daylist/data/storage/model/storage_subject.dart';
 import 'package:daylist/data/storage/model/storage_teacher.dart';
 import 'package:daylist/data/storage/model/storage_time.dart';
@@ -39,8 +38,9 @@ class SubjectDataRepository extends SubjectRepository {
 
   @override
   Future addSubject({required AddSubjectBody body}) async {
-    return await _apiUtil.addSubject(body: body).then(
-        (value) => VoitingDataRepository(_apiUtil).add(body: body.voitingBody));
+    return await _apiUtil.addSubject(body: body);
+    // .then(
+    //     (value) => VoitingDataRepository(_apiUtil).add(body: body.voitingBody));
   }
 
   @override

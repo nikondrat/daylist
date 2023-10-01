@@ -1,4 +1,3 @@
-import 'package:daylist/presentation/views/widgets/dialogs/add_city_dialog.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -201,17 +200,7 @@ class _Mobile<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(title),
-          actions: [
-            IconButton(
-                onPressed: () {
-                  showDialog(
-                      context: context, builder: (context) => AddCityDialog());
-                },
-                icon: Icon(Icons.add))
-          ],
-        ),
+        appBar: AppBar(title: Text(title)),
         body: _List(type: type, data: data, itemBuilder: itemBuilder));
   }
 }

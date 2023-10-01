@@ -175,7 +175,7 @@ class _AddTeacherViewState extends ConsumerState<AddTeacherView> {
                   child: SubsectionWidget(
                       subsection: Subsection(
                           onTap: () => context.goNamed(
-                              ViewsNames.addReplacementTeacherTitleClassroom),
+                              ViewsNames.addReplacementTeacherClassroom),
                           title: classroom?.title ??
                               t.subject.classroom.capitalize(),
                           shape: shapeBorder,

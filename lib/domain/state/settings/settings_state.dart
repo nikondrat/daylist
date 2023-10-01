@@ -59,6 +59,7 @@ class SettingsNotifier {
 
   User? _user;
   String get userId => _user?.$id ?? '';
+  bool get isAdmin => _user?.labels.contains('admin') ?? false;
 
   City? get city => _settings?.city;
   set city(City? city) {

@@ -53,22 +53,6 @@ class VoitingItemWidget extends StatelessWidget {
   }
 }
 
-class _Title extends StatelessWidget {
-  final Voiting voiting;
-  const _Title({required this.voiting});
-
-  @override
-  Widget build(BuildContext context) {
-    String title = '';
-
-    if (voiting.time != null) {
-      title = '${voiting.time!.start}:${voiting.time!.end}';
-    } else if (voiting.title != null) {}
-
-    return const Placeholder();
-  }
-}
-
 class _Leading extends HookConsumerWidget {
   final VoitingType type;
   const _Leading({required this.type});

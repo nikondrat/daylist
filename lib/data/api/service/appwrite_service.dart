@@ -154,7 +154,7 @@ class AppwriteService {
         databaseId: body.databaseId,
         collectionId: body.collectionId,
         documentId: body.title.id,
-        data: {'title': body.title.title});
+        data: {'title': body.title.title, 'isCorrect': true});
   }
 
   Future<List<ApiTeacher>> getTeachers({required GetTeachersBody body}) async {
@@ -181,6 +181,7 @@ class AppwriteService {
           'title': body.teacher.title.id,
           'classroom': body.teacher.classroom.id,
           'institutionId': body.teacher.institutionId,
+          'isCorrect': true
         });
   }
 
@@ -199,9 +200,7 @@ class AppwriteService {
         databaseId: body.databaseId,
         collectionId: body.collectionId,
         documentId: body.classroom.id,
-        data: {
-          'title': body.classroom.title,
-        });
+        data: {'title': body.classroom.title, 'isCorrect': true});
   }
 
   Future<List<ApiTime>> getTimes({required GetTimesBody body}) async {
@@ -222,6 +221,7 @@ class AppwriteService {
           'start': body.time.start,
           'end': body.time.end,
           'number': body.time.number,
+          'isCorrect': true
         });
   }
 
@@ -248,6 +248,7 @@ class AppwriteService {
           'groupId': body.subject.groupId,
           'showInWeek': body.subject.showInWeek,
           'weekday': body.subject.weekday,
+          'isCorrect': true
         });
   }
 
@@ -275,7 +276,8 @@ class AppwriteService {
           'undergroup': body.replacement.undergroup,
           'groupId': body.replacement.groupId,
           'teacher': body.replacement.teacher.id,
-          'time': body.replacement.time.id
+          'time': body.replacement.time.id,
+          'isCorrect': true
         });
   }
 

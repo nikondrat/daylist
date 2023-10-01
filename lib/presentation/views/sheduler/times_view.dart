@@ -41,6 +41,7 @@ class TimesView extends HookConsumerWidget {
             config: items,
             builder: (v) {
               return CustomListWidget(
+                  onRefresh: () => ref.invalidate(timesProvider),
                   children: v
                       .map((e) => ListTile(
                           onTap: () {

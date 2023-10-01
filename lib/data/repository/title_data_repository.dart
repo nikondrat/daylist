@@ -1,7 +1,6 @@
 import 'package:daylist/data/api/api_util.dart';
 import 'package:daylist/data/api/request/add/add_title_body.dart';
 import 'package:daylist/data/api/request/get/get_titles_body.dart';
-import 'package:daylist/data/repository/voiting_data_repository.dart';
 import 'package:daylist/data/storage/model/storage_title.dart';
 import 'package:daylist/data/storage/storage_util.dart';
 import 'package:daylist/domain/model/title.dart';
@@ -31,7 +30,8 @@ class TitleDataRepository extends TitleRepository {
 
   @override
   Future addTitle({required AddTitleBody body}) async {
-    return await _apiUtil.addTitle(body: body).then(
-        (value) => VoitingDataRepository(_apiUtil).add(body: body.voitingBody));
+    return await _apiUtil.addTitle(body: body);
+    // .then(
+    //     (value) => VoitingDataRepository(_apiUtil).add(body: body.voitingBody));
   }
 }

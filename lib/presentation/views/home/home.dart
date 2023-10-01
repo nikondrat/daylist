@@ -3,7 +3,6 @@ import 'package:daylist/domain/state/settings/settings_state.dart';
 import 'package:daylist/presentation/views/widgets/list.dart';
 import 'package:daylist/presentation/views/widgets/subject.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:daylist/presentation/extensions/theme/context.dart';
@@ -40,6 +39,7 @@ class _Body extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final DateTime now = DateTime.now();
     final DateTime tomorrow = now.add(const Duration(days: 1));
+    final bool isAdmin = ref.watch(settingsProvider).isAdmin;
 
     final int undergroup = ref.watch(settingsProvider).undergroup;
     final bool isEvenWeek = ref.watch(isEvenWeekProvider);
@@ -54,23 +54,25 @@ class _Body extends HookConsumerWidget {
                 icon: const Icon(UniconsLine.setting)),
             title: Text(t.settings.app_name),
             actions: [
-              Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: IconButton(
-                      onPressed: () => ref
-                          .read(isChangeScheduleProvider.notifier)
-                          .update((state) => !state),
-                      color: context.color.primaryColor,
-                      splashRadius: 20,
-                      icon: const Icon(UniconsLine.edit))),
-              Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: IconButton(
-                      onPressed: () => context.goNamed(ViewsNames.voitings),
-                      color: context.color.primaryColor,
-                      splashRadius: 20,
-                      icon: const FaIcon(FontAwesomeIcons.wandMagicSparkles,
-                          size: 16))),
+              isAdmin
+                  ? Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: IconButton(
+                          onPressed: () => ref
+                              .read(isChangeScheduleProvider.notifier)
+                              .update((state) => !state),
+                          color: context.color.primaryColor,
+                          splashRadius: 20,
+                          icon: const Icon(UniconsLine.edit)))
+                  : const SizedBox.shrink(),
+              // Padding(
+              //     padding: const EdgeInsets.all(8),
+              //     child: IconButton(
+              //         onPressed: () => context.goNamed(ViewsNames.voitings),
+              //         color: context.color.primaryColor,
+              //         splashRadius: 20,
+              //         icon: const FaIcon(FontAwesomeIcons.wandMagicSparkles,
+              //             size: 16))),
               Padding(
                   padding: const EdgeInsets.all(8),
                   child: IconButton(
