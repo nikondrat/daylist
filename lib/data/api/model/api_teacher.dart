@@ -11,7 +11,7 @@ class ApiTeacher {
   ApiTeacher.fromApi(Map<String, dynamic> map)
       : id = map['\$id'],
         initials = map['initials'],
-        classroom = map['classroom'],
+        classroom = '${map['classroom']}',
         institutionId = map['institutionId'],
         title = ApiTitle.fromApi(map['title']),
         createdBy = map['createdBy'];

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:appwrite/appwrite.dart';
 import 'package:daylist/data/repository/user_repository.dart';
 import 'package:daylist/domain/state/settings/settings_state.dart';
@@ -53,6 +55,8 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
     if (!emailState.currentState!.validate() ||
         !passwordState.currentState!.validate()) return;
 
+    log('sf');
+
     try {
       await AuthDataRepository(Dependencies().getIt.get())
           .signUp(
@@ -63,7 +67,9 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
 
         context.goNamed(ViewsNames.selectionCity);
       });
-    } on AppwriteException catch (e) {
+    } on AppwriteException catch (e, s) {
+      log(e.toString());
+      log(s.toString());
       switch (e.code) {
         case 409:
           ref.read(authErrorProvider.notifier).update((state) => t.errors.used);

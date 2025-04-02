@@ -37,6 +37,10 @@ class GroupShedulerView extends HookConsumerWidget {
                               context.goNamed(ViewsNames.addReplacement),
                           splashRadius: 20,
                           icon: const Icon(Icons.add))),
+                  IconButton(
+                      onPressed: () => context.goNamed(ViewsNames.settings),
+                      splashRadius: 20,
+                      icon: const Icon(UniconsLine.setting)),
                   Padding(
                       padding: const EdgeInsets.all(8),
                       child: IconButton(

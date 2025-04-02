@@ -35,7 +35,7 @@ class Settings {
     return <String, dynamic>{
       'city': city!.toMap(),
       'institution': institution!.toMap(),
-      'group': group!.toMap(),
+      'group': group?.toMap(),
       'undergroup': undergroup,
       'isDark': isDark,
       'isShowTime': isShowTime,
@@ -50,7 +50,7 @@ class Settings {
     return Settings(
         city: City.fromMap(map['city']),
         institution: Institution.fromMap(map['institution']),
-        group: Group.fromMap(map['group']),
+        group: map['group'] == null ? null : Group.fromMap(map['group']),
         undergroup: map['undergroup'] ?? 1,
         isDark: map['isDark'] ?? false,
         isShowTime: map['isShowTime'] ?? false,

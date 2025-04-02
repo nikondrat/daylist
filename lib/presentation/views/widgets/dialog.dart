@@ -27,10 +27,14 @@ class CustomDialog extends StatelessWidget {
                   style: context.text.mediumText.copyWith(color: Colors.red))),
           TextButton(
               onPressed: () async {
-                final ConnectivityResult connectivityResult =
+                final List<ConnectivityResult> connectivityResult =
                     await Connectivity().checkConnectivity();
-                if (connectivityResult == ConnectivityResult.mobile ||
-                    connectivityResult == ConnectivityResult.wifi) {
+                final bool hasConnect = connectivityResult
+                    .where((ConnectivityResult result) =>
+                        result == ConnectivityResult.mobile ||
+                        result == ConnectivityResult.wifi)
+                    .isNotEmpty;
+                if (hasConnect) {
                   onSubmitted();
                 } else {
                   if (context.mounted) {

@@ -156,7 +156,7 @@ class ApiUtil {
 
   Future signUp({required SignUpBody body}) async {
     return _appwriteService.signUp(body: body).then((value) =>
-        signIn(body: SignInBody(email: body.email, password: body.password)));
+        signUp(body: SignUpBody(email: body.email, password: body.password)));
   }
 
   Future signIn({required SignInBody body}) async {

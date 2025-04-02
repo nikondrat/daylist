@@ -8,6 +8,7 @@ import 'package:daylist/domain/model/time.dart';
 import 'package:daylist/domain/model/title.dart';
 import 'package:daylist/domain/state/dialogs/subject_dialog_state.dart';
 import 'package:daylist/domain/state/settings/settings_state.dart';
+import 'package:daylist/domain/state/sheduler/sheduler_state.dart';
 import 'package:daylist/domain/state/week/week_state.dart';
 import 'package:daylist/internal/dependencies/dependencies.dart';
 import 'package:daylist/presentation/extensions/theme/context.dart';
@@ -35,7 +36,8 @@ class _AddSubjectViewState extends ConsumerState<AddSubjectView> {
   Future addSubject() async {
     final User user =
         await AuthDataRepository(Dependencies().getIt.get()).getUser();
-    final String? groupId = ref.watch(settingsProvider).group?.id;
+    final String? groupId =
+        ref.watch(settingsProvider).group?.id ?? ref.watch(selectedGroup)?.id;
 
     final Teacher? teacher = ref.watch(selectedTeacherProvider);
     final SubjectTitle? titleId = ref.watch(selectedSubjectTitleProvider);

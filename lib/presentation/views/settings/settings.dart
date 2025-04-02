@@ -1,4 +1,5 @@
 import 'package:daylist/domain/state/settings/settings_state.dart';
+import 'package:daylist/domain/state/sheduler/sheduler_state.dart';
 import 'package:daylist/presentation/extensions/theme/context.dart';
 import 'package:daylist/presentation/res/values.dart';
 import 'package:daylist/presentation/translations/translations.g.dart';
@@ -45,6 +46,8 @@ class _GeneralSectionWidget extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final settings = ref.watch(settingsProvider);
 
+    final group = ref.watch(selectedGroup);
+
     return SectionWidget(title: t.settings.general, children: [
       settings.isScheduler || kDebugMode
           ? SubsectionWidget(
@@ -71,7 +74,7 @@ class _GeneralSectionWidget extends HookConsumerWidget {
               icon: const Icon(UniconsLine.cell),
               onTap: () => router.pushNamed(ViewsNames.selectionGroup),
               title: t.settings.group,
-              trailing: [Text(settings.group!.title)])),
+              trailing: [Text(group?.title ?? settings.group!.title)])),
       SubsectionWidget(
           subsection: Subsection(
               icon: const Icon(UniconsLine.yin_yang),

@@ -16,7 +16,7 @@ class ApiReplacement {
       : id = map['\$id'],
         teacher = ApiTeacher.fromApi(map['teacher']),
         time = ApiTime.fromApi(map['time']),
-        groupId = map['groupId'],
+        groupId = map['group']['\$id'],
         date = DateTime.parse(map['date']),
         mode = map['mode'],
         undergroup = map['undergroup'],

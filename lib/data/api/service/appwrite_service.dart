@@ -186,11 +186,16 @@ class AppwriteService {
   Future<List<ApiReplacement>> getReplacements(
       {required GetReplacementsBody body}) async {
     final DocumentList docs = await _databases.listDocuments(
-        databaseId: body.databaseId,
-        collectionId: body.collectionId,
-        queries: [
-          Query.equal('groupId', body.groupId),
-        ]);
+      databaseId: body.databaseId,
+      collectionId: body.collectionId,
+      queries: [
+        Query.equal('group', body.groupId),
+        // Query.select([
+        //   '*',
+        //   'time.*'
+        // ]) // Используйте имя связи, которое вы указали в настройках отношения
+      ],
+    );
 
     return docs.documents.map((e) => ApiReplacement.fromApi(e.data)).toList();
   }
@@ -205,7 +210,7 @@ class AppwriteService {
           'mode': body.replacement.mode.name,
           'createdBy': body.replacement.createdBy,
           'undergroup': body.replacement.undergroup,
-          'groupId': body.replacement.groupId,
+          'group': body.replacement.groupId,
           'teacher': body.replacement.teacher.id,
           'time': body.replacement.time.id
         });
@@ -224,7 +229,7 @@ class AppwriteService {
   }
 
   Future signIn({required SignInBody body}) async {
-    return _account.createEmailSession(
+    return _account.createEmailPasswordSession(
         email: body.email, password: body.password);
   }
 
