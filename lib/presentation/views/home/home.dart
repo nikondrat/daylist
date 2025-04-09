@@ -49,6 +49,11 @@ class _Body extends HookConsumerWidget {
                 icon: const Icon(UniconsLine.setting)),
             title: Text(t.settings.app_name),
             actions: [
+              IconButton(
+                  onPressed: () {
+                    context.pushNamed(ViewsNames.courses);
+                  },
+                  icon: Icon(UniconsLine.books)),
               Padding(
                   padding: const EdgeInsets.all(8),
                   child: IconButton(

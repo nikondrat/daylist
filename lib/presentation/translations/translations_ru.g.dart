@@ -37,6 +37,7 @@ class TranslationsRu implements Translations {
 
 	// Translations
 	@override late final _TranslationsAuthRu auth = _TranslationsAuthRu._(_root);
+	@override late final _TranslationsCoursesRu courses = _TranslationsCoursesRu._(_root);
 	@override late final _TranslationsDialogRu dialog = _TranslationsDialogRu._(_root);
 	@override late final _TranslationsErrorsRu errors = _TranslationsErrorsRu._(_root);
 	@override late final _TranslationsHomeRu home = _TranslationsHomeRu._(_root);
@@ -61,6 +62,16 @@ class _TranslationsAuthRu implements TranslationsAuthEn {
 	@override String get surname => 'Фамилия';
 	@override String get password => 'Пароль';
 	@override late final _TranslationsAuthHelpersRu helpers = _TranslationsAuthHelpersRu._(_root);
+}
+
+// Path: courses
+class _TranslationsCoursesRu implements TranslationsCoursesEn {
+	_TranslationsCoursesRu._(this._root);
+
+	final TranslationsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Курсы';
 }
 
 // Path: dialog
@@ -323,6 +334,7 @@ extension on TranslationsRu {
 				const TextSpan(text: 'Нет аккаунта? '),
 				tapHere('Зарегистрироваться'),
 			]);
+			case 'courses.title': return 'Курсы';
 			case 'dialog.wrong': return 'Неправильно';
 			case 'dialog.initials': return 'Фамилия Имя Отчество';
 			case 'dialog.start': return 'Начало';

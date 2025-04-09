@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -16,7 +15,9 @@ void main() async {
   // if (kDebugMode) {
   //   dotenv.testLoad(fileInput: File('.env').readAsStringSync());
   // } else {
-  await dotenv.load(mergeWith: Platform.environment);
+  await dotenv.load(
+      // mergeWith: Platform.environment
+      );
   // }
   await SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);

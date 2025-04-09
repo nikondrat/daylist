@@ -32,7 +32,7 @@ class SettingsView extends HookConsumerWidget {
             body: const CustomListWidget(children: [
               _GeneralSectionWidget(),
               _ThemeSectionWidget(),
-              _Info()
+              // _Info()
             ])));
     // const AdaptiveWidget(
     // mobile: _Mobile(), tablet: _Tablet(), desktop: _Desktop()));

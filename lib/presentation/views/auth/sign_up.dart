@@ -206,8 +206,10 @@ class _SignUpButton extends HookConsumerWidget {
               child: ElevatedButton(
                   onPressed: signUp,
                   child: Text(t.auth.signUp,
-                      style: context.text.mediumText
-                          .copyWith(color: context.color.backgroundColor))))
+                      style: context.text.mediumText.copyWith(
+                        color: context.color.primaryColor,
+                        fontWeight: FontWeight.bold,
+                      ))))
         ]));
   }
 }

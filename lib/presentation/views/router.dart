@@ -3,6 +3,8 @@ import 'package:daylist/data/repository/user_repository.dart';
 import 'package:daylist/data/storage/model/settings.dart';
 import 'package:daylist/presentation/views/auth/sign_in.dart';
 import 'package:daylist/presentation/views/auth/sign_up.dart';
+import 'package:daylist/presentation/views/courses/course_view.dart';
+import 'package:daylist/presentation/views/courses/courses_view.dart';
 import 'package:daylist/presentation/views/sheduler/add_replacement.dart';
 import 'package:daylist/presentation/views/sheduler/add_subject.dart';
 import 'package:daylist/presentation/views/sheduler/group_sheduler.dart';
@@ -82,6 +84,16 @@ final GoRouter router = GoRouter(navigatorKey: navigatorKey, routes: [
       builder: (context, state) => const HomeView(),
       routes: [
         GoRoute(
+            path: ViewsPaths.courses,
+            name: ViewsNames.courses,
+            builder: (context, state) => CoursesView(),
+            routes: [
+              GoRoute(
+                  name: ViewsNames.course,
+                  path: ViewsPaths.course,
+                  builder: (context, state) => const CourseView()),
+            ]),
+        GoRoute(
             name: ViewsNames.week,
             path: ViewsPaths.week,
             builder: (context, state) => const WeekView()),
@@ -157,6 +169,8 @@ abstract class ViewsNames {
 
   static const String home = 'home';
   static const String week = 'week';
+  static const String courses = 'courses';
+  static const String course = 'course';
   static const String settings = 'settings';
 
   static const String sheduler = 'sheduler';
@@ -183,7 +197,10 @@ abstract class ViewsPaths {
   static const String selectionGroup = ViewsNames.selectionGroup;
 
   static const String home = '/${ViewsNames.home}';
+
   static const String week = ViewsNames.week;
+  static const String courses = ViewsNames.courses;
+  static const String course = ViewsNames.course;
   static const String settings = ViewsNames.settings;
 
   static const String sheduler = '/${ViewsNames.sheduler}';

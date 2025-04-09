@@ -40,6 +40,7 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 
 	// Translations
 	late final TranslationsAuthEn auth = TranslationsAuthEn._(_root);
+	late final TranslationsCoursesEn courses = TranslationsCoursesEn._(_root);
 	late final TranslationsDialogEn dialog = TranslationsDialogEn._(_root);
 	late final TranslationsErrorsEn errors = TranslationsErrorsEn._(_root);
 	late final TranslationsHomeEn home = TranslationsHomeEn._(_root);
@@ -64,6 +65,16 @@ class TranslationsAuthEn {
 	String get surname => 'Surname';
 	String get password => 'Password';
 	late final TranslationsAuthHelpersEn helpers = TranslationsAuthHelpersEn._(_root);
+}
+
+// Path: courses
+class TranslationsCoursesEn {
+	TranslationsCoursesEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Courses';
 }
 
 // Path: dialog
@@ -326,6 +337,7 @@ extension on Translations {
 				const TextSpan(text: 'Don\'t have an account? '),
 				tapHere('Sign up'),
 			]);
+			case 'courses.title': return 'Courses';
 			case 'dialog.wrong': return 'Wrong';
 			case 'dialog.initials': return 'Surname Name Patronymic';
 			case 'dialog.start': return 'Start';
