@@ -101,7 +101,7 @@ ThemeData theme(
           dialBackgroundColor: colors.secondaryColor,
           dayPeriodTextColor: colors.primaryColor,
           dialHandColor: colors.primaryColor),
-      dialogTheme: DialogTheme(
+      dialogTheme: DialogThemeData(
           titleTextStyle: textStyles.largeText,
           contentTextStyle: textStyles.mediumText,
           backgroundColor: colors.backgroundColor,

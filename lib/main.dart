@@ -15,7 +15,7 @@ void main() async {
   // if (kDebugMode) {
   //   dotenv.testLoad(fileInput: File('.env').readAsStringSync());
   // } else {
-  await dotenv.load(
+  await dotenv.load(fileName: 'dotenv'
       // mergeWith: Platform.environment
       );
   // }

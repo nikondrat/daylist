@@ -1,0 +1,14 @@
+endPoint=https://cloud.appwrite.io/v1
+key=64d4bcf3213d8dda08c8
+shedulersTeamId=67ed2f000000f6b17545
+
+databaseId=64d4be72b5cece81442a
+citiesCollectionId=64d4be7f63e38a57a475
+subjectsCollectionId=64d4c01d76db1adc74a2
+timesCollectionId=64d4bfaba5a0851c1ead
+titlesCollectionId=64d4bf3f71f70f12f933
+teachersCollectionId=64d4bf581c1d07353434
+replacementsCollectionId=64d4c07ef20ba28da4b7
+subjectsCollectionId=64d4c01d76db1adc74a2
+groupsCollectionId=64d4bf0eecf47716bc33
+institutionsCollectionId=64d4beb6d0a33b69a0e2
